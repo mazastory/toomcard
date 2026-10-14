@@ -85,6 +85,24 @@
       opacity: 1;
     }
 
+    /* Simulator Embed Auto-Scaling Mode */
+    body.in-simulator {
+      padding: 4px 0 0 0 !important;
+      min-height: 100% !important;
+      height: 100% !important;
+      justify-content: flex-start !important;
+      overflow: hidden !important;
+    }
+    body.in-simulator .container {
+      transform: scale(0.80);
+      transform-origin: top center;
+      margin-top: 0px;
+    }
+    body.in-simulator .viral-badge-link,
+    body.in-simulator .flip-hint:nth-of-type(2) {
+      display: none !important;
+    }
+
     /* 3D Vertical Card Scene */
     .card-scene {
       width: 100%;
@@ -774,7 +792,7 @@
             <!-- 로고 박스 (탭 시 QR 팝업) -->
             <div class="front-logo-container">
               <div class="front-logo-box" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR코드가 열립니다">
-                <img id="frontLogoImg" src="/assets/setupod.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/setupod_symbol.png';">
+                <img id="frontLogoImg" src="/assets/toomuslogo.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomuslogo.gif';">
               </div>
             </div>
 
@@ -803,7 +821,7 @@
             <!-- Top Logo on Back -->
             <div class="back-top-logo-container">
               <div class="back-top-logo" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR코드가 열립니다">
-                <img id="backLogoImg" src="/assets/setupod.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/setupod_symbol.png';">
+                <img id="backLogoImg" src="/assets/toomuslogo.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomuslogo.gif';">
               </div>
             </div>
 
@@ -872,9 +890,9 @@
     </div>
 
     <!-- Viral Powered-By Badge -->
-    <a href="/index.html" class="viral-badge-link" title="SETUPOD에서 나만의 비즈니스 팟 만들기">
+    <a href="/index.html" class="viral-badge-link" title="TOOMCARD에서 나만의 3D 명함 만들기">
       <i data-lucide="sparkles" style="width: 13px; height: 13px; color: var(--neon-accent);"></i>
-      <span>Setup your business with <strong>SETUPOD</strong></span>
+      <span>Created with <strong>TOOMCARD.COM</strong></span>
     </a>
 
   </div>
@@ -1014,6 +1032,9 @@
   <script src="/js/maza-telemetry.js"></script>
   <script src="/js/lead-magnet.js"></script>
   <script>
+    if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'simulator') {
+      document.body.classList.add('in-simulator');
+    }
     if (window.MazaTelemetry) {
       window.MazaTelemetry.init({ podId: 'toomcard3d' });
     }

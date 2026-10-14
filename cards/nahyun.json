@@ -7,11 +7,11 @@
   "companyWatermark": "TOOMUS",
   "slogan": "Life, Connected",
   "tagline": "LIFE · CONNECTED",
-  "role": "매니저",
-  "name": "김나현",
-  "phone": "010-7413-0806",
+  "role": "브랜드 디렉터",
+  "name": "Emma Watson",
+  "phone": "02-555-0100",
   "phoneLabel": "M",
-  "email": "nahyun@toomus.com",
+  "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
     "Toomus",
@@ -30,20 +30,20 @@
   },
   "socials": [],
   "vcard": {
-    "lastName": "김",
-    "firstName": "나현",
-    "formattedName": "김나현",
+    "lastName": "Watson",
+    "firstName": "Emma",
+    "formattedName": "Emma Watson",
     "org": "TOOMUS",
     "title": "매니저",
-    "tel": "010-7413-0806",
-    "email": "nahyun@toomus.com",
+    "tel": "02-555-0100",
+    "email": "hello@toomcard.com",
     "url": "https://toomus.com/nahyun",
     "note": "TOOMUS | Life, Connected"
   },
   "meta": {
-    "title": "TOOMUS | 김나현 디지털 명함",
+    "title": "TOOMUS | Emma Watson 디지털 명함",
     "siteName": "TOOMUS",
-    "ogTitle": "김나현 | TOOMUS",
+    "ogTitle": "Emma Watson | TOOMUS",
     "ogDescription": "Life, Connected | TOOMUS 공식 디지털 명함",
     "ogImage": "/assets/toomuslogo.gif"
   }

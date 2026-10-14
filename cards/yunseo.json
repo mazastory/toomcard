@@ -7,11 +7,11 @@
   "companyWatermark": "MAZA",
   "slogan": "플립마켓에서 달러자산 플랫폼으로",
   "tagline": "BUILD · SCALE · EXIT",
-  "role": "대표",
-  "name": "조윤서",
-  "phone": "010-8970-9449",
+  "role": "글로벌 전략 이사",
+  "name": "Elena Rostova",
+  "phone": "02-555-0100",
   "phoneLabel": "M",
-  "email": "ceo@mazastudio.kr",
+  "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
     "디지털 자산 구축",
@@ -37,20 +37,20 @@
     }
   ],
   "vcard": {
-    "lastName": "조",
-    "firstName": "윤서",
-    "formattedName": "조윤서 (MAZA STUDIO 대표)",
+    "lastName": "Rostova",
+    "firstName": "Elena",
+    "formattedName": "Elena Rostova",
     "org": "MAZA STUDIO",
     "title": "대표",
-    "tel": "010-8970-9449",
-    "email": "ceo@mazastudio.kr",
+    "tel": "02-555-0100",
+    "email": "hello@toomcard.com",
     "url": "https://mazastudio.kr/yunseo",
     "note": "MAZA STUDIO | 플립마켓에서 달러자산 플랫폼으로"
   },
   "meta": {
-    "title": "MAZA STUDIO | 조윤서 대표 디지털 명함",
+    "title": "MAZA STUDIO | Elena Rostova 디지털 명함",
     "siteName": "MAZA STUDIO",
-    "ogTitle": "조윤서 대표 | MAZA STUDIO",
+    "ogTitle": "Elena Rostova | MAZA STUDIO",
     "ogDescription": "플립마켓에서 달러자산 플랫폼으로 | MAZA STUDIO 공식 디지털 명함",
     "ogImage": "assets/sample_client_maza.png"
   }

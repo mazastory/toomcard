@@ -7,11 +7,11 @@
   "companyWatermark": "MAZA",
   "slogan": "플립마켓에서 달러자산 플랫폼으로",
   "tagline": "BUILD · SCALE · EXIT",
-  "role": "매니저",
-  "name": "유지연",
-  "phone": "010-8212-1468",
+  "role": "프로덕트 매니저",
+  "name": "Chloe Bennett",
+  "phone": "02-555-0100",
   "phoneLabel": "M",
-  "email": "annay35@mazastudio.kr",
+  "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
     "디지털 자산 구축",
@@ -49,20 +49,20 @@
     }
   ],
   "vcard": {
-    "lastName": "유",
-    "firstName": "지연",
-    "formattedName": "유지연",
+    "lastName": "Bennett",
+    "firstName": "Chloe",
+    "formattedName": "Chloe Bennett",
     "org": "MAZA STUDIO",
     "title": "매니저",
-    "tel": "010-8212-1468",
-    "email": "annay35@mazastudio.kr",
+    "tel": "02-555-0100",
+    "email": "hello@toomcard.com",
     "url": "https://mazastudio.kr/jiyeon",
     "note": "MAZA STUDIO | 플립마켓에서 달러자산 플랫폼으로"
   },
   "meta": {
-    "title": "MAZA STUDIO | 유지연 디지털 명함",
+    "title": "MAZA STUDIO | Chloe Bennett 디지털 명함",
     "siteName": "MAZA STUDIO",
-    "ogTitle": "유지연 | MAZA STUDIO",
+    "ogTitle": "Chloe Bennett | MAZA STUDIO",
     "ogDescription": "플립마켓에서 달러자산 플랫폼으로 | MAZA STUDIO 공식 디지털 명함",
     "ogImage": "assets/sample_client_maza.png"
   }

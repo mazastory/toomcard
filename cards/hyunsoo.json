@@ -7,11 +7,11 @@
   "companyWatermark": "MAZA",
   "slogan": "플립마켓에서 달러자산 플랫폼으로",
   "tagline": "BUILD · SCALE · EXIT",
-  "role": "매니저",
-  "name": "김현수",
-  "phone": "010-8243-0601",
+  "role": "수석 엔지니어",
+  "name": "Lucas Vance",
+  "phone": "02-555-0100",
   "phoneLabel": "M",
-  "email": "hsk0309@mazastudio.kr",
+  "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
     "디지털 자산 구축",
@@ -49,20 +49,20 @@
     }
   ],
   "vcard": {
-    "lastName": "김",
-    "firstName": "현수",
-    "formattedName": "김현수",
+    "lastName": "Vance",
+    "firstName": "Lucas",
+    "formattedName": "Lucas Vance",
     "org": "MAZA STUDIO",
     "title": "매니저",
-    "tel": "010-8243-0601",
-    "email": "hsk0309@mazastudio.kr",
+    "tel": "02-555-0100",
+    "email": "hello@toomcard.com",
     "url": "https://mazastudio.kr/hyunsoo",
     "note": "MAZA STUDIO | 플립마켓에서 달러자산 플랫폼으로"
   },
   "meta": {
-    "title": "MAZA STUDIO | 김현수 디지털 명함",
+    "title": "MAZA STUDIO | Lucas Vance 디지털 명함",
     "siteName": "MAZA STUDIO",
-    "ogTitle": "김현수 | MAZA STUDIO",
+    "ogTitle": "Lucas Vance | MAZA STUDIO",
     "ogDescription": "플립마켓에서 달러자산 플랫폼으로 | MAZA STUDIO 공식 디지털 명함",
     "ogImage": "assets/sample_client_maza.png"
   }

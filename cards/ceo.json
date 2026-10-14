@@ -1,14 +1,14 @@
 {
   "theme": "obsidian",
   "layout": "metal",
-  "name": "Andrew K",
-  "role": "투머스 /  대표",
+  "name": "David Miller",
+  "role": "대표이사 (CEO)",
   "company": "TOOMUS",
   "companyWatermark": "TOOMUS",
   "slogan": "무한한 가능성을 연결하는 비즈니스 플랫폼",
   "tagline": "ENDLESS POTENTIAL",
-  "phone": "010-2661-0070",
-  "email": "ceo@toomus.com",
+  "phone": "02-555-0100",
+  "email": "hello@toomcard.com",
   "moatTags": [
     "디지털 자산화",
     "전략적 비즈니스 빌드",
@@ -36,12 +36,13 @@
     "alt": "TOOMUS"
   },
   "vcard": {
-    "firstName": "Andrew",
-    "lastName": "K",
+    "firstName": "David",
+    "lastName": "Miller",
     "org": "TOOMUS",
     "title": "투머스 대표 / Product Lead",
-    "tel": "010-2661-0070",
-    "email": "ceo@toomus.com",
-    "url": "https://setupod.com/ceo"
+    "tel": "02-555-0100",
+    "email": "hello@toomcard.com",
+    "url": "https://setupod.com/ceo",
+    "formattedName": "David Miller"
   }
 }

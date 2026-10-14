@@ -7,11 +7,11 @@
   "companyWatermark": "MAZA",
   "slogan": "플립마켓에서 달러자산 플랫폼으로",
   "tagline": "BUILD · SCALE · EXIT",
-  "role": "매니저",
-  "name": "김용수",
-  "phone": "010-4772-1411",
+  "role": "비즈니스 개발 리드",
+  "name": "Noah Miller",
+  "phone": "02-555-0100",
   "phoneLabel": "M",
-  "email": "dydtn919@mazastudio.kr",
+  "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
     "디지털 자산 구축",
@@ -49,20 +49,20 @@
     }
   ],
   "vcard": {
-    "lastName": "김",
-    "firstName": "용수",
-    "formattedName": "김용수",
+    "lastName": "Miller",
+    "firstName": "Noah",
+    "formattedName": "Noah Miller",
     "org": "MAZA STUDIO",
     "title": "매니저",
-    "tel": "010-4772-1411",
-    "email": "dydtn919@mazastudio.kr",
+    "tel": "02-555-0100",
+    "email": "hello@toomcard.com",
     "url": "https://mazastudio.kr/yongsu",
     "note": "MAZA STUDIO | 플립마켓에서 달러자산 플랫폼으로"
   },
   "meta": {
-    "title": "MAZA STUDIO | 김용수 디지털 명함",
+    "title": "MAZA STUDIO | Noah Miller 디지털 명함",
     "siteName": "MAZA STUDIO",
-    "ogTitle": "김용수 | MAZA STUDIO",
+    "ogTitle": "Noah Miller | MAZA STUDIO",
     "ogDescription": "플립마켓에서 달러자산 플랫폼으로 | MAZA STUDIO 공식 디지털 명함",
     "ogImage": "assets/sample_client_maza.png"
   }

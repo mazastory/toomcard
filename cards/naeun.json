@@ -7,11 +7,11 @@
   "companyWatermark": "TOOMUS",
   "slogan": "Life, Connected",
   "tagline": "LIFE · CONNECTED",
-  "role": "매니저",
-  "name": "김나은",
-  "phone": "010-4985-0712",
+  "role": "Global Director",
+  "name": "Sophia Kang",
+  "phone": "02-555-0199",
   "phoneLabel": "M",
-  "email": "naeun@toomus.com",
+  "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
     "Toomus",
@@ -24,26 +24,37 @@
     "alt": "TOOMUS Logo"
   },
   "primaryAction": {
-    "url": "https://toomus.com",
-    "label": "TOOMUS 웹사이트",
+    "url": "https://toomcard.com",
+    "label": "TOOMUS 공식 웹사이트",
     "icon": "globe"
   },
-  "socials": [],
+  "socials": [
+    {
+      "type": "kakao",
+      "url": "https://open.kakao.com",
+      "label": "카카오톡 상담"
+    },
+    {
+      "type": "instagram",
+      "url": "https://instagram.com",
+      "label": "인스타그램"
+    }
+  ],
   "vcard": {
-    "lastName": "김",
-    "firstName": "나은",
-    "formattedName": "김나은",
+    "lastName": "Kang",
+    "firstName": "Sophia",
+    "formattedName": "Sophia Kang",
     "org": "TOOMUS",
-    "title": "매니저",
-    "tel": "010-4985-0712",
-    "email": "naeun@toomus.com",
-    "url": "https://toomus.com/naeun",
+    "title": "Global Director",
+    "tel": "02-555-0199",
+    "email": "hello@toomcard.com",
+    "url": "https://toomcard.com/naeun",
     "note": "TOOMUS | Life, Connected"
   },
   "meta": {
-    "title": "TOOMUS | 김나은 디지털 명함",
+    "title": "TOOMUS | Sophia Kang 디지털 명함",
     "siteName": "TOOMUS",
-    "ogTitle": "김나은 | TOOMUS",
+    "ogTitle": "Sophia Kang | TOOMUS",
     "ogDescription": "Life, Connected | TOOMUS 공식 디지털 명함",
     "ogImage": "/assets/toomuslogo.gif"
   }
