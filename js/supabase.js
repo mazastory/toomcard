@@ -14,24 +14,26 @@ if (window.supabase) {
 }
 
 // 1. 카카오 간편 로그인
-async function signInWithKakao() {
+async function signInWithKakao(customRedirect) {
   if (!supabaseClient) return alert("Supabase 클라이언트가 초기화되지 않았습니다.");
+  const redirectTarget = customRedirect || (window.location.origin + window.location.pathname);
   const { data, error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'kakao',
     options: {
-      redirectTo: window.location.origin + window.location.pathname
+      redirectTo: redirectTarget
     }
   });
   if (error) console.error("Kakao login error:", error);
 }
 
 // 2. 구글 간편 로그인
-async function signInWithGoogle() {
+async function signInWithGoogle(customRedirect) {
   if (!supabaseClient) return alert("Supabase 클라이언트가 초기화되지 않았습니다.");
+  const redirectTarget = customRedirect || (window.location.origin + window.location.pathname);
   const { data, error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin + window.location.pathname
+      redirectTo: redirectTarget
     }
   });
   if (error) console.error("Google login error:", error);
