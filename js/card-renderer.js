@@ -289,8 +289,8 @@ function populateCard(data) {
     if (fContainer) fContainer.style.display = 'none';
     if (bContainer) bContainer.style.display = 'none';
   } else if (data.logo) {
-    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/setupod.gif');
-    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/setupod_symbol.png');
+    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/toomuslogo.gif');
+    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/toomuslogo.gif');
 
     if (frontLogoImg) {
       frontLogoImg.onerror = function() {
@@ -537,15 +537,15 @@ function shareToKakao() {
     return;
   }
   
-  const title = (cardData && cardData.meta) ? cardData.meta.title : "SETUPOD 디지털 명함";
-  const desc = (cardData && cardData.meta) ? cardData.meta.ogDescription : "디지털 명함을 확인해보세요.";
-  let imageUrl = "https://setupod.com/assets/setupod.gif";
+  const title = (cardData && cardData.meta) ? cardData.meta.title : "TOOMCARD 3D 디지털 명함";
+  const desc = (cardData && cardData.meta) ? cardData.meta.ogDescription : "차세대 3D 인터랙티브 스마트 명함";
+  let imageUrl = "https://toomcard.com/assets/toomuslogo.gif";
   
   if (cardData && cardData.logo && cardData.logo.src) {
     if (cardData.logo.src.startsWith('http')) {
       imageUrl = cardData.logo.src;
     } else {
-      imageUrl = "https://setupod.com/" + cardData.logo.src.replace(/^\/+/, '');
+      imageUrl = "https://toomcard.com/" + cardData.logo.src.replace(/^\/+/, '');
     }
   }
 
@@ -608,8 +608,8 @@ function nativeShare() {
   }
   if (navigator.share) {
     navigator.share({
-      title: (cardData && cardData.meta) ? cardData.meta.title : "SETUPOD 디지털 명함",
-      text: (cardData && cardData.company) ? `${cardData.company} 공식 디지털 명함입니다.` : "공식 디지털 명함입니다.",
+      title: (cardData && cardData.meta) ? cardData.meta.title : "TOOMCARD 3D 디지털 명함",
+      text: (cardData && cardData.company) ? `${cardData.company} 3D 스마트 명함입니다.` : "TOOMCARD 3D 스마트 명함입니다.",
       url: window.location.href
     }).catch(() => {});
   } else {
@@ -669,8 +669,8 @@ function populateCardFromCloud(cloud, company) {
     return;
   }
 
-  const role = p.handle ? p.handle.replace(/@\w+\s*[·•-]?\s*/, '').trim() : 'Creator';
-  const companyName = company ? company.toUpperCase() : (p.handle && p.handle.includes('@') ? p.handle.split('·')[0].replace('@', '').trim().toUpperCase() : 'SETUPOD');
+  const role = p.handle ? p.handle.replace(/@\w+\s*[·•-]?\s*/, '').trim() : 'Member';
+  const companyName = company ? company.toUpperCase() : (p.handle && p.handle.includes('@') ? p.handle.split('·')[0].replace('@', '').trim().toUpperCase() : 'TOOMCARD');
 
   const cardModel = {
     slug: p.slug,
@@ -678,34 +678,29 @@ function populateCardFromCloud(cloud, company) {
     theme: p.theme || 'violet',
     company: companyName,
     companyWatermark: companyName,
-    slogan: p.bio || 'ALL-IN-ONE BUSINESS ASSET & 3D CARD',
-    tagline: 'ALL-IN-ONE BUSINESS ASSET',
+    slogan: p.bio || 'ALL-IN-ONE 3D SMART BUSINESS CARD',
+    tagline: '3D SMART IDENTITY',
     role: role || '대표',
     name: p.name || 'Member',
     phone: p.phone || '010-0000-0000',
-    email: p.email || 'contact@setupod.com',
-    moatTags: ['3D 인터랙티브', 'vCard 자동저장', '올인원 멀티링크'],
+    email: p.email || 'hello@toomcard.com',
+    moatTags: ['3D 인터랙티브', 'vCard 원클릭 저장', 'NFC 스마트 연동'],
     logo: {
-      src: p.avatar_url || '/assets/setupod.gif',
-      fallback: '/assets/setupod.gif',
+      src: p.avatar_url || '/assets/toomuslogo.gif',
+      fallback: '/assets/toomuslogo.gif',
       alt: companyName
     },
     primaryAction: {
-      url: `multilink.html?id=${p.slug}`,
-      label: '멀티링크 바로가기',
-      icon: 'link'
+      url: `/card.html?id=${p.slug}`,
+      label: '3D 명함 확인',
+      icon: 'layers'
     },
     socials: [
       {
         type: 'kakao',
         url: 'https://open.kakao.com',
-        label: '카카오톡 채널',
+        label: '카카오톡 상담',
         color: '#ffd978'
-      },
-      {
-        type: 'instagram',
-        url: 'https://instagram.com',
-        label: '인스타그램'
       }
     ],
     vcard: {
@@ -713,11 +708,11 @@ function populateCardFromCloud(cloud, company) {
       org: companyName,
       title: role || '대표',
       tel: p.phone || '010-0000-0000',
-      email: p.email || 'contact@setupod.com',
+      email: p.email || 'hello@toomcard.com',
       note: p.bio || ''
     },
     meta: {
-      title: `${companyName} | ${p.name} 디지털 명함`,
+      title: `${companyName} | ${p.name} 3D 스마트 명함`,
       siteName: companyName
     }
   };

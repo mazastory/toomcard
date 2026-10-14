@@ -1545,10 +1545,28 @@
 </head>
 <body class="app-mode">
 
+  <!-- 상단 프리미엄 헤더 GNB -->
+  <header style="background: rgba(7, 5, 13, 0.9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: sticky; top: 0; z-index: 1000; padding: 12px 24px;">
+    <div style="max-width: 1320px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+      <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff;">
+        <div style="width: 32px; height: 32px; border-radius: 9px; background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.4); display: flex; align-items: center; justify-content: center;">
+          <i data-lucide="layers" style="width: 18px; height: 18px; color: #c084fc;"></i>
+        </div>
+        <span style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 900; letter-spacing: 0.05em; color: #fff;">TOOMCARD</span>
+        <span style="font-size: 10px; font-weight: 800; color: #ffd978; background: rgba(255, 217, 120, 0.15); border: 1px solid rgba(255, 217, 120, 0.3); padding: 2px 7px; border-radius: 99px;">STUDIO</span>
+      </a>
 
-
-  <!-- 상단 헤더 -->
-  
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="/#nfc" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: #ffd978; text-decoration: none; padding: 7px 14px; border-radius: 99px; background: rgba(255, 217, 120, 0.1); border: 1px solid rgba(255, 217, 120, 0.25);">
+          <span>💳 실물 NFC 카드 소개</span>
+        </a>
+        <a href="/dashboard" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: #e2e8f0; text-decoration: none; padding: 7px 14px; border-radius: 99px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);">
+          <i data-lucide="layout-dashboard" style="width: 14px; height: 14px;"></i>
+          <span>내 명함 관리</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
   <!-- 메인 2분할 레이아웃 -->
   <div class="studio-container">
@@ -1677,33 +1695,33 @@
           <div class="form-group" style="grid-column: 1 / -1; margin-bottom: 8px;">
             <label class="form-label">커스텀 URL (선택) <span class="sub" style="color:var(--neon-accent);">*입력 시 해당 주소로 덮어씌워집니다 (예: ceo)</span></label>
             <div style="display:flex;align-items:center;background:var(--input-bg);border:1px solid var(--input-border);border-radius:12px;padding:0 12px;overflow:hidden;transition:all 0.3s ease;">
-              <span style="color:rgba(255,255,255,0.4);font-size:13px;padding-right:6px;">setupod.com/c/</span>
+              <span style="color:rgba(255,255,255,0.4);font-size:13px;padding-right:6px;">toomcard.com/</span>
               <input type="text" id="inputSlug" class="form-input" style="flex:1;background:transparent;border:none;padding-left:0;outline:none;" placeholder="영문/숫자 (공백 비워두면 자동 생성)">
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">이름 (영문/한글) <span class="sub">필수</span></label>
-            <input type="text" id="inputName" class="form-input" value="김민준" placeholder="예: 김민준, Alex Rivera" oninput="liveUpdate()" onfocus="forceCardBack()">
+            <input type="text" id="inputName" class="form-input" value="David Miller" placeholder="예: David Miller, Alex Rivera" oninput="liveUpdate()" onfocus="forceCardBack()">
           </div>
           <div class="form-group">
             <label class="form-label">직함 / 포지션 <span class="sub">필수</span></label>
-            <input type="text" id="inputRole" class="form-input" value="대표이사" placeholder="예: 대표이사, Founder, 팀장" oninput="liveUpdate()" onfocus="forceCardBack()">
+            <input type="text" id="inputRole" class="form-input" value="대표 (Founder & CEO)" placeholder="예: 대표이사, Founder, 디렉터" oninput="liveUpdate()" onfocus="forceCardBack()">
           </div>
           <div class="form-group">
             <label class="form-label">회사 / 브랜드명 <span class="sub">필수</span></label>
-            <input type="text" id="inputCompany" class="form-input" value="SETUPOD" placeholder="예: SETUPOD, NEXUS GLOBAL" oninput="liveUpdate()" onfocus="forceCardFront()">
+            <input type="text" id="inputCompany" class="form-input" value="TOOMCARD" placeholder="예: TOOMCARD, TOOMUS" oninput="liveUpdate()" onfocus="forceCardFront()">
           </div>
           <div class="form-group">
             <label class="form-label">배경 워터마크 영문 <span class="sub">대문자 권장</span></label>
-            <input type="text" id="inputWatermark" class="form-input" value="SETUPOD" placeholder="예: SETUPOD, NEXUS" oninput="liveUpdate()" onfocus="forceCardFront()">
+            <input type="text" id="inputWatermark" class="form-input" value="TOOMCARD" placeholder="예: TOOMCARD, TOOMUS" oninput="liveUpdate()" onfocus="forceCardFront()">
           </div>
           <div class="form-group full-width">
             <label class="form-label">슬로건 / 비전 한 줄 <span class="sub">앞·뒷면 강조</span></label>
-            <input type="text" id="inputSlogan" class="form-input" value="차세대 올인원 비즈니스 자산 & 3D 명함" placeholder="회사의 핵심 가치" oninput="liveUpdate()" onfocus="forceCardFront()">
+            <input type="text" id="inputSlogan" class="form-input" value="종이 명함의 시대를 끝내는 살아 움직이는 3D 명함" placeholder="회사의 핵심 가치" oninput="liveUpdate()" onfocus="forceCardFront()">
           </div>
           <div class="form-group full-width">
             <label class="form-label">영문 각인 태그라인 <span class="sub">상단 미니 럭셔리</span></label>
-            <input type="text" id="inputTagline" class="form-input" value="ALL-IN-ONE BUSINESS ASSET" placeholder="예: ENDLESS POTENTIAL" oninput="liveUpdate()" onfocus="forceCardFront()">
+            <input type="text" id="inputTagline" class="form-input" value="LIFE · CONNECTED" placeholder="예: LIFE · CONNECTED" oninput="liveUpdate()" onfocus="forceCardFront()">
           </div>
         </div>
       </div>
@@ -1818,11 +1836,11 @@
           </div>
           <div class="form-group">
             <label class="form-label">이메일 주소 <span class="sub">탭 시 메일 작성</span></label>
-            <input type="email" id="inputEmail" class="form-input" value="official@setupod.com" placeholder="name@company.com" oninput="liveUpdate()" onfocus="forceCardBack()">
+            <input type="email" id="inputEmail" class="form-input" value="hello@toomcard.com" placeholder="name@company.com" oninput="liveUpdate()" onfocus="forceCardBack()">
           </div>
           <div class="form-group">
             <label class="form-label">공식 웹사이트 URL</label>
-            <input type="url" id="inputWebsiteUrl" class="form-input" value="https://setupod.com" oninput="liveUpdate()" onfocus="forceCardFront()">
+            <input type="url" id="inputWebsiteUrl" class="form-input" value="https://toomcard.com" oninput="liveUpdate()" onfocus="forceCardFront()">
           </div>
           <div class="form-group">
             <label class="form-label">웹사이트 버튼 텍스트</label>
@@ -2069,14 +2087,14 @@
               <div class="front-wrapper">
                 <div class="front-logo-container">
                   <div class="front-logo-box" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR 코드가 열립니다.">
-                    <img id="frontLogoImg" src="../assets/setupod.gif" alt="Logo">
+                    <img id="frontLogoImg" src="/assets/toomuslogo.gif" alt="Logo">
                   </div>
                 </div>
 
                 <div class="front-info-container">
-                  <div class="brand-sub-engraving" id="frontTagline">ALL-IN-ONE BUSINESS ASSET</div>
-                  <div class="front-company" id="frontCompany">SETUPOD</div>
-                  <div class="front-slogan" id="frontSlogan">차세대 올인원 비즈니스 자산 & 3D 명함</div>
+                  <div class="brand-sub-engraving" id="frontTagline">LIFE · CONNECTED</div>
+                  <div class="front-company" id="frontCompany">TOOMCARD</div>
+                  <div class="front-slogan" id="frontSlogan">종이 명함의 시대를 끝내는 살아 움직이는 3D 명함</div>
 
                   <div class="moat-tags" id="frontMoatTags"></div>
 
@@ -2092,18 +2110,18 @@
               <div class="back-wrapper">
                 <div class="back-top-logo-container">
                   <div class="back-top-logo" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR 코드가 열립니다.">
-                    <img id="backLogoImg" src="../assets/setupod.gif" alt="Logo">
+                    <img id="backLogoImg" src="/assets/toomuslogo.gif" alt="Logo">
                   </div>
                 </div>
 
                 <div class="back-info-container">
-                  <div class="brand-sub-engraving" id="backTagline">ALL-IN-ONE BUSINESS ASSET</div>
-                  <div class="back-company-name" id="backCompany">SETUPOD</div>
-                  <div class="back-company-slogan" id="backSlogan">차세대 올인원 비즈니스 자산 & 3D 명함</div>
+                  <div class="brand-sub-engraving" id="backTagline">LIFE · CONNECTED</div>
+                  <div class="back-company-name" id="backCompany">TOOMCARD</div>
+                  <div class="back-company-slogan" id="backSlogan">종이 명함의 시대를 끝내는 살아 움직이는 3D 명함</div>
 
                   <div class="profile-row">
-                    <span class="role-title" id="roleTitle">대표이사</span>
-                    <span class="name-title" id="nameTitle">김민준</span>
+                    <span class="role-title" id="roleTitle">대표 (Founder & CEO)</span>
+                    <span class="name-title" id="nameTitle">David Miller</span>
                   </div>
 
                   <div class="contact-group">
@@ -2113,7 +2131,7 @@
                     </div>
                     <div class="contact-row">
                       <span class="contact-key" id="emailKey">E</span>
-                      <span class="contact-value" id="emailValue">official@setupod.com</span>
+                      <span class="contact-value" id="emailValue">hello@toomcard.com</span>
                     </div>
                   </div>
 
@@ -2174,7 +2192,7 @@
   <script>
     let currentLayout = 'classic';
     let currentTheme = 'violet';
-    let currentLogoSrc = 'assets/setupod.gif';
+    let currentLogoSrc = '/assets/toomuslogo.gif';
 
     let qrcodeObj = null;
 
@@ -2186,7 +2204,7 @@
           const qrTarget = document.getElementById('qrContainer');
           qrTarget.innerHTML = "";
           qrcodeObj = new QRCode(qrTarget, {
-            text: "https://setupod.com",
+            text: "https://toomcard.com",
             width: 160,
             height: 160,
             colorDark: "#100a24",
@@ -2543,11 +2561,9 @@
             if (res.error) {
               showToast(`❌ 발행 실패: ${res.error}`);
             } else {
-              // 로컬 및 운영 환경 모두에서 작동하도록 URL 생성
-              const baseUrl = window.location.origin.includes('127.0.0.1') || window.location.origin.includes('localhost') 
-                ? `${window.location.origin}/bizcard_public.html?id=${safeName}`
-                : `https://setupod.com/c/${safeName}`;
-                
+              // toomcard.com 단독 슬러그 URL 생성
+              const baseUrl = `${window.location.origin}/${safeName}`;
+              
               showToast(`🎉 클라우드 발행 완료!`);
               
               if (typeof gtag === 'function') {
@@ -2558,8 +2574,17 @@
               }
               
               navigator.clipboard.writeText(baseUrl).then(() => {
-                setTimeout(() => showToast(`✅ 생성된 링크가 클립보드에 복사되었습니다!\n${baseUrl}`), 1000);
+                showToast(`✅ 링크가 복사되었습니다: ${baseUrl}`);
               });
+
+              // 발행 성공 모달 팝업 표시
+              const modal = document.getElementById('publishSuccessModal');
+              if (modal) {
+                document.getElementById('publishedUrlText').innerText = baseUrl;
+                document.getElementById('btnViewLiveCard').href = baseUrl;
+                modal.style.display = 'flex';
+                if (window.lucide) lucide.createIcons();
+              }
             }
           } else {
             showToast("⚠️ Supabase 연동 모듈을 찾을 수 없습니다.");
@@ -3471,11 +3496,144 @@ function toggleMobileMenu() {
   </script>
   <script src="https://js.tosspayments.com/v1"></script>
 
-  <!-- Removed makerIntroOverlay to drop users directly into the workspace -->
+  <!-- Publish Success Modal -->
+  <div id="publishSuccessModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(12px); z-index:99999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#130c22; border:1px solid rgba(168,85,247,0.4); border-radius:24px; padding:36px; max-width:460px; width:100%; box-shadow:0 25px 60px rgba(0,0,0,0.8); text-align:center;">
+      <div style="width:64px; height:64px; border-radius:20px; background:linear-gradient(135deg,#a855f7,#ec4899); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 0 25px rgba(168,85,247,0.5);">
+        <i data-lucide="check" style="width:32px; height:32px; color:#fff;"></i>
+      </div>
+      <h3 style="font-size:22px; font-weight:800; color:#fff; margin-bottom:8px;">3D 명함이 발행되었습니다! 🎉</h3>
+      <p style="font-size:14px; color:#a1a1aa; margin-bottom:24px;">이제 어디서든 나만의 3D 명함 링크를 공유할 수 있습니다.</p>
 
-  <script src="../js/toast.js"></script>
-  <script src="../js/auth-modal.js"></script>
-  <script src="../js/gnb.js"></script>
-  <script src="../js/maker-ai.js"></script>
+      <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+        <span id="publishedUrlText" style="font-size:14px; font-weight:600; color:#ffd978; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:300px;"></span>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('publishedUrlText').innerText); showToast('링크가 복사되었습니다!');" style="background:#a855f7; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">복사</button>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-bottom:24px;">
+        <a id="btnViewLiveCard" href="#" target="_blank" style="flex:1; background:linear-gradient(135deg,#a855f7,#ec4899); color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <span>내 명함 열기</span>
+          <i data-lucide="external-link" style="width:15px; height:15px;"></i>
+        </a>
+        <a href="/dashboard" style="flex:1; background:rgba(255,255,255,0.08); color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;">
+          <span>대시보드 가기</span>
+        </a>
+      </div>
+
+      <!-- NFC Upsell Card inside modal -->
+      <div style="background:linear-gradient(135deg,rgba(255,217,120,0.1),rgba(168,85,247,0.1)); border:1px solid rgba(255,217,120,0.3); border-radius:16px; padding:16px; text-align:left; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div>
+          <div style="font-size:11px; font-weight:800; color:#ffd978; margin-bottom:2px;">실물 스마트 카드 신청</div>
+          <div style="font-size:13px; font-weight:700; color:#fff;">스마트폰에 탭하면 열리는 NFC 메탈 카드</div>
+        </div>
+        <button onclick="openNfcOrderFromPublishModal()" style="background:#ffd978; color:#000; border:none; padding:8px 14px; border-radius:8px; font-size:12px; font-weight:800; white-space:nowrap; cursor:pointer;">실물 주문</button>
+      </div>
+
+      <button onclick="document.getElementById('publishSuccessModal').style.display='none'" style="margin-top:20px; background:transparent; border:none; color:#71717a; font-size:13px; cursor:pointer;">창 닫기</button>
+    </div>
+  </div>
+
+  <!-- Modal for NFC Physical Card Order in Maker -->
+  <div id="makerNfcOrderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#110c1f; border:1px solid rgba(255,217,120,0.35); border-radius:24px; max-width:480px; width:100%; padding:32px; box-shadow:0 25px 60px rgba(0,0,0,0.8);">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <span style="font-size:24px;">💳</span>
+        <h3 style="font-size:20px; font-weight:800; color:#fff;">실물 스마트 NFC 카드 제작 신청</h3>
+      </div>
+      <p style="font-size:13px; color:#a1a1aa; margin-bottom:20px;">
+        방금 발행하신 3D 명함 정보가 내장된 맞춤형 실물 카드를 제작 배송합니다.
+      </p>
+
+      <form id="makerNfcOrderForm" onsubmit="handleMakerNfcOrderSubmit(event)">
+        <div style="margin-bottom:14px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">카드 모델 선택</label>
+          <select id="mNfcCardType" style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px; outline:none;">
+            <option value="metal_gold" style="background:#110c1f;">🥇 티타늄 골드 메탈 (₩49,000 / 레이저 각인)</option>
+            <option value="pvc_black" style="background:#110c1f;">🖤 매트 블랙 프리미엄 PVC (₩29,000 / 무광 방수)</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div>
+            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">카드 각인 성함</label>
+            <input type="text" id="mNfcEngraveName" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="예: DAVID MILLER">
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">받으실 분 연락처</label>
+            <input type="tel" id="mNfcContact" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="010-1234-5678">
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">배송받으실 주소</label>
+          <input type="text" id="mNfcAddress" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="서울시 강남구 테헤란로 123 4층">
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">연동된 3D 명함 URL</label>
+          <input type="text" id="mNfcCardUrl" readonly style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); color:#ffd978; font-size:13.5px; font-weight:600;">
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:flex-end;">
+          <button type="button" onclick="document.getElementById('makerNfcOrderModal').style.display='none'" style="padding:10px 18px; border-radius:10px; background:rgba(255,255,255,0.08); color:#fff; border:none; cursor:pointer; font-size:13px; font-weight:700;">닫기</button>
+          <button type="submit" id="mNfcSubmitBtn" style="padding:10px 20px; border-radius:10px; background:linear-gradient(135deg,#ffd978,#f59e0b); color:#000; border:none; cursor:pointer; font-size:13px; font-weight:800;">주문 접수 완료</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openNfcOrderFromPublishModal() {
+      const pubUrl = document.getElementById('publishedUrlText')?.innerText || window.location.href;
+      const engraveInput = document.getElementById('mNfcEngraveName');
+      const urlInput = document.getElementById('mNfcCardUrl');
+      
+      const currentName = document.getElementById('inName')?.value || document.getElementById('inRole')?.value || '';
+      if (engraveInput && currentName) engraveInput.value = currentName.toUpperCase();
+      if (urlInput) urlInput.value = pubUrl;
+
+      document.getElementById('publishSuccessModal').style.display = 'none';
+      document.getElementById('makerNfcOrderModal').style.display = 'flex';
+    }
+
+    async function handleMakerNfcOrderSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mNfcSubmitBtn');
+      btn.innerText = '접수 중...';
+      btn.disabled = true;
+
+      const cardType = document.getElementById('mNfcCardType').value;
+      const engraveName = document.getElementById('mNfcEngraveName').value.trim();
+      const contact = document.getElementById('mNfcContact').value.trim();
+      const address = document.getElementById('mNfcAddress').value.trim();
+      const cardUrl = document.getElementById('mNfcCardUrl').value.trim();
+
+      try {
+        await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pod_id: 'toomcard_nfc_order',
+            name: engraveName,
+            contact: contact,
+            email: contact.includes('@') ? contact : `${Date.now()}@toomcard.order`,
+            phone: !contact.includes('@') ? contact : null,
+            lead_type: 'nfc_order',
+            memo: `[메이커 직통 NFC 주문] 모델: ${cardType} / 주소: ${address} / 각인: ${engraveName} / 연동URL: ${cardUrl}`,
+            source: 'toomcard.com/maker'
+          })
+        });
+      } catch (err) {}
+
+      alert('실물 NFC 스마트 카드 주문 접수가 완료되었습니다!\n배송 및 결제 안내를 위해 담당자가 문자로 안내드리겠습니다.');
+      document.getElementById('makerNfcOrderModal').style.display = 'none';
+      btn.innerText = '주문 접수 완료';
+      btn.disabled = false;
+    }
+  </script>
+
+  <script src="/js/toast.js"></script>
+  <script src="/js/auth-modal.js"></script>
+  <script src="/js/maker-ai.js"></script>
 </body>
 </html>

@@ -19,12 +19,12 @@
     "기업 공식명함"
   ],
   "logo": {
-    "src": "/assets/setupod.gif",
-    "fallback": "/assets/setupod_symbol.png",
+    "src": "/assets/toomuslogo.gif",
+    "fallback": "/assets/toomuslogo.gif",
     "alt": "NEXUS GLOBAL Logo"
   },
   "primaryAction": {
-    "url": "https://setupod.com",
+    "url": "https://toomcard.com",
     "label": "공식 웹사이트",
     "icon": "sparkles"
   },
@@ -50,7 +50,7 @@
     "title": "총괄 디렉터",
     "tel": "02-555-0100",
     "email": "hello@toomcard.com",
-    "url": "https://setupod.com/nexus",
+    "url": "https://toomcard.com/nexus",
     "note": "NEXUS GLOBAL | 미래를 여는 차세대 엔터프라이즈 솔루션"
   },
   "meta": {

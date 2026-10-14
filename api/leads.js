@@ -58,15 +58,17 @@ module.exports = async (req, res) => {
         source 
       } = req.body || {};
 
-      if (!email) {
-        return res.status(400).json({ success: false, error: 'Email is required' });
+      if (!email && !phone && !contact) {
+        return res.status(400).json({ success: false, error: 'Contact (email or phone) is required' });
       }
 
-      const normalizedEmail = email.trim().toLowerCase();
+      const normalizedEmail = email 
+        ? email.trim().toLowerCase() 
+        : (contact && contact.includes('@') ? contact.trim().toLowerCase() : `inbound_${Date.now()}@toomcard.lead`);
       const resolvedPhone = phone || (contact && !contact.includes('@') ? contact : null);
       const resolvedKakao = kakao_id || null;
-      const resolvedDomain = domain || 'setupod.com';
-      const resolvedSource = source || 'lead_magnet_widget';
+      const resolvedDomain = domain || 'toomcard.com';
+      const resolvedSource = source || 'toomcard_web';
       const timestamp = new Date().toISOString();
 
       const leadRecord = {
