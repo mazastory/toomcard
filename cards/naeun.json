@@ -4,19 +4,20 @@
   "companySlug": "toomus",
   "layout": "metal",
   "theme": "obsidian",
+  "edition": "TITANIUM PRO",
   "companyWatermark": "TOOMUS",
-  "slogan": "Life, Connected",
-  "tagline": "LIFE · CONNECTED",
-  "role": "Global Director",
+  "slogan": "Next-Gen Digital Living & Mobility",
+  "tagline": "GLOBAL STRATEGY GROUP",
+  "role": "Global Managing Director",
   "name": "Sophia Kang",
   "phone": "02-555-0199",
   "phoneLabel": "M",
   "email": "hello@toomcard.com",
   "emailLabel": "E",
   "moatTags": [
-    "Toomus",
-    "Life",
-    "Connected"
+    "글로벌 비즈니스",
+    "브랜드 전략",
+    "M&A 파트너십"
   ],
   "logo": {
     "src": "/assets/toomcard_symbol.jpg",
@@ -25,14 +26,14 @@
   },
   "primaryAction": {
     "url": "https://toomcard.com",
-    "label": "TOOMUS 공식 웹사이트",
+    "label": "공식 웹사이트",
     "icon": "globe"
   },
   "socials": [
     {
       "type": "kakao",
       "url": "https://open.kakao.com",
-      "label": "카카오톡 상담"
+      "label": "카카오톡 1:1"
     },
     {
       "type": "instagram",
@@ -45,17 +46,17 @@
     "firstName": "Sophia",
     "formattedName": "Sophia Kang",
     "org": "TOOMUS",
-    "title": "Global Director",
+    "title": "Global Managing Director",
     "tel": "02-555-0199",
     "email": "hello@toomcard.com",
     "url": "https://toomcard.com/naeun",
-    "note": "TOOMUS | Life, Connected"
+    "note": "TOOMUS | Next-Gen Digital Living & Mobility"
   },
   "meta": {
     "title": "TOOMUS | Sophia Kang 디지털 명함",
     "siteName": "TOOMUS",
     "ogTitle": "Sophia Kang | TOOMUS",
-    "ogDescription": "Life, Connected | TOOMUS 공식 디지털 명함",
+    "ogDescription": "Next-Gen Digital Living & Mobility | TOOMUS 공식 디지털 명함",
     "ogImage": "/assets/toomcard_symbol.jpg"
   }
 }

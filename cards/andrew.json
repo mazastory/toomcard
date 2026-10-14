@@ -1,19 +1,20 @@
 {
   "slug": "andrew",
-  "theme": "maza",
+  "theme": "violet",
   "layout": "metal",
+  "edition": "FOUNDER EDITION",
   "name": "David Miller",
   "role": "Founder & CEO",
   "company": "TOOMUS",
   "companyWatermark": "TOOMUS",
-  "slogan": "Life, Connected & Next-Gen Digital Assets",
-  "tagline": "LIFE · CONNECTED",
+  "slogan": "Building Scaled 3D Digital Assets",
+  "tagline": "FOUNDER & MANAGING PARTNER",
   "phone": "02-555-0100",
   "email": "ceo@toomcard.com",
   "moatTags": [
-    "AI 파이프라인 설계",
+    "3D SaaS 인프라",
     "디지털 자산화",
-    "글로벌 비즈니스"
+    "글로벌 벤처"
   ],
   "logo": {
     "src": "/assets/toomcard_symbol.jpg",
@@ -45,13 +46,13 @@
     "title": "Founder & CEO",
     "tel": "02-555-0100",
     "email": "ceo@toomcard.com",
-    "url": "https://toomcard.com"
+    "url": "https://toomcard.com/andrew"
   },
   "meta": {
     "title": "TOOMUS | David Miller 대표 디지털 명함",
     "siteName": "TOOMUS",
     "ogTitle": "David Miller | TOOMUS",
-    "ogDescription": "Life, Connected | TOOMUS 공식 디지털 명함",
+    "ogDescription": "Building Scaled 3D Digital Assets | TOOMUS 공식 디지털 명함",
     "ogImage": "/assets/toomcard_symbol.jpg"
   }
 }

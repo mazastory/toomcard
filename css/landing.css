@@ -295,13 +295,13 @@ body {
 
 .simulator-frame {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
   height: 640px;
-  background: rgba(18, 12, 32, 0.8);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  border-radius: 36px;
+  background: #0d0a17;
+  border: 1.5px solid rgba(168, 85, 247, 0.4);
+  border-radius: 40px;
   padding: 12px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 50px rgba(168, 85, 247, 0.2);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(168, 85, 247, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -311,18 +311,19 @@ body {
 .simulator-notch {
   width: 120px;
   height: 18px;
-  background: #07050d;
+  background: #040208;
   border-radius: 0 0 14px 14px;
   margin: 0 auto 6px;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .simulator-iframe {
   width: 100%;
   height: calc(100% - 24px);
   border: none;
-  border-radius: 24px;
-  background: #000;
+  border-radius: 28px;
+  background: #06030c;
   display: block;
 }
 

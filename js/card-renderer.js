@@ -129,90 +129,96 @@ function getSocialIconSvg(type) {
   return `<i data-lucide="globe" style="width:14px;height:14px;color:#38bdf8;"></i>`;
 }
 
-// 내부 2x2 액션 버튼 바인딩
+// 내부 고전환 액션 버튼 바인딩 (앞면 & 뒷면 최적화)
 function renderActionDocks(data) {
-  const docks = [
-    document.getElementById('insideActionDockFront'),
-    document.getElementById('insideActionDockBack')
-  ];
+  const dockFront = document.getElementById('insideActionDockFront');
+  const dockBack = document.getElementById('insideActionDockBack');
 
   const primaryAction = data.primaryAction || {
     url: '#',
-    label: '웹사이트 바로가기',
-    icon: 'sparkles'
+    label: '공식 사이트',
+    icon: 'globe'
   };
 
   const socials = data.socials || [];
   const social1 = socials[0] || null;
-  const social2 = socials[1] || null;
 
-  docks.forEach(dock => {
-    if (!dock) return;
-
-    let row1 = `
-      <div class="inside-action-row">
-        <button class="btn-action btn-save" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
-          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
-          <span>연락처 저장</span>
+  let social1BtnHtml = '';
+  if (social1) {
+    if (social1.type === 'social_modal') {
+      social1BtnHtml = `
+        <button class="btn-sub-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social1.label}">
+          <i data-lucide="${social1.icon || 'globe'}" style="width: 13px; height: 13px; color: #38bdf8;"></i>
+          <span>${social1.label.replace('채널', '').trim()}</span>
         </button>
-        <a href="${primaryAction.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${primaryAction.label}">
-          <i data-lucide="${primaryAction.icon || 'sparkles'}" style="width: 15px; height: 15px;"></i>
-          <span>${primaryAction.label}</span>
+      `;
+    } else {
+      social1BtnHtml = `
+        <a href="${social1.url}" target="_blank" rel="noopener noreferrer" class="btn-sub-glass" onclick="event.stopPropagation()" title="${social1.label}">
+          ${getSocialIconSvg(social1.type)}
+          <span>${social1.label.replace('상담', '').replace('채널', '').trim() || '카카오톡'}</span>
         </a>
-      </div>
+      `;
+    }
+  } else {
+    social1BtnHtml = `
+      <a href="https://open.kakao.com" target="_blank" rel="noopener noreferrer" class="btn-sub-glass" onclick="event.stopPropagation()" title="카카오톡 상담">
+        ${getSocialIconSvg('kakao')}
+        <span>카카오톡</span>
+      </a>
     `;
+  }
 
-    let social1Btn = '';
-    if (social1) {
-      if (social1.type === 'social_modal') {
-        social1Btn = `
-          <button class="btn-action btn-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social1.label}">
-            <i data-lucide="${social1.icon || 'globe'}" style="width: 14px; height: 14px; color: #38bdf8;"></i>
-            <span>${social1.label}</span>
-          </button>
-        `;
-      } else {
-        social1Btn = `
-          <a href="${social1.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${social1.label}">
-            ${getSocialIconSvg(social1.type)}
-            <span>${social1.label}</span>
-          </a>
-        `;
-      }
-    }
-
-    let social2Btn = '';
-    if (social2) {
-      if (social2.type === 'social_modal') {
-        social2Btn = `
-          <button class="btn-action btn-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social2.label}">
-            <i data-lucide="${social2.icon || 'globe'}" style="width: 14px; height: 14px; color: #38bdf8;"></i>
-            <span>${social2.label}</span>
-          </button>
-        `;
-      } else {
-        social2Btn = `
-          <a href="${social2.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${social2.label}">
-            ${getSocialIconSvg(social2.type)}
-            <span>${social2.label}</span>
-          </a>
-        `;
-      }
-    }
-
-    let row2 = `
-      <div class="inside-action-row">
-        ${social1Btn}
-        ${social2Btn}
-        <button class="btn-action btn-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12);" title="명함 주인에게 연락처 및 문의 남기기">
-          <i data-lucide="message-square" style="width: 14px; height: 14px; color: #c084fc;"></i>
-          <span style="color: #e9d5ff; font-weight: 700;">상담/연락</span>
+  // 앞면 액션 독: Hero vCard + (공식사이트, 카톡, 상담문의)
+  if (dockFront) {
+    dockFront.innerHTML = `
+      <button class="btn-hero-vcard" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
+        <div class="vcard-btn-left">
+          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+          <span>연락처(vCard) 원클릭 저장</span>
+        </div>
+        <span class="vcard-btn-arrow">➔</span>
+      </button>
+      <div class="action-sub-grid">
+        <a href="${primaryAction.url}" target="_blank" rel="noopener noreferrer" class="btn-sub-glass" onclick="event.stopPropagation()" title="${primaryAction.label}">
+          <i data-lucide="${primaryAction.icon || 'globe'}" style="width: 13px; height: 13px; color: #38bdf8;"></i>
+          <span>${primaryAction.label.length > 7 ? primaryAction.label.slice(0, 7) : primaryAction.label}</span>
+        </a>
+        ${social1BtnHtml}
+        <button class="btn-sub-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);" title="명함 주인에게 연락처 및 문의 남기기">
+          <i data-lucide="message-square" style="width: 13px; height: 13px; color: #c084fc;"></i>
+          <span style="color: #e9d5ff;">상담/문의</span>
         </button>
       </div>
     `;
+  }
 
-    dock.innerHTML = row1 + row2;
-  });
+  // 뒷면 액션 독: Hero vCard + (링크 복사, 카톡 전송, 다른 앱 공유)
+  if (dockBack) {
+    dockBack.innerHTML = `
+      <button class="btn-hero-vcard" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
+        <div class="vcard-btn-left">
+          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+          <span>연락처(vCard) 즉시 저장</span>
+        </div>
+        <span class="vcard-btn-arrow">➔</span>
+      </button>
+      <div class="action-sub-grid">
+        <button class="btn-sub-glass" onclick="event.stopPropagation(); copyCardUrl();" title="명함 링크 복사">
+          <i data-lucide="copy" style="width: 13px; height: 13px; color: #ffd978;"></i>
+          <span>링크 복사</span>
+        </button>
+        <button class="btn-sub-glass" onclick="event.stopPropagation(); shareToKakao();" title="카카오톡으로 공유">
+          ${getSocialIconSvg('kakao')}
+          <span>카톡 전송</span>
+        </button>
+        <button class="btn-sub-glass" onclick="event.stopPropagation(); nativeShare();" title="다른 앱으로 공유">
+          <i data-lucide="share-2" style="width: 13px; height: 13px; color: #38bdf8;"></i>
+          <span>공유하기</span>
+        </button>
+      </div>
+    `;
+  }
 }
 
 // 소셜 채널 모달 채우기
@@ -255,7 +261,7 @@ function populateCard(data) {
   if (layoutStylesheet) {
     layoutStylesheet.href = layout === 'classic' ? '' : `/themes/layout-${layout}.css`;
   }
-  const cardElement = document.getElementById('cardElement');
+  const cardElement = document.getElementById('cardScene');
   if (cardElement) {
     cardElement.classList.remove('layout-classic', 'layout-metal', 'layout-visual');
     cardElement.classList.add(`layout-${layout}`);
@@ -284,10 +290,8 @@ function populateCard(data) {
   const frontLogoImg = document.getElementById('frontLogoImg');
   const backLogoImg = document.getElementById('backLogoImg');
   if (data.logo === false || (data.logo && data.logo.src === "")) {
-    const fContainer = document.querySelector('.front-logo-container');
-    const bContainer = document.querySelector('.back-top-logo-container');
+    const fContainer = document.querySelector('.card-medallion-area') || document.querySelector('.front-logo-container');
     if (fContainer) fContainer.style.display = 'none';
-    if (bContainer) bContainer.style.display = 'none';
   } else if (data.logo) {
     const primarySrc = resolveAssetUrl(data.logo.src || '/assets/toomcard_symbol.jpg');
     const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/toomcard_symbol.jpg');
@@ -312,27 +316,32 @@ function populateCard(data) {
 
   // 3D 홀로그램 & GIF 모션 연출 바인딩
   const logoMotion = data.logoMotion || data.avatarMotion;
-  const fLogoBox = document.querySelector('.front-logo-box');
-  const bLogoBox = document.querySelector('.back-top-logo');
+  const fLogoBox = document.querySelector('.card-medallion-box') || document.querySelector('.front-logo-box');
   if (logoMotion && logoMotion !== 'none') {
     const motionClasses = ['fx-hologram-pulse', 'fx-cyber-shimmer', 'fx-3d-floating', 'fx-gold-sparkle'];
-    [fLogoBox, bLogoBox].forEach(box => {
-      if (!box) return;
-      motionClasses.forEach(c => box.classList.remove(c));
-      if (logoMotion === 'pulse') box.classList.add('fx-hologram-pulse');
-      else if (logoMotion === 'shimmer') box.classList.add('fx-cyber-shimmer');
-      else if (logoMotion === 'float') box.classList.add('fx-3d-floating');
-      else if (logoMotion === 'gold') box.classList.add('fx-gold-sparkle');
-    });
+    if (fLogoBox) {
+      motionClasses.forEach(c => fLogoBox.classList.remove(c));
+      if (logoMotion === 'pulse') fLogoBox.classList.add('fx-hologram-pulse');
+      else if (logoMotion === 'shimmer') fLogoBox.classList.add('fx-cyber-shimmer');
+      else if (logoMotion === 'float') fLogoBox.classList.add('fx-3d-floating');
+      else if (logoMotion === 'gold') fLogoBox.classList.add('fx-gold-sparkle');
+    }
   }
 
-  // 앞면 정보 바인딩
-  const frontTagline = document.getElementById('frontTagline');
+  // 앞면 정보 바인딩 (이름, 직함, 회사명, 슬로건, 에디션)
   const frontCompany = document.getElementById('frontCompany');
   const frontSlogan = document.getElementById('frontSlogan');
-  if (frontTagline) frontTagline.innerText = data.tagline || '';
+  const frontName = document.getElementById('frontName');
+  const frontRole = document.getElementById('frontRole');
+  const frontEditionText = document.getElementById('frontEditionText');
+
   if (frontCompany) frontCompany.innerText = data.company || '';
   if (frontSlogan) frontSlogan.innerText = data.slogan || '';
+  if (frontName) frontName.innerText = data.name || '';
+  if (frontRole) frontRole.innerText = data.role || '';
+  if (frontEditionText) {
+    frontEditionText.innerText = data.edition || (data.theme === 'executive' ? 'PLATINUM VIP' : (data.theme === 'violet' ? 'NEON EDITION' : 'TITANIUM PRO'));
+  }
 
   // 뒷면 정보 바인딩
   const backTagline = document.getElementById('backTagline');
@@ -371,6 +380,9 @@ function populateCard(data) {
   const tagsHtml = (data.moatTags || []).map(tag => `<span class="moat-tag">${tag}</span>`).join('');
   if (frontMoatTags) frontMoatTags.innerHTML = tagsHtml;
   if (backMoatTags) backMoatTags.innerHTML = tagsHtml;
+
+  // 뒷면 직관 QR 코드 실시간 생성
+  renderBackDirectQr();
 
   // 액션 독 바인딩
   renderActionDocks(data);
@@ -426,6 +438,25 @@ function setupSwipe() {
 }
 
 // QR Code Modal (qrcodeObj is declared at top of file)
+function renderBackDirectQr() {
+  const target = document.getElementById('backQrDirectTarget');
+  if (!target) return;
+  target.innerHTML = "";
+  if (typeof QRCode !== 'undefined') {
+    try {
+      new QRCode(target, {
+        text: window.location.href,
+        width: 105,
+        height: 105,
+        colorDark: "#0c0a14",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    } catch (e) {
+      console.warn("Back QR generate error:", e);
+    }
+  }
+}
 
 function initQrCode() {
   const qrTarget = document.getElementById('qrContainer');
