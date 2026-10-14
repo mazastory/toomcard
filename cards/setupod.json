@@ -1,0 +1,66 @@
+{
+  "slug": "setupod",
+  "layout": "classic",
+  "theme": "violet",
+  "company": "SETUPOD",
+  "companyWatermark": "SETUPOD",
+  "slogan": "차세대 올인원 비즈니스 자산 & 3D 인터랙티브 명함",
+  "tagline": "ALL-IN-ONE BUSINESS ASSET",
+  "role": "대표",
+  "name": "Andrew K",
+  "phone": "010-2661-0070",
+  "phoneLabel": "M",
+  "email": "ceo@setupod.com",
+  "emailLabel": "E",
+  "moatTags": [
+    "3D 인터랙티브",
+    "vCard 주소록 저장",
+    "올인원 멀티링크"
+  ],
+  "logo": {
+    "src": "/assets/setupod.gif",
+    "fallback": "/assets/setupod_symbol.png",
+    "alt": "SETUPOD Logo"
+  },
+  "primaryAction": {
+    "url": "https://setupod.com",
+    "label": "공식 웹사이트",
+    "icon": "sparkles"
+  },
+  "socials": [
+    {
+      "type": "kakao",
+      "url": "https://open.kakao.com/o/sU9uClQi",
+      "label": "카카오 1:1",
+      "color": "#ffd978"
+    },
+    {
+      "type": "instagram",
+      "url": "https://instagram.com",
+      "label": "인스타그램",
+      "color": "#f472b6"
+    }
+  ],
+  "affiliateAction": {
+    "url": "https://setupod.com",
+    "label": "대표 애용 워크스페이스 & 비즈니스 팟 ⚡"
+  },
+  "vcard": {
+    "lastName": "K",
+    "firstName": "Andrew",
+    "formattedName": "Andrew K (대표)",
+    "org": "SETUPOD",
+    "title": "대표",
+    "tel": "010-2661-0070",
+    "email": "ceo@setupod.com",
+    "url": "https://setupod.com",
+    "note": "SETUPOD | 차세대 올인원 비즈니스 자산 & 3D 인터랙티브 명함"
+  },
+  "meta": {
+    "title": "SETUPOD | Andrew K 대표 디지털 명함",
+    "siteName": "SETUPOD",
+    "ogTitle": "Andrew K 대표 | SETUPOD",
+    "ogDescription": "ALL-IN-ONE BUSINESS ASSET | SETUPOD 공식 디지털 명함",
+    "ogImage": "assets/setupod.gif"
+  }
+}

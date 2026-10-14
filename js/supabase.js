@@ -1,0 +1,424 @@
+/**
+ * SETUPOD Supabase SDK Client
+ * Supabase Project: xhjauoabxybaksvbtcic
+ */
+
+const SUPABASE_URL = "https://xhjauoabxybaksvbtcic.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoamF1b2FieHliYWtzdmJ0Y2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMzg0NzQsImV4cCI6MjEwNDYxNDQ3NH0.wBK3-8IIq3JKYbMrVlLtx6rRPRmhCblm74EwL_3PxBY";
+
+// Supabase 클라이언트 초기화
+let supabaseClient = null;
+
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+// 1. 카카오 간편 로그인
+async function signInWithKakao() {
+  if (!supabaseClient) return alert("Supabase 클라이언트가 초기화되지 않았습니다.");
+  const { data, error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: window.location.origin + window.location.pathname
+    }
+  });
+  if (error) console.error("Kakao login error:", error);
+}
+
+// 2. 구글 간편 로그인
+async function signInWithGoogle() {
+  if (!supabaseClient) return alert("Supabase 클라이언트가 초기화되지 않았습니다.");
+  const { data, error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + window.location.pathname
+    }
+  });
+  if (error) console.error("Google login error:", error);
+}
+
+// 3. 이메일/비밀번호 간편 가입
+async function signUpWithEmail(email, password) {
+  if (!supabaseClient) return;
+  return await supabaseClient.auth.signUp({ email, password });
+}
+
+// 4. 이메일 로그인
+async function signInWithEmail(email, password) {
+  if (!supabaseClient) return;
+  return await supabaseClient.auth.signInWithPassword({ email, password });
+}
+
+// 5. 로그아웃
+async function signOutUser() {
+  if (!supabaseClient) return;
+  await supabaseClient.auth.signOut();
+  window.location.reload();
+}
+
+// 6. 현재 세션 / 유저 가져오기
+async function getCurrentUser() {
+  if (!supabaseClient) return null;
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  return session ? session.user : null;
+}
+
+// 7. 내 팟(Pod) & 프로필 클라우드 동기화 (저장)
+async function syncPodToCloud(slug, profileData, componentsData) {
+  const user = await getCurrentUser();
+  if (!user) return { error: "로그인이 필요합니다." };
+
+  // 프로필 업데이트/생성
+  const { error: profileErr } = await supabaseClient
+    .from('profiles')
+    .upsert({
+      id: user.id,
+      slug: slug,
+      name: profileData.name,
+      handle: profileData.handle,
+      bio: profileData.bio,
+      theme: profileData.theme || 'violet',
+      updated_at: new Date().toISOString()
+    });
+
+  if (profileErr) return { error: profileErr.message };
+
+  // 팟 컴포넌트 목록 업데이트/생성 (slug 기준 upsert)
+  const { error: podErr } = await supabaseClient
+    .from('pods')
+    .upsert({
+      user_id: user.id,
+      slug: slug,
+      components_json: componentsData,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'slug' });
+
+  if (podErr) return { error: podErr.message };
+
+  return { success: true };
+}
+
+// 7-2. 팀/기업 명함 일괄 클라우드 저장
+async function syncTeamPodsToCloud(companySlug, companyData, members) {
+  const user = await getCurrentUser();
+  if (!user) return { error: "로그인이 필요합니다." };
+
+  const results = [];
+  const cleanCompSlug = companySlug.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+
+  for (const m of members) {
+    const memberSlug = (m.slug || m.name).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    const fullSlug = `${cleanCompSlug}/${memberSlug}`;
+
+    const cardModel = {
+      theme: companyData.theme || 'obsidian',
+      layout: companyData.layout || 'classic',
+      name: m.name,
+      role: m.role,
+      company: companyData.company,
+      companyWatermark: companyData.watermark || companyData.company,
+      slogan: companyData.slogan || '',
+      tagline: companyData.tagline || 'ALL-IN-ONE BUSINESS ASSET',
+      phone: m.phone || '',
+      email: m.email || '',
+      moatTags: companyData.tags || ['3D 인터랙티브', 'vCard 주소록 저장', '올인원 멀티링크'],
+      primaryAction: {
+        url: companyData.websiteUrl || 'https://setupod.com',
+        label: companyData.websiteLabel || '공식 웹사이트'
+      },
+      socials: [
+        { type: 'kakao', url: companyData.kakaoUrl || '#', label: companyData.kakaoLabel || '카카오톡' },
+        { type: 'instagram', url: companyData.instaUrl || '#', label: companyData.instaLabel || '인스타그램' }
+      ],
+      logo: {
+        src: companyData.logoSrc || 'assets/setupod.gif',
+        fallback: 'assets/setupod.gif',
+        alt: companyData.company
+      },
+      vcard: {
+        firstName: m.name,
+        org: companyData.company,
+        title: m.role,
+        tel: m.phone,
+        email: m.email,
+        url: `https://setupod.com/${fullSlug}`
+      }
+    };
+
+    const { error: err } = await supabaseClient
+      .from('pods')
+      .upsert({
+        user_id: user.id,
+        slug: fullSlug,
+        components_json: { card: cardModel },
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'slug' });
+
+    if (err) {
+      console.warn(`Failed to sync pod ${fullSlug}:`, err);
+      results.push({ slug: fullSlug, success: false, error: err.message });
+    } else {
+      results.push({ slug: fullSlug, success: true });
+    }
+  }
+
+  return { success: true, results };
+}
+
+// 8. 클라우드에서 팟 불러오기 (공개 페이지 조회)
+async function loadPodFromCloud(slug) {
+  if (!supabaseClient) return null;
+
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  const { data: pod } = await supabaseClient
+    .from('pods')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  return { profile, pod };
+}
+
+async function loadPodByUserId(userId) {
+  if (!supabaseClient) return null;
+
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (!profile) return null;
+
+  const { data: pod } = await supabaseClient
+    .from('pods')
+    .select('*')
+    .eq('slug', profile.slug)
+    .single();
+
+  return { profile, pod };
+}
+
+// 9. 방문자 리드(전화번호) 클라우드 DB 저장 (정밀 출처 분석 및 UTM 추적)
+async function saveLeadToCloud(targetSlug, phone, memo = '') {
+  if (!supabaseClient) return false;
+  
+  // Get owner's user_id from pods table
+  let ownerId = null;
+  const { data: pod } = await supabaseClient
+    .from('pods')
+    .select('user_id')
+    .eq('slug', targetSlug)
+    .maybeSingle();
+    
+  if (pod) {
+    ownerId = pod.user_id;
+  } else if (targetSlug && targetSlug.includes('/')) {
+    const pureSlug = targetSlug.split('/').pop();
+    const { data: podPure } = await supabaseClient
+      .from('pods')
+      .select('user_id')
+      .eq('slug', pureSlug)
+      .maybeSingle();
+    if (podPure) ownerId = podPure.user_id;
+  }
+
+  // 출처(Referrer) 및 채널 스마트 파싱
+  const ref = document.referrer || '';
+  let channel = 'Direct / 카카오톡';
+  if (ref.includes('instagram.com')) channel = '인스타그램';
+  else if (ref.includes('naver.com')) channel = '네이버';
+  else if (ref.includes('google.com')) channel = '구글 검색';
+  else if (ref.includes('youtube.com')) channel = '유튜브';
+  else if (ref.includes('threads.net')) channel = '스레드(Threads)';
+  else if (ref.includes('facebook.com')) channel = '페이스북';
+  else if (ref) channel = new URL(ref).hostname;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const utmSource = urlParams.get('utm_source') || '';
+  const utmMedium = urlParams.get('utm_medium') || '';
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  const { error } = await supabaseClient
+    .from('leads')
+    .insert({
+      user_id: ownerId,
+      target_slug: targetSlug,
+      phone: phone,
+      metadata: { 
+        referrer: ref,
+        channel: utmSource ? `${channel} (${utmSource})` : channel,
+        utm_medium: utmMedium,
+        device: isMobile ? 'Mobile' : 'Desktop',
+        memo: memo || '',
+        pageUrl: window.location.href,
+        userAgent: navigator.userAgent
+      }
+    });
+  return !error;
+}
+
+// 9-1. 내 명함에 접수된 리드(방문자 연락처) 목록 불러오기
+async function getMyLeads() {
+  const user = await getCurrentUser();
+  if (!user) return null;
+  const { data: leads, error } = await supabaseClient
+    .from('leads')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+  if (error) console.error("Error fetching leads:", error);
+  return leads;
+}
+
+// 9-2. 명함 조회수(Analytics) 기록하기 (정밀 채널 및 세션 스토리지 중복 방지)
+async function recordPageView(slug) {
+  if (!supabaseClient) return false;
+  // 중복 조회(새로고침) 방지를 위해 세션 스토리지 체크
+  const viewedKey = `setupod_viewed_${slug}`;
+  if (sessionStorage.getItem(viewedKey)) return true;
+  
+  const ref = document.referrer || '';
+  let channel = 'Direct / 카카오톡';
+  if (ref.includes('instagram.com')) channel = '인스타그램';
+  else if (ref.includes('naver.com')) channel = '네이버';
+  else if (ref.includes('google.com')) channel = '구글 검색';
+  else if (ref.includes('youtube.com')) channel = '유튜브';
+  else if (ref.includes('threads.net')) channel = '스레드(Threads)';
+  else if (ref) {
+    try { channel = new URL(ref).hostname; } catch(e) { channel = 'External'; }
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const utmSource = urlParams.get('utm_source') || '';
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  const { error } = await supabaseClient
+    .from('page_views')
+    .insert({
+      target_slug: slug,
+      metadata: { 
+        referrer: ref,
+        channel: utmSource ? `${channel} (${utmSource})` : channel,
+        device: isMobile ? 'Mobile' : 'Desktop',
+        userAgent: navigator.userAgent
+      }
+    });
+    
+  if (!error) {
+    sessionStorage.setItem(viewedKey, 'true');
+    return true;
+  }
+  return false;
+}
+
+// 9-3. 명함별 총 조회수 가져오기
+async function getAnalytics(slug) {
+  if (!supabaseClient) return 0;
+  const { count, error } = await supabaseClient
+    .from('page_views')
+    .select('*', { count: 'exact', head: true })
+    .eq('target_slug', slug);
+  if (error) {
+    console.error("Error fetching analytics:", error);
+    return 0;
+  }
+  return count || 0;
+}
+
+// 9-4. 명함별 최근 N일 조회수 히스토리 가져오기 (차트용)
+async function getAnalyticsHistory(slug, days = 7) {
+  if (!supabaseClient) return [];
+  
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  const startDate = d.toISOString();
+  
+  const { data, error } = await supabaseClient
+    .from('page_views')
+    .select('created_at')
+    .eq('target_slug', slug)
+    .gte('created_at', startDate)
+    .order('created_at', { ascending: true });
+    
+  if (error) {
+    console.error("Error fetching analytics history:", error);
+    return [];
+  }
+  
+  // 날짜별 그룹핑 로직 (YYYY-MM-DD 형식)
+  const history = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const tempDate = new Date();
+    tempDate.setDate(tempDate.getDate() - i);
+    const dateStr = tempDate.toISOString().split('T')[0];
+    history[dateStr] = 0;
+  }
+  
+  data.forEach(view => {
+    const dateStr = view.created_at.split('T')[0];
+    if (history[dateStr] !== undefined) {
+      history[dateStr]++;
+    }
+  });
+  
+  return Object.keys(history).map(date => ({
+    date,
+    views: history[date]
+  }));
+}
+
+// 10. 내 명함 목록 불러오기 (대시보드용)
+async function getMyPods() {
+  const user = await getCurrentUser();
+  if (!user) return null;
+  const { data: pods, error } = await supabaseClient
+    .from('pods')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('updated_at', { ascending: false });
+  if (error) console.error("Error fetching pods:", error);
+  return pods;
+}
+
+// 11. 내 명함 삭제하기
+async function deleteMyPod(slug) {
+  const user = await getCurrentUser();
+  if (!user) return false;
+  const { error } = await supabaseClient
+    .from('pods')
+    .delete()
+    .eq('user_id', user.id)
+    .eq('slug', slug);
+  if (error) console.error("Error deleting pod:", error);
+  return !error;
+}
+
+// 12. PRO 업그레이드 상태 저장
+async function upgradeToPro() {
+  const user = await getCurrentUser();
+  if (!user) return false;
+  const { error } = await supabaseClient
+    .from('profiles')
+    .update({ tier: 'PRO' })
+    .eq('id', user.id);
+  if (error) console.error("Error upgrading to PRO:", error);
+  return !error;
+}
+
+// 13. PRO 상태 확인
+async function checkProStatus() {
+  const user = await getCurrentUser();
+  if (!user) return false;
+  const { data } = await supabaseClient
+    .from('profiles')
+    .select('tier')
+    .eq('id', user.id)
+    .single();
+  return data && data.tier === 'PRO';
+}

@@ -1,0 +1,793 @@
+/**
+ * SETUPOD Dynamic Card Renderer Engine
+ * Author: SETUPOD Team
+ */
+
+let cardData = null;
+let qrcodeObj = null;
+
+// URL 파라미터 또는 경로에서 회사 및 카드 slug 추출
+// 지원 형식:
+// 1. setupod.com/nexus/alex -> company: 'nexus', slug: 'alex'
+// 2. setupod.com/alex -> company: null, slug: 'alex'
+// 3. ?id=alex 또는 ?id=setupod
+function getCardIdentifier() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const qId = urlParams.get('id') || urlParams.get('card');
+  const qComp = urlParams.get('company') || urlParams.get('org');
+  if (qId) return { company: qComp || null, slug: qId.toLowerCase() };
+
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  if (pathParts.length >= 2 && !pathParts[0].includes('.html')) {
+    if (pathParts[0] === 'card' || pathParts[0] === 'c' || pathParts[0] === 'a') {
+      if (pathParts.length >= 3) {
+        return { company: pathParts[1].toLowerCase(), slug: pathParts[2].toLowerCase() };
+      }
+      return { company: null, slug: pathParts[1].toLowerCase() };
+    }
+    return { company: pathParts[0].toLowerCase(), slug: pathParts[1].toLowerCase() };
+  }
+  if (pathParts.length === 1 && !pathParts[0].includes('.html')) {
+    if (pathParts[0] === 'card' || pathParts[0] === 'c' || pathParts[0] === 'a') return { company: null, slug: 'setupod' };
+    return { company: null, slug: pathParts[0].toLowerCase() };
+  }
+  return { company: null, slug: 'setupod' };
+}
+
+function getCardSlug() {
+  return getCardIdentifier().slug;
+}
+
+// 테마 스타일시트 동적 주입
+function applyTheme(themeName) {
+  const existingThemeLink = document.getElementById('themeStylesheet');
+  const themeHref = `/themes/${themeName || 'violet'}.css`;
+  
+  if (existingThemeLink) {
+    existingThemeLink.href = themeHref;
+  } else {
+    const link = document.createElement('link');
+    link.id = 'themeStylesheet';
+    link.rel = 'stylesheet';
+    link.href = themeHref;
+    document.head.appendChild(link);
+  }
+}
+
+// 텍스트를 거꾸로 분해하여 워터마크 세로 텍스트 생성 (글자 수에 따른 지능형 동적 스케일링)
+function renderWatermark(text) {
+  const container = document.getElementById('watermarkContainerFront');
+  const containerBack = document.getElementById('watermarkContainerBack');
+  if (!text) return;
+
+  const letters = text.toUpperCase().split('').reverse();
+  const n = letters.length;
+
+  let fontSize, spanHeight, spanWidth, rightOffset;
+
+  if (n <= 3) {
+    fontSize = 140;
+    spanHeight = 115;
+    spanWidth = 140;
+    rightOffset = -22;
+  } else if (n === 4) {
+    // MAZA 원본 스펙: 135px x 105px
+    fontSize = 135;
+    spanHeight = 105;
+    spanWidth = 135;
+    rightOffset = -20;
+  } else if (n === 5) {
+    fontSize = 105;
+    spanHeight = 92;
+    spanWidth = 105;
+    rightOffset = -15;
+  } else if (n === 6) {
+    fontSize = 88;
+    spanHeight = 80;
+    spanWidth = 88;
+    rightOffset = -12;
+  } else if (n === 7) {
+    fontSize = 72;
+    spanHeight = 70;
+    spanWidth = 72;
+    rightOffset = -8;
+  } else if (n === 8) {
+    fontSize = 64;
+    spanHeight = 62;
+    spanWidth = 64;
+    rightOffset = -6;
+  } else {
+    spanHeight = Math.max(36, Math.floor(485 / n));
+    fontSize = Math.round(spanHeight * 1.12);
+    spanWidth = fontSize;
+    rightOffset = -4;
+  }
+
+  const html = letters.map(c => `<span style="font-size:${fontSize}px !important; width:${spanWidth}px !important; height:${spanHeight}px !important; line-height:1;">${c}</span>`).join('');
+
+  [container, containerBack].forEach(c => {
+    if (!c) return;
+    c.innerHTML = html;
+    c.style.right = `${rightOffset}px`;
+  });
+}
+
+// Lucide 아이콘 매핑 헬퍼
+function getSocialIconSvg(type) {
+  if (type === 'kakao') {
+    return `<svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;flex-shrink:0;color:#ffd978;">
+      <path d="M12 3C6.48 3 2 6.48 2 10.77C2 13.52 3.82 15.93 6.6 17.21L5.7 20.55C5.6 20.93 6.03 21.23 6.36 21.01L10.38 18.34C10.91 18.41 11.45 18.45 12 18.45C17.52 18.45 22 14.97 22 10.77C22 6.48 17.52 3 12 3Z" />
+    </svg>`;
+  }
+  if (type === 'instagram') {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;color:#f472b6;">
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+    </svg>`;
+  }
+  return `<i data-lucide="globe" style="width:14px;height:14px;color:#38bdf8;"></i>`;
+}
+
+// 내부 2x2 액션 버튼 바인딩
+function renderActionDocks(data) {
+  const docks = [
+    document.getElementById('insideActionDockFront'),
+    document.getElementById('insideActionDockBack')
+  ];
+
+  const primaryAction = data.primaryAction || {
+    url: '#',
+    label: '웹사이트 바로가기',
+    icon: 'sparkles'
+  };
+
+  const socials = data.socials || [];
+  const social1 = socials[0] || null;
+  const social2 = socials[1] || null;
+
+  docks.forEach(dock => {
+    if (!dock) return;
+
+    let row1 = `
+      <div class="inside-action-row">
+        <button class="btn-action btn-save" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
+          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+          <span>연락처 저장</span>
+        </button>
+        <a href="${primaryAction.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${primaryAction.label}">
+          <i data-lucide="${primaryAction.icon || 'sparkles'}" style="width: 15px; height: 15px;"></i>
+          <span>${primaryAction.label}</span>
+        </a>
+      </div>
+    `;
+
+    let social1Btn = '';
+    if (social1) {
+      if (social1.type === 'social_modal') {
+        social1Btn = `
+          <button class="btn-action btn-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social1.label}">
+            <i data-lucide="${social1.icon || 'globe'}" style="width: 14px; height: 14px; color: #38bdf8;"></i>
+            <span>${social1.label}</span>
+          </button>
+        `;
+      } else {
+        social1Btn = `
+          <a href="${social1.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${social1.label}">
+            ${getSocialIconSvg(social1.type)}
+            <span>${social1.label}</span>
+          </a>
+        `;
+      }
+    }
+
+    let social2Btn = '';
+    if (social2) {
+      if (social2.type === 'social_modal') {
+        social2Btn = `
+          <button class="btn-action btn-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social2.label}">
+            <i data-lucide="${social2.icon || 'globe'}" style="width: 14px; height: 14px; color: #38bdf8;"></i>
+            <span>${social2.label}</span>
+          </button>
+        `;
+      } else {
+        social2Btn = `
+          <a href="${social2.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${social2.label}">
+            ${getSocialIconSvg(social2.type)}
+            <span>${social2.label}</span>
+          </a>
+        `;
+      }
+    }
+
+    let row2 = `
+      <div class="inside-action-row">
+        ${social1Btn}
+        ${social2Btn}
+        <button class="btn-action btn-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12);" title="명함 주인에게 연락처 및 문의 남기기">
+          <i data-lucide="message-square" style="width: 14px; height: 14px; color: #c084fc;"></i>
+          <span style="color: #e9d5ff; font-weight: 700;">상담/연락</span>
+        </button>
+      </div>
+    `;
+
+    dock.innerHTML = row1 + row2;
+  });
+}
+
+// 소셜 채널 모달 채우기
+function renderSocialModal(data) {
+  const modalList = document.getElementById('socialModalList');
+  if (!modalList) return;
+
+  const socialModalItem = (data.socials || []).find(s => s.type === 'social_modal');
+  if (!socialModalItem || !socialModalItem.channels) {
+    modalList.innerHTML = '';
+    return;
+  }
+
+  const itemsHtml = socialModalItem.channels.map(channel => `
+    <a href="${channel.url}" target="_blank" rel="noopener noreferrer" class="channel-row">
+      <div class="channel-left">
+        <i data-lucide="${channel.icon || 'globe'}" style="width: 18px; height: 18px;"></i>
+        <div class="channel-info">
+          <span class="channel-name">${channel.name}</span>
+          <span class="channel-handle">${channel.id}</span>
+        </div>
+      </div>
+      <div class="channel-right">
+        <span class="channel-badge">${channel.badge}</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: rgba(255,255,255,0.4);"></i>
+      </div>
+    </a>
+  `).join('');
+
+  modalList.innerHTML = itemsHtml;
+}
+
+// 메인 데이터 바인딩
+function populateCard(data) {
+  cardData = data;
+
+  // 레이아웃 적용
+  const layout = data.layout || 'classic';
+  const layoutStylesheet = document.getElementById('layoutStylesheet');
+  if (layoutStylesheet) {
+    layoutStylesheet.href = layout === 'classic' ? '' : `/themes/layout-${layout}.css`;
+  }
+  const cardElement = document.getElementById('cardElement');
+  if (cardElement) {
+    cardElement.classList.remove('layout-classic', 'layout-metal', 'layout-visual');
+    cardElement.classList.add(`layout-${layout}`);
+  }
+
+  // 테마 적용
+  applyTheme(data.theme);
+
+  // 브라우저 타이틀 및 OG 태그
+  if (data.meta) {
+    document.title = data.meta.title || `${data.company} | ${data.name} 디지털 명함`;
+  }
+
+  // 워터마크
+  renderWatermark(data.companyWatermark || data.company);
+
+  // 로고 이미지 (절대 경로 정규화 & 무한 onerror 루프 완전 차단)
+  function resolveAssetUrl(url) {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('/')) {
+      return url;
+    }
+    return '/' + url;
+  }
+
+  const frontLogoImg = document.getElementById('frontLogoImg');
+  const backLogoImg = document.getElementById('backLogoImg');
+  if (data.logo === false || (data.logo && data.logo.src === "")) {
+    const fContainer = document.querySelector('.front-logo-container');
+    const bContainer = document.querySelector('.back-top-logo-container');
+    if (fContainer) fContainer.style.display = 'none';
+    if (bContainer) bContainer.style.display = 'none';
+  } else if (data.logo) {
+    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/setupod.gif');
+    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/setupod_symbol.png');
+
+    if (frontLogoImg) {
+      frontLogoImg.onerror = function() {
+        this.onerror = null; // 무한 재귀 깜빡임 완전 방지
+        this.src = fallbackSrc;
+      };
+      frontLogoImg.src = primarySrc;
+      frontLogoImg.alt = data.logo.alt || data.company;
+    }
+    if (backLogoImg) {
+      backLogoImg.onerror = function() {
+        this.onerror = null; // 무한 재귀 깜빡임 완전 방지
+        this.src = fallbackSrc;
+      };
+      backLogoImg.src = primarySrc;
+      backLogoImg.alt = data.logo.alt || data.company;
+    }
+  }
+
+  // 3D 홀로그램 & GIF 모션 연출 바인딩
+  const logoMotion = data.logoMotion || data.avatarMotion;
+  const fLogoBox = document.querySelector('.front-logo-box');
+  const bLogoBox = document.querySelector('.back-top-logo');
+  if (logoMotion && logoMotion !== 'none') {
+    const motionClasses = ['fx-hologram-pulse', 'fx-cyber-shimmer', 'fx-3d-floating', 'fx-gold-sparkle'];
+    [fLogoBox, bLogoBox].forEach(box => {
+      if (!box) return;
+      motionClasses.forEach(c => box.classList.remove(c));
+      if (logoMotion === 'pulse') box.classList.add('fx-hologram-pulse');
+      else if (logoMotion === 'shimmer') box.classList.add('fx-cyber-shimmer');
+      else if (logoMotion === 'float') box.classList.add('fx-3d-floating');
+      else if (logoMotion === 'gold') box.classList.add('fx-gold-sparkle');
+    });
+  }
+
+  // 앞면 정보 바인딩
+  const frontTagline = document.getElementById('frontTagline');
+  const frontCompany = document.getElementById('frontCompany');
+  const frontSlogan = document.getElementById('frontSlogan');
+  if (frontTagline) frontTagline.innerText = data.tagline || '';
+  if (frontCompany) frontCompany.innerText = data.company || '';
+  if (frontSlogan) frontSlogan.innerText = data.slogan || '';
+
+  // 뒷면 정보 바인딩
+  const backTagline = document.getElementById('backTagline');
+  const backCompany = document.getElementById('backCompany');
+  const backSlogan = document.getElementById('backSlogan');
+  const roleTitle = document.getElementById('roleTitle');
+  const nameTitle = document.getElementById('nameTitle');
+  if (backTagline) backTagline.innerText = data.tagline || '';
+  if (backCompany) backCompany.innerText = data.company || '';
+  if (backSlogan) backSlogan.innerText = data.slogan || '';
+  if (roleTitle) roleTitle.innerText = data.role || '';
+  if (nameTitle) nameTitle.innerText = data.name || '';
+
+  // 연락처 정보 바인딩
+  const phoneLink = document.getElementById('phoneLink');
+  const phoneKey = document.getElementById('phoneKey');
+  const phoneValue = document.getElementById('phoneValue');
+  if (phoneLink && data.phone) {
+    phoneLink.href = `tel:${data.phone}`;
+    if (phoneKey) phoneKey.innerText = data.phoneLabel || 'T';
+    if (phoneValue) phoneValue.innerText = data.phone;
+  }
+
+  const emailLink = document.getElementById('emailLink');
+  const emailKey = document.getElementById('emailKey');
+  const emailValue = document.getElementById('emailValue');
+  if (emailLink && data.email) {
+    emailLink.href = `mailto:${data.email}`;
+    if (emailKey) emailKey.innerText = data.emailLabel || 'E';
+    if (emailValue) emailValue.innerText = data.email;
+  }
+
+  // 해자 태그 (Moat Tags) 바인딩
+  const frontMoatTags = document.getElementById('frontMoatTags');
+  const backMoatTags = document.getElementById('backMoatTags');
+  const tagsHtml = (data.moatTags || []).map(tag => `<span class="moat-tag">${tag}</span>`).join('');
+  if (frontMoatTags) frontMoatTags.innerHTML = tagsHtml;
+  if (backMoatTags) backMoatTags.innerHTML = tagsHtml;
+
+  // 액션 독 바인딩
+  renderActionDocks(data);
+
+  // 소셜 모달 바인딩
+  renderSocialModal(data);
+
+  // 수익화 슬롯 (쿠팡 파트너스 / 추천 링크) 바인딩
+  const affContainer = document.getElementById('affiliateBannerContainer');
+  const affLink = document.getElementById('affiliateBannerLink');
+  const affLabel = document.getElementById('affiliateBannerLabel');
+  if (affContainer && affLink && data.affiliateAction && data.affiliateAction.url) {
+    affLink.href = data.affiliateAction.url;
+    if (affLabel && data.affiliateAction.label) {
+      affLabel.innerText = data.affiliateAction.label;
+    }
+    affContainer.style.display = 'block';
+  } else if (affContainer) {
+    affContainer.style.display = 'none';
+  }
+
+  // Lucide Icons 다시 렌더링
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+// 3D Flip Card Toggle
+function toggleCardFlip() {
+  const scene = document.getElementById('cardScene');
+  if (scene) scene.classList.toggle('flipped');
+}
+
+// Touch Slide / Swipe Detection for 3D Flip
+let touchStartX = 0;
+let touchEndX = 0;
+
+function setupSwipe() {
+  const cardSceneEl = document.getElementById('cardScene');
+  if (!cardSceneEl) return;
+
+  cardSceneEl.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  cardSceneEl.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchEndX - touchStartX;
+    if (Math.abs(diffX) > 40) {
+      toggleCardFlip();
+    }
+  }, { passive: true });
+}
+
+// QR Code Modal (qrcodeObj is declared at top of file)
+
+function initQrCode() {
+  const qrTarget = document.getElementById('qrContainer');
+  if (!qrTarget) return;
+  qrTarget.innerHTML = "";
+  qrcodeObj = new QRCode(qrTarget, {
+    text: window.location.href,
+    width: 160,
+    height: 160,
+    colorDark: "#100a24",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+window.switchQrType = function(type) {
+  if (!qrcodeObj) return;
+
+  const btnWeb = document.getElementById('btnQrWeb');
+  const btnKakao = document.getElementById('btnQrKakao');
+
+  if (type === 'web') {
+    btnWeb.style.background = 'rgba(168, 85, 247, 0.2)';
+    btnWeb.style.color = '#d8b4fe';
+    btnKakao.style.background = 'transparent';
+    btnKakao.style.color = 'rgba(255, 255, 255, 0.5)';
+    qrcodeObj.clear();
+    qrcodeObj.makeCode(window.location.href);
+  } else if (type === 'kakao') {
+    const kakaoSocial = cardData?.socials?.find(s => s.type === 'kakao');
+    if (!kakaoSocial || !kakaoSocial.url || !kakaoSocial.url.startsWith('http')) {
+      showToast("❌ 카카오톡 링크가 등록되지 않았습니다.");
+      return;
+    }
+    btnKakao.style.background = '#fee500';
+    btnKakao.style.color = '#371d1e';
+    btnWeb.style.background = 'transparent';
+    btnWeb.style.color = 'rgba(255, 255, 255, 0.5)';
+    qrcodeObj.clear();
+    qrcodeObj.makeCode(kakaoSocial.url);
+  }
+};
+
+function openShareModal() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'view_qr', {
+      event_category: 'engagement',
+      card_name: cardData?.name || 'unknown'
+    });
+  }
+  const modal = document.getElementById('shareModal');
+  if (modal) {
+    modal.classList.add('active');
+    if (!qrcodeObj) {
+      initQrCode();
+    }
+  }
+}
+
+function closeShareModal() {
+  const modal = document.getElementById('shareModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function handleModalBgClick(e) {
+  if (e.target.id === 'shareModal') {
+    closeShareModal();
+  }
+}
+
+// Social Channels Modal
+function openSocialModal() {
+  const modal = document.getElementById('socialModal');
+  if (modal) modal.classList.add('active');
+}
+
+function closeSocialModal() {
+  const modal = document.getElementById('socialModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function handleSocialModalBgClick(e) {
+  if (e.target.id === 'socialModal') {
+    closeSocialModal();
+  }
+}
+
+// Toast
+function showToast(msg) {
+  const toast = document.getElementById('toastMsg');
+  const toastText = document.getElementById('toastText');
+  if (!toast) return;
+  if (toastText) toastText.innerText = msg;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2200);
+}
+
+// Kakao SDK Init
+if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
+  Kakao.init('a9f1f4d2bdd716519cf711ef516bf8b9');
+}
+
+// Kakao Share
+function shareToKakao() {
+  if (typeof Kakao === 'undefined' || !Kakao.isInitialized()) {
+    showToast("카카오톡 공유를 초기화할 수 없습니다.");
+    return;
+  }
+  
+  const title = (cardData && cardData.meta) ? cardData.meta.title : "SETUPOD 디지털 명함";
+  const desc = (cardData && cardData.meta) ? cardData.meta.ogDescription : "디지털 명함을 확인해보세요.";
+  let imageUrl = "https://setupod.com/assets/setupod.gif";
+  
+  if (cardData && cardData.logo && cardData.logo.src) {
+    if (cardData.logo.src.startsWith('http')) {
+      imageUrl = cardData.logo.src;
+    } else {
+      imageUrl = "https://setupod.com/" + cardData.logo.src.replace(/^\/+/, '');
+    }
+  }
+
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: title,
+      description: desc,
+      imageUrl: imageUrl,
+      link: {
+        mobileWebUrl: window.location.href,
+        webUrl: window.location.href,
+      },
+    },
+    buttons: [
+      {
+        title: '명함 보기',
+        link: {
+          mobileWebUrl: window.location.href,
+          webUrl: window.location.href,
+        },
+      },
+    ],
+  });
+  
+  if (typeof gtag === 'function') {
+    gtag('event', 'share', {
+      method: 'kakao_share',
+      content_type: 'digital_card',
+      item_id: window.location.pathname
+    });
+  }
+}
+
+// Copy URL
+function copyCardUrl() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'share', {
+      method: 'copy_link',
+      content_type: 'digital_card',
+      item_id: window.location.pathname
+    });
+  }
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    showToast("명함 링크가 복사되었습니다!");
+    closeShareModal();
+  }).catch(() => {
+    showToast("링크 복사에 실패했습니다.");
+  });
+}
+
+// Native Web Share
+function nativeShare() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'share', {
+      method: 'native_share',
+      content_type: 'digital_card',
+      item_id: window.location.pathname
+    });
+  }
+  if (navigator.share) {
+    navigator.share({
+      title: (cardData && cardData.meta) ? cardData.meta.title : "SETUPOD 디지털 명함",
+      text: (cardData && cardData.company) ? `${cardData.company} 공식 디지털 명함입니다.` : "공식 디지털 명함입니다.",
+      url: window.location.href
+    }).catch(() => {});
+  } else {
+    copyCardUrl();
+  }
+}
+
+// Dynamic vCard Download
+function downloadVCard() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'save_contact', {
+      event_category: 'conversion',
+      card_name: cardData?.name || 'unknown'
+    });
+  }
+  if (!cardData || !cardData.vcard) {
+    showToast("연락처 정보를 찾을 수 없습니다.");
+    return;
+  }
+  const v = cardData.vcard;
+  const vcardData = `BEGIN:VCARD
+VERSION:3.0
+N:${v.lastName || ''};${v.firstName || ''};;;
+FN:${v.formattedName || cardData.name}
+ORG:${v.org || cardData.company}
+TITLE:${v.title || cardData.role}
+TEL;TYPE=WORK,VOICE:${v.tel || cardData.phone}
+EMAIL;TYPE=WORK,INTERNET:${v.email || cardData.email}
+URL;TYPE=WORK:${v.url || cardData.website || ''}
+NOTE:${v.note || cardData.slogan || ''}
+END:VCARD`;
+
+  const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${(v.formattedName || cardData.name).replace(/\s+/g, '_')}.vcf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("연락처 파일(vCard)이 다운로드되었습니다!");
+}
+
+// 클라우드 프로필을 3D 명함 모델로 매핑
+function populateCardFromCloud(cloud, company) {
+  const p = cloud.profile || {};
+  const podJson = (cloud.pod && cloud.pod.components_json) ? cloud.pod.components_json : null;
+
+  // 1. 직접 저장된 고품질 명함 객체(card)가 있는 경우 바로 렌더링
+  if (podJson && podJson.card && podJson.card.company && podJson.card.name) {
+    populateCard(podJson.card);
+    return;
+  }
+  if (podJson && podJson.company && podJson.name) {
+    populateCard(podJson);
+    return;
+  }
+
+  const role = p.handle ? p.handle.replace(/@\w+\s*[·•-]?\s*/, '').trim() : 'Creator';
+  const companyName = company ? company.toUpperCase() : (p.handle && p.handle.includes('@') ? p.handle.split('·')[0].replace('@', '').trim().toUpperCase() : 'SETUPOD');
+
+  const cardModel = {
+    slug: p.slug,
+    layout: p.layout || 'classic',
+    theme: p.theme || 'violet',
+    company: companyName,
+    companyWatermark: companyName,
+    slogan: p.bio || 'ALL-IN-ONE BUSINESS ASSET & 3D CARD',
+    tagline: 'ALL-IN-ONE BUSINESS ASSET',
+    role: role || '대표',
+    name: p.name || 'Member',
+    phone: p.phone || '010-0000-0000',
+    email: p.email || 'contact@setupod.com',
+    moatTags: ['3D 인터랙티브', 'vCard 자동저장', '올인원 멀티링크'],
+    logo: {
+      src: p.avatar_url || '/assets/setupod.gif',
+      fallback: '/assets/setupod.gif',
+      alt: companyName
+    },
+    primaryAction: {
+      url: `multilink.html?id=${p.slug}`,
+      label: '멀티링크 바로가기',
+      icon: 'link'
+    },
+    socials: [
+      {
+        type: 'kakao',
+        url: 'https://open.kakao.com',
+        label: '카카오톡 채널',
+        color: '#ffd978'
+      },
+      {
+        type: 'instagram',
+        url: 'https://instagram.com',
+        label: '인스타그램'
+      }
+    ],
+    vcard: {
+      firstName: p.name || 'Member',
+      org: companyName,
+      title: role || '대표',
+      tel: p.phone || '010-0000-0000',
+      email: p.email || 'contact@setupod.com',
+      note: p.bio || ''
+    },
+    meta: {
+      title: `${companyName} | ${p.name} 디지털 명함`,
+      siteName: companyName
+    }
+  };
+
+  populateCard(cardModel);
+}
+
+// 초기화 진입점
+async function initCardEngine() {
+  const { company, slug } = getCardIdentifier();
+
+  // 1. Supabase 클라우드에서 검색 시도
+  if (typeof loadPodFromCloud === 'function') {
+    try {
+      const searchSlug = company ? `${company}/${slug}` : slug;
+      let cloud = await loadPodFromCloud(searchSlug);
+      if (!cloud || (!cloud.profile && !cloud.pod)) {
+        cloud = await loadPodFromCloud(slug);
+      }
+      if (cloud && (cloud.profile || cloud.pod)) {
+        populateCardFromCloud(cloud, company);
+        setupSwipe();
+        const container = document.querySelector('.container');
+        if (container) container.classList.add('loaded');
+        return;
+      }
+    } catch (e) {
+      console.log("Cloud card fetch fallback:", e);
+    }
+  }
+
+  // 2. 로컬 JSON 파일 폴백
+  const paths = company ? [`/cards/${company}_${slug}.json`, `/cards/${slug}.json`] : [`/cards/${slug}.json`];
+  let loaded = false;
+  for (const p of paths) {
+    try {
+      const res = await fetch(p);
+      if (res.ok) {
+        const data = await res.json();
+        populateCard(data);
+        loaded = true;
+        break;
+      }
+    } catch (e) {}
+  }
+
+  // 3. 기본 toomus / naeun 명함 폴백
+  if (!loaded) {
+    try {
+      const fallbackRes = await fetch(`/cards/toomus.json`);
+      const fallbackData = await fallbackRes.json();
+      populateCard(fallbackData);
+    } catch (e) {
+      showToast("명함 데이터를 불러오지 못했습니다.");
+    }
+  }
+
+  setupSwipe();
+  
+  // Reveal the container after rendering
+  const container = document.querySelector('.container');
+  if (container) {
+    container.classList.add('loaded');
+  }
+  
+  // Analytics 조회수 기록
+  if (typeof recordPageView === 'function') {
+    const targetSlug = company ? `${company}/${slug}` : slug;
+    recordPageView(targetSlug).catch(e => console.log('Analytics Error:', e));
+  }
+}
+
+window.addEventListener('DOMContentLoaded', initCardEngine);

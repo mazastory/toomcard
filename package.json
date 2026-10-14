@@ -1,0 +1,22 @@
+{
+  "name": "toomcard",
+  "version": "1.0.0",
+  "description": "TOOMCARD - Next-Gen 3D Interactive Digital Business Card Platform",
+  "main": "api/render.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "@vercel/og": "^0.6.2"
+  },
+  "keywords": [
+    "digital-business-card",
+    "3d-card",
+    "vcard",
+    "toomcard",
+    "toomus"
+  ],
+  "author": "TOOMUS",
+  "license": "MIT"
+}

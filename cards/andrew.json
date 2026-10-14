@@ -1,0 +1,43 @@
+{
+  "theme": "maza",
+  "layout": "metal",
+  "name": "Andrew K",
+  "role": "CTO",
+  "company": "MAZA STUDIO",
+  "companyWatermark": "MAZA",
+  "slogan": "초개인화된 AI 에이전트와 비즈니스 자동화 파이프라인 설계",
+  "tagline": "AI AUTOMATION & AGENTIC WORKFLOWS",
+  "phone": "010-2661-0070",
+  "email": "maza@mazastudio.kr",
+  "moatTags": [
+    "AI 파이프라인 설계",
+    "자동화 엔지니어링",
+    "풀스택 개발"
+  ],
+  "primaryAction": {
+    "url": "https://open.kakao.com/o/sUdweERi",
+    "label": "1:1 채팅하기"
+  },
+  "socials": [
+    {
+      "type": "kakao",
+      "url": "https://open.kakao.com/o/sUdweERi",
+      "label": "카카오 1:1"
+    },
+    {
+      "type": "instagram",
+      "url": "https://instagram.com/mazabase",
+      "label": "인스타그램"
+    }
+  ],
+  "logo": false,
+  "vcard": {
+    "firstName": "Andrew",
+    "lastName": "K",
+    "org": "MAZA STUDIO",
+    "title": "CTO",
+    "tel": "010-2661-0070",
+    "email": "maza@mazastudio.kr",
+    "url": "https://open.kakao.com/o/sUdweERi"
+  }
+}
