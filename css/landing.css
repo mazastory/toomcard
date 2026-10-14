@@ -325,9 +325,6 @@ body {
   background: #000;
   display: block;
 }
-  border-radius: 24px;
-  background: #000;
-}
 
 .sample-switcher {
   display: flex;
