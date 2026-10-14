@@ -19,8 +19,8 @@
     "기업 공식명함"
   ],
   "logo": {
-    "src": "/assets/toomuslogo.gif",
-    "fallback": "/assets/toomuslogo.gif",
+    "src": "/assets/toomcard_symbol.jpg",
+    "fallback": "/assets/toomcard_symbol.jpg",
     "alt": "NEXUS GLOBAL Logo"
   },
   "primaryAction": {
@@ -58,6 +58,6 @@
     "siteName": "NEXUS GLOBAL",
     "ogTitle": "Alex Rivera | NEXUS GLOBAL",
     "ogDescription": "GLOBAL INNOVATION | NEXUS GLOBAL 공식 디지털 명함",
-    "ogImage": "assets/setupod.gif"
+    "ogImage": "assets/toomcard_symbol.jpg"
   }
 }

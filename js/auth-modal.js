@@ -16,7 +16,7 @@
         </button>
         
         <div class="auth-modal-header">
-          <img src="/assets/toomuslogo.gif" alt="TOOMCARD" class="auth-modal-logo" onerror="this.src='/assets/favicon-32x32.png'">
+          <img src="/assets/toomcard-symbol.svg" alt="TOOMCARD" class="auth-modal-logo" style="width: 56px; height: 56px; border-radius: 16px; box-shadow: 0 0 20px rgba(168, 85, 247, 0.45); display: inline-block; margin-bottom: 16px;" onerror="this.src='/assets/favicon-32x32.png'">
           <h2 class="auth-modal-title">TOOMCARD 시작하기</h2>
           <p class="auth-modal-subtitle">제작하신 3D 명함을 영구 보존하고 toomcard.com 고유 링크를 생성하기 위해 3초 만에 로그인하세요.</p>
         </div>

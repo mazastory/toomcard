@@ -19,8 +19,8 @@
     "Connected"
   ],
   "logo": {
-    "src": "/assets/toomuslogo.gif",
-    "fallback": "/assets/toomuslogo.gif",
+    "src": "/assets/toomcard_symbol.jpg",
+    "fallback": "/assets/toomcard_symbol.jpg",
     "alt": "TOOMUS Logo"
   },
   "primaryAction": {
@@ -45,6 +45,6 @@
     "siteName": "TOOMUS",
     "ogTitle": "Emma Watson | TOOMUS",
     "ogDescription": "Life, Connected | TOOMUS 공식 디지털 명함",
-    "ogImage": "/assets/toomuslogo.gif"
+    "ogImage": "/assets/toomcard_symbol.jpg"
   }
 }

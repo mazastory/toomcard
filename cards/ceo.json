@@ -31,8 +31,8 @@
     }
   ],
   "logo": {
-    "src": "/assets/toomuslogo.gif",
-    "fallback": "/assets/toomuslogo.gif",
+    "src": "/assets/toomcard_symbol.jpg",
+    "fallback": "/assets/toomcard_symbol.jpg",
     "alt": "TOOMUS"
   },
   "vcard": {

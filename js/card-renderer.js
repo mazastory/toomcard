@@ -289,8 +289,8 @@ function populateCard(data) {
     if (fContainer) fContainer.style.display = 'none';
     if (bContainer) bContainer.style.display = 'none';
   } else if (data.logo) {
-    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/toomuslogo.gif');
-    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/toomuslogo.gif');
+    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/toomcard_symbol.jpg');
+    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/toomcard_symbol.jpg');
 
     if (frontLogoImg) {
       frontLogoImg.onerror = function() {
@@ -539,7 +539,7 @@ function shareToKakao() {
   
   const title = (cardData && cardData.meta) ? cardData.meta.title : "TOOMCARD 3D 디지털 명함";
   const desc = (cardData && cardData.meta) ? cardData.meta.ogDescription : "차세대 3D 인터랙티브 스마트 명함";
-  let imageUrl = "https://toomcard.com/assets/toomuslogo.gif";
+  let imageUrl = "https://toomcard.com/assets/toomcard_symbol.jpg";
   
   if (cardData && cardData.logo && cardData.logo.src) {
     if (cardData.logo.src.startsWith('http')) {
@@ -704,8 +704,8 @@ function populateCardFromCloud(cloud, company) {
     email: p.email || 'hello@toomcard.com',
     moatTags: ['3D 인터랙티브', 'vCard 원클릭 저장', 'NFC 스마트 연동'],
     logo: {
-      src: p.avatar_url || '/assets/toomuslogo.gif',
-      fallback: '/assets/toomuslogo.gif',
+      src: p.avatar_url || '/assets/toomcard_symbol.jpg',
+      fallback: '/assets/toomcard_symbol.jpg',
       alt: companyName
     },
     primaryAction: {

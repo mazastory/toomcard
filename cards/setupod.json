@@ -18,7 +18,7 @@
     "올인원 멀티링크"
   ],
   "logo": {
-    "src": "/assets/setupod.gif",
+    "src": "/assets/toomcard_symbol.jpg",
     "fallback": "/assets/setupod_symbol.png",
     "alt": "SETUPOD Logo"
   },
@@ -61,6 +61,6 @@
     "siteName": "SETUPOD",
     "ogTitle": "Alex Rivera | SETUPOD",
     "ogDescription": "ALL-IN-ONE BUSINESS ASSET | SETUPOD 공식 디지털 명함",
-    "ogImage": "assets/setupod.gif"
+    "ogImage": "assets/toomcard_symbol.jpg"
   }
 }
