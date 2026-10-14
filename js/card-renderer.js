@@ -625,6 +625,24 @@ function downloadVCard() {
       card_name: cardData?.name || 'unknown'
     });
   }
+  // Record conversion to Supabase page_views
+  try {
+    if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+      const slug = (typeof currentSlug !== 'undefined' && currentSlug) ? currentSlug : window.location.pathname.replace(/^\//, '');
+      if (slug && !slug.includes('.')) {
+        supabaseClient.from('page_views').insert({
+          target_slug: slug,
+          metadata: {
+            event: 'vcard_save',
+            channel: 'vCard Download',
+            device: /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+            referrer: document.referrer || ''
+          }
+        }).then();
+      }
+    }
+  } catch(e) {}
+
   if (!cardData || !cardData.vcard) {
     showToast("연락처 정보를 찾을 수 없습니다.");
     return;
