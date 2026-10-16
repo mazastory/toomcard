@@ -1,0 +1,395 @@
+/* ==================================================
+   LAYOUT: MINIMAL LUXURY METAL PLATE (미니멀 플레이트)
+   Front: 100% Photorealistic Physical Metal Card Artwork
+   Back: High-Impact Executive Revelation & Smart Cockpit
+   ================================================== */
+
+/* --- Card Scene & Physics Calibration --- */
+.layout-plate .card-face {
+  border-radius: 28px !important;
+}
+
+/* ==================================================
+   FRONT FACE: PURE BESPOKE PHYSICAL METAL ARTWORK
+   ================================================== */
+.layout-plate .card-face.front {
+  padding: 0 !important;
+  background: #090a0f !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.24) !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  box-shadow: 
+    0 28px 70px rgba(0, 0, 0, 0.95),
+    0 0 40px var(--neon-glow, rgba(168, 85, 247, 0.4)),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+/* Hide HTML typography & buttons on the front to reveal the pure card artwork */
+.layout-plate .card-face.front .front-wrapper,
+.layout-plate .card-face.front .watermark-dynamic,
+.layout-plate .card-face.front::before,
+.layout-plate #insideActionDockFront,
+.layout-plate .card-executive-section,
+.layout-plate .plate-flip-prompt,
+.layout-plate #frontActionDock,
+.layout-plate .front-info-container {
+  display: none !important;
+}
+
+/* Photorealistic Card Plate Artwork Container */
+.plate-artwork-container {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  z-index: 2;
+  cursor: pointer;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+.layout-plate .plate-artwork-container {
+  display: block !important;
+}
+
+.card-scene.flipped .layout-plate .plate-artwork-container,
+.card-scene.flipped .plate-artwork-container {
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.plate-artwork-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 28px !important;
+  pointer-events: none;
+  filter: contrast(1.03) brightness(1.02);
+}
+
+/* Living Physical Anisotropic Light Sweep */
+.plate-specular-sheen {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(115deg, 
+    transparent 36%, 
+    rgba(255, 255, 255, 0.04) 44%, 
+    rgba(255, 255, 255, 0.22) 50%, 
+    rgba(255, 217, 120, 0.18) 53%, 
+    rgba(255, 255, 255, 0.06) 56%, 
+    transparent 64%);
+  pointer-events: none;
+  z-index: 3;
+  transform: rotate(-15deg);
+  animation: plateHoloSweep 6.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  opacity: 0.85;
+}
+
+@keyframes plateHoloSweep {
+  0% { transform: translateY(-110%) rotate(-15deg); }
+  28%, 100% { transform: translateY(130%) rotate(-15deg); }
+}
+
+/* Minimal Luxury Tactile Pill Hint */
+.plate-flip-pill {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  background: rgba(10, 10, 16, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 99px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+  user-select: none;
+  animation: platePillPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes platePillPulse {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  50% {
+    border-color: rgba(255, 217, 120, 0.65);
+    box-shadow: 0 8px 24px rgba(255, 217, 120, 0.3);
+    color: #ffffff;
+  }
+}
+
+.plate-flip-pill:hover {
+  background: rgba(15, 15, 24, 0.9);
+  border-color: rgba(255, 217, 120, 0.85);
+  color: #ffd978;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* ==================================================
+   BACK FACE: HIGH-IMPACT EXECUTIVE REVELATION (SETUPOD / TOOMUS MASTER)
+   ================================================== */
+.layout-plate .card-face.back {
+  padding: 30px 24px 22px 24px !important;
+  border-radius: 28px !important;
+  background: var(--card-gradient, radial-gradient(circle at 50% 0%, #1a1c29 0%, #0a0b10 100%)) !important;
+}
+
+.layout-plate .back-wrapper {
+  position: relative !important;
+  z-index: 2 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+/* Top Logo on Back (144px Interactive 3D Flipper) */
+.layout-plate .back-top-logo-container {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-top: 4px !important;
+}
+
+.layout-plate .back-flipper-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  perspective: 1000px !important;
+  cursor: pointer !important;
+}
+
+.layout-plate .back-flipper {
+  width: 144px !important;
+  height: 144px !important;
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.32, 1.1) !important;
+  border-radius: 26px !important;
+}
+
+.layout-plate .back-flipper.show-qr {
+  transform: rotateY(180deg) !important;
+}
+
+.layout-plate .back-flipper-face {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  border-radius: 26px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: var(--logo-bg, radial-gradient(circle at 35% 35%, #252838 0%, #0c0d14 100%)) !important;
+  border: 1px solid var(--logo-border, rgba(255, 217, 120, 0.35)) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(245, 158, 11, 0.25) !important;
+  padding: 10px !important;
+}
+
+.layout-plate .back-flipper-logo {
+  transform: rotateY(0deg) !important;
+  z-index: 2 !important;
+}
+
+.layout-plate .back-top-logo {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.layout-plate .back-top-logo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 16px !important;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5)) !important;
+}
+
+.layout-plate .back-flipper-qr {
+  transform: rotateY(180deg) !important;
+  z-index: 1 !important;
+}
+
+.layout-plate .back-qr-box {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 8px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+}
+
+.layout-plate .back-qr-box img,
+.layout-plate .back-qr-box canvas {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: contain !important;
+}
+
+/* Main Business Info Area (setupod.com/ceo) */
+.layout-plate .back-info-container {
+  margin-top: auto !important;
+  margin-bottom: 2px !important;
+  width: 100% !important;
+}
+
+.layout-plate .back-company-name {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.05em !important;
+  margin-bottom: 4px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
+  line-height: 1.15 !important;
+}
+
+.layout-plate .back-company-slogan {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--gold-accent, #ffd978) !important;
+  margin-bottom: 12px !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.35 !important;
+}
+
+.layout-plate .profile-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: baseline !important;
+  gap: 4px 10px !important;
+  margin-bottom: 14px !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+}
+
+.layout-plate .name-title {
+  order: 1 !important;
+  font-family: 'Montserrat', 'Pretendard', sans-serif !important;
+  font-size: 21px !important;
+  font-weight: 900 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.layout-plate .role-title {
+  order: 2 !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: var(--gold-accent, #ffd978) !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  word-break: keep-all !important;
+}
+
+.layout-plate .contact-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  margin-bottom: 10px !important;
+  width: 100% !important;
+}
+
+.layout-plate .contact-row {
+  padding: 7px 12px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.layout-plate .contact-row:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 217, 120, 0.4) !important;
+  transform: translateX(3px) !important;
+}
+
+.layout-plate .contact-key {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  color: var(--gold-accent, #ffd978) !important;
+  width: 16px !important;
+  flex-shrink: 0 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.layout-plate .contact-value {
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Moat Tags */
+.layout-plate .moat-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+.layout-plate .moat-tag {
+  font-size: 10px !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Action Dock Tuning (2x2 Grid setupod.com style) */
+.layout-plate .inside-action-dock {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  width: 100% !important;
+}
+
+.layout-plate .front-logo-container {
+  display: none !important;
+}
+

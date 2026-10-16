@@ -38,6 +38,10 @@
       "destination": "/themes/:path*"
     },
     {
+      "source": "/bizcard/themes/:path*",
+      "destination": "/themes/:path*"
+    },
+    {
       "source": "/assets/:path*",
       "destination": "/assets/:path*"
     },

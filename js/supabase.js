@@ -120,12 +120,12 @@ async function syncTeamPodsToCloud(companySlug, companyData, members) {
       company: companyData.company,
       companyWatermark: companyData.watermark || companyData.company,
       slogan: companyData.slogan || '',
-      tagline: companyData.tagline || 'ALL-IN-ONE BUSINESS ASSET',
+      tagline: companyData.tagline || 'TO DAY, TO TOMORROW',
       phone: m.phone || '',
       email: m.email || '',
-      moatTags: companyData.tags || ['3D 인터랙티브', 'vCard 주소록 저장', '올인원 멀티링크'],
+      moatTags: companyData.tags || ['3D 인터랙티브', 'vCard 주소록 저장', '스마트 NFC 연동'],
       primaryAction: {
-        url: companyData.websiteUrl || 'https://setupod.com',
+        url: companyData.websiteUrl || 'https://toomcard.com',
         label: companyData.websiteLabel || '공식 웹사이트'
       },
       socials: [
@@ -133,8 +133,8 @@ async function syncTeamPodsToCloud(companySlug, companyData, members) {
         { type: 'instagram', url: companyData.instaUrl || '#', label: companyData.instaLabel || '인스타그램' }
       ],
       logo: {
-        src: companyData.logoSrc || '/assets/toomcard_symbol.jpg',
-        fallback: '/assets/toomcard_symbol.jpg',
+        src: companyData.logoSrc || '/assets/toomcard_hd.gif',
+        fallback: '/assets/toomcard_hd.gif',
         alt: companyData.company
       },
       vcard: {
@@ -143,7 +143,7 @@ async function syncTeamPodsToCloud(companySlug, companyData, members) {
         title: m.role,
         tel: m.phone,
         email: m.email,
-        url: `https://setupod.com/${fullSlug}`
+        url: `https://toomcard.com/${fullSlug}`
       }
     };
 
@@ -282,7 +282,7 @@ async function getMyLeads() {
 async function recordPageView(slug) {
   if (!supabaseClient) return false;
   // 중복 조회(새로고침) 방지를 위해 세션 스토리지 체크
-  const viewedKey = `setupod_viewed_${slug}`;
+  const viewedKey = `toomcard_viewed_${slug}`;
   if (sessionStorage.getItem(viewedKey)) return true;
   
   const ref = document.referrer || '';

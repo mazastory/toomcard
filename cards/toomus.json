@@ -1,12 +1,63 @@
 {
+  "slug": "toomus",
   "id": "toomus",
-  "name": "David Miller",
-  "title": "대표",
-  "company": "Toomus",
-  "phone": "02-555-0100",
-  "email": "ceo@toomcard.com",
-  "tagline": "Life, Connected",
-  "avatar": "/assets/toomcard_symbol.jpg",
   "theme": "obsidian",
-  "origin": "TOOMUS Global"
+  "layout": "plate",
+  "edition": "SWISS TITANIUM PRO",
+  "name": "Andrew K",
+  "role": "투머스 / 대표",
+  "title": "대표",
+  "company": "TOOMUS",
+  "companyWatermark": "TOOMUS",
+  "slogan": "무한한 가능성을 연결하는 비즈니스 플랫폼",
+  "tagline": "ENDLESS POTENTIAL",
+  "phone": "010-2661-0070",
+  "email": "ceo@toomus.com",
+  "origin": "TOOMUS Global",
+  "moatTags": [
+    "디지털 자산화",
+    "전략적 비즈니스 빌드",
+    "글로벌 파트너십"
+  ],
+  "logo": {
+    "src": "/assets/toomuslogo.gif",
+    "fallback": "/assets/toomuslogo.gif",
+    "alt": "TOOMUS Logo"
+  },
+  "avatar": "/assets/toomuslogo.gif",
+  "plateCardImage": "/assets/toomus_front_plate.png",
+  "primaryAction": {
+    "url": "https://toomus.com",
+    "label": "공식 웹사이트",
+    "icon": "globe"
+  },
+  "socials": [
+    {
+      "type": "kakao",
+      "url": "https://open.kakao.com/o/sFAWAlQi",
+      "label": "카카오 1:1"
+    },
+    {
+      "type": "instagram",
+      "url": "https://instagram.com/toomus7",
+      "label": "인스타그램"
+    }
+  ],
+  "vcard": {
+    "firstName": "Andrew",
+    "lastName": "K",
+    "formattedName": "Andrew K",
+    "org": "TOOMUS",
+    "title": "투머스 대표 / Product Lead",
+    "tel": "010-2661-0070",
+    "email": "ceo@toomus.com",
+    "url": "https://toomus.com"
+  },
+  "meta": {
+    "title": "TOOMUS | Andrew K 대표 디지털 명함",
+    "siteName": "TOOMUS",
+    "ogTitle": "Andrew K | TOOMUS 대표",
+    "ogDescription": "무한한 가능성을 연결하는 비즈니스 플랫폼 | TOOMUS 공식 디지털 명함",
+    "ogImage": "/assets/toomus_card_minimal.jpg"
+  }
 }

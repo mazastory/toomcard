@@ -111,14 +111,14 @@ body {
 }
 
 .brand-symbol {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+  background: transparent;
+  flex-shrink: 0;
 }
 
 .brand-badge {

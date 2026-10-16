@@ -1,0 +1,106 @@
+:root {
+  /* ========================================================
+     THEME: FROSTED ACRYLIC (투명 & 프로스트 아크릴)
+     Inspired by: Photomon Biz Transparent PET & Acrylic Cards
+     ======================================================== */
+  --bg-body: radial-gradient(circle at 50% 15%, #16192b 0%, #0b0d18 60%, #020308 100%);
+  --bg-card: rgba(255, 255, 255, 0.08);
+  --card-gradient: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 45%, rgba(255,255,255,0.02) 100%);
+  --neon-accent: #38bdf8;
+  --neon-glow: rgba(56, 189, 248, 0.35);
+  --border-accent: rgba(255, 255, 255, 0.35);
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --gold-accent: #7dd3fc;
+  --tagline-color: rgba(186, 230, 253, 0.7);
+  --logo-bg: rgba(255, 255, 255, 0.04);
+  --logo-border: rgba(255, 255, 255, 0.4);
+  --logo-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(56, 189, 248, 0.2);
+  --key-color: #f0f9ff;
+  --moat-bg: rgba(255, 255, 255, 0.08);
+  --moat-border: rgba(255, 255, 255, 0.25);
+  --moat-text: #ffffff;
+  --save-btn-bg: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(56,189,248,0.2) 50%, rgba(255,255,255,0.08) 100%);
+  --save-btn-color: #ffffff;
+  --save-btn-shadow: 0 6px 20px rgba(56, 189, 248, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  --watermark-color: rgba(255, 255, 255, 0.045);
+}
+
+/* Translucent Frosted Acrylic Physical Finish */
+.card-face {
+  background: 
+    linear-gradient(125deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.03) 35%, transparent 60%, rgba(56,189,248,0.08) 80%, rgba(255,255,255,0.2) 100%),
+    var(--card-gradient) !important;
+  backdrop-filter: blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.38) !important;
+  box-shadow: 
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.75),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.4),
+    0 24px 60px rgba(0, 0, 0, 0.65),
+    0 0 32px rgba(56, 189, 248, 0.2) !important;
+}
+
+/* Prismatic Rainbow Refraction Sweep */
+.card-face::before {
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.15) 42%, rgba(56, 189, 248, 0.35) 48%, rgba(236, 72, 153, 0.28) 52%, rgba(250, 204, 21, 0.22) 55%, rgba(255, 255, 255, 0.15) 58%, transparent 68%) !important;
+  opacity: 0.8 !important;
+}
+
+.card-brand-name {
+  background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 50%, #bae6fd 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.3) !important;
+}
+
+.executive-name {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+.executive-role {
+  color: #38bdf8 !important;
+  letter-spacing: 0.06em !important;
+}
+
+.medallion-bevel-outer {
+  background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.1) 45%, rgba(0,0,0,0.4) 100%) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.medallion-bevel-inner {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.contact-row {
+  background: rgba(255, 255, 255, 0.07) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.contact-row:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.btn-sub-glass {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 24px rgba(56, 189, 248, 0.25);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  50% {
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55), 0 0 36px rgba(56, 189, 248, 0.45);
+    border-color: rgba(56, 189, 248, 0.65);
+  }
+}

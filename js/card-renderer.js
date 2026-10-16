@@ -6,11 +6,60 @@
 let cardData = null;
 let qrcodeObj = null;
 
-// URL 파라미터 또는 경로에서 회사 및 카드 slug 추출
-// 지원 형식:
-// 1. setupod.com/nexus/alex -> company: 'nexus', slug: 'alex'
-// 2. setupod.com/alex -> company: null, slug: 'alex'
-// 3. ?id=alex 또는 ?id=setupod
+// 완전 오프라인 / 404 차단용 내장 마스터 카드 폴백 (절대 흰 화면 방지)
+const DEFAULT_CARD_FALLBACK = {
+  slug: "toomcard",
+  id: "toomcard",
+  theme: "obsidian",
+  layout: "plate",
+  edition: "TITANIUM PRO",
+  name: "Alex Rivera",
+  role: "총괄 디렉터 / Managing Director",
+  company: "TOOMCARD",
+  companyWatermark: "TOOMCARD",
+  slogan: "오늘의 짧은 만남을 내일의 거대한 비즈니스로 잇는 스마트 카드",
+  tagline: "TO DAY, TO TOMORROW",
+  phone: "010-5555-0100",
+  email: "hello@toomcard.com",
+  origin: "TOOMCARD Global",
+  moatTags: ["3D 인터랙티브", "vCard 주소록 저장", "스마트 NFC 하드웨어"],
+  logo: {
+    src: "/assets/toomcard.gif",
+    fallback: "/assets/toomcard-brand-logo.svg",
+    alt: "TOOMCARD Logo"
+  },
+  plateCardImage: "/assets/toomcard_front_plate.png",
+  primaryAction: {
+    url: "https://toomcard.com",
+    label: "공식 웹사이트",
+    icon: "globe"
+  },
+  socials: [
+    { type: "kakao", url: "https://open.kakao.com", label: "카카오톡 1:1" },
+    { type: "instagram", url: "https://instagram.com", label: "인스타그램" }
+  ],
+  vcard: {
+    firstName: "Alex",
+    lastName: "Rivera",
+    formattedName: "Alex Rivera",
+    org: "TOOMCARD",
+    title: "총괄 디렉터",
+    tel: "010-5555-0100",
+    email: "hello@toomcard.com",
+    url: "https://toomcard.com"
+  }
+};
+
+// Live Server 등 하위 디렉토리 호스팅 환경(/toomcard/) 자동 감지
+function getBasePath() {
+  const path = window.location.pathname;
+  if (path.includes('/toomcard/')) {
+    return '/toomcard';
+  }
+  return '';
+}
+
+// URL 파라미터 또는 경로에서 회사 및 카드 slug 추출 (Live Server /card.html 호환)
 function getCardIdentifier() {
   const urlParams = new URLSearchParams(window.location.search);
   const qId = urlParams.get('id') || urlParams.get('card');
@@ -18,30 +67,27 @@ function getCardIdentifier() {
   if (qId) return { company: qComp || null, slug: qId.toLowerCase() };
 
   const pathParts = window.location.pathname.split('/').filter(Boolean);
-  if (pathParts.length >= 2 && !pathParts[0].includes('.html')) {
-    if (pathParts[0] === 'card' || pathParts[0] === 'c' || pathParts[0] === 'a') {
-      if (pathParts.length >= 3) {
-        return { company: pathParts[1].toLowerCase(), slug: pathParts[2].toLowerCase() };
-      }
-      return { company: null, slug: pathParts[1].toLowerCase() };
-    }
-    return { company: pathParts[0].toLowerCase(), slug: pathParts[1].toLowerCase() };
+  // toomcard 폴더명 제외
+  const filteredParts = pathParts.filter(p => p !== 'toomcard');
+
+  if (filteredParts.length >= 2 && !filteredParts[filteredParts.length - 1].includes('.html')) {
+    return { company: filteredParts[0].toLowerCase(), slug: filteredParts[1].toLowerCase() };
   }
-  if (pathParts.length === 1 && !pathParts[0].includes('.html')) {
-    if (pathParts[0] === 'card' || pathParts[0] === 'c' || pathParts[0] === 'a') return { company: null, slug: 'setupod' };
-    return { company: null, slug: pathParts[0].toLowerCase() };
+  if (filteredParts.length === 1 && !filteredParts[0].includes('.html')) {
+    return { company: null, slug: filteredParts[0].toLowerCase() };
   }
-  return { company: null, slug: 'setupod' };
+  return { company: null, slug: 'toomcard' };
 }
 
 function getCardSlug() {
   return getCardIdentifier().slug;
 }
 
-// 테마 스타일시트 동적 주입
+// 테마 스타일시트 동적 주입 (Base Path 자동 결합)
 function applyTheme(themeName) {
   const existingThemeLink = document.getElementById('themeStylesheet');
-  const themeHref = `/themes/${themeName || 'violet'}.css`;
+  const base = getBasePath();
+  const themeHref = `${base}/themes/${themeName || 'obsidian'}.css`;
   
   if (existingThemeLink) {
     existingThemeLink.href = themeHref;
@@ -129,96 +175,74 @@ function getSocialIconSvg(type) {
   return `<i data-lucide="globe" style="width:14px;height:14px;color:#38bdf8;"></i>`;
 }
 
-// 내부 고전환 액션 버튼 바인딩 (앞면 & 뒷면 최적화)
+// 내부 고전환 액션 버튼 바인딩 (setupod.com/ceo 2x2 럭셔리 그리드)
 function renderActionDocks(data) {
   const dockFront = document.getElementById('insideActionDockFront');
   const dockBack = document.getElementById('insideActionDockBack');
 
   const primaryAction = data.primaryAction || {
-    url: '#',
-    label: '공식 사이트',
+    url: 'https://toomus.com',
+    label: '공식 웹사이트',
     icon: 'globe'
   };
 
   const socials = data.socials || [];
   const social1 = socials[0] || null;
+  const social2 = socials[1] || null;
 
-  let social1BtnHtml = '';
-  if (social1) {
-    if (social1.type === 'social_modal') {
-      social1BtnHtml = `
-        <button class="btn-sub-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social1.label}">
-          <i data-lucide="${social1.icon || 'globe'}" style="width: 13px; height: 13px; color: #38bdf8;"></i>
-          <span>${social1.label.replace('채널', '').trim()}</span>
+  function buildSocialBtn(social) {
+    if (!social) return '';
+    if (social.type === 'social_modal') {
+      return `
+        <button class="btn-action btn-glass" onclick="event.stopPropagation(); openSocialModal();" title="${social.label}">
+          <i data-lucide="${social.icon || 'globe'}" style="width: 14px; height: 14px; color: #38bdf8;"></i>
+          <span>${social.label}</span>
         </button>
       `;
-    } else {
-      social1BtnHtml = `
-        <a href="${social1.url}" target="_blank" rel="noopener noreferrer" class="btn-sub-glass" onclick="event.stopPropagation()" title="${social1.label}">
-          ${getSocialIconSvg(social1.type)}
-          <span>${social1.label.replace('상담', '').replace('채널', '').trim() || '카카오톡'}</span>
-        </a>
-      `;
     }
-  } else {
-    social1BtnHtml = `
-      <a href="https://open.kakao.com" target="_blank" rel="noopener noreferrer" class="btn-sub-glass" onclick="event.stopPropagation()" title="카카오톡 상담">
-        ${getSocialIconSvg('kakao')}
-        <span>카카오톡</span>
+    return `
+      <a href="${social.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${social.label}">
+        ${getSocialIconSvg(social.type)}
+        <span>${social.label}</span>
       </a>
     `;
   }
 
-  // 앞면 액션 독: Hero vCard + (공식사이트, 카톡, 상담문의)
-  if (dockFront) {
-    dockFront.innerHTML = `
-      <button class="btn-hero-vcard" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
-        <div class="vcard-btn-left">
-          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
-          <span>연락처(vCard) 원클릭 저장</span>
-        </div>
-        <span class="vcard-btn-arrow">➔</span>
-      </button>
-      <div class="action-sub-grid">
-        <a href="${primaryAction.url}" target="_blank" rel="noopener noreferrer" class="btn-sub-glass" onclick="event.stopPropagation()" title="${primaryAction.label}">
-          <i data-lucide="${primaryAction.icon || 'globe'}" style="width: 13px; height: 13px; color: #38bdf8;"></i>
-          <span>${primaryAction.label.length > 7 ? primaryAction.label.slice(0, 7) : primaryAction.label}</span>
-        </a>
-        ${social1BtnHtml}
-        <button class="btn-sub-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);" title="명함 주인에게 연락처 및 문의 남기기">
-          <i data-lucide="message-square" style="width: 13px; height: 13px; color: #c084fc;"></i>
-          <span style="color: #e9d5ff;">상담/문의</span>
-        </button>
-      </div>
-    `;
-  }
+  const social1Btn = buildSocialBtn(social1) || `
+    <a href="https://open.kakao.com" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="카카오 1:1">
+      ${getSocialIconSvg('kakao')}
+      <span>카카오 1:1</span>
+    </a>
+  `;
 
-  // 뒷면 액션 독: Hero vCard + (링크 복사, 카톡 전송, 다른 앱 공유)
-  if (dockBack) {
-    dockBack.innerHTML = `
-      <button class="btn-hero-vcard" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
-        <div class="vcard-btn-left">
-          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
-          <span>연락처(vCard) 즉시 저장</span>
-        </div>
-        <span class="vcard-btn-arrow">➔</span>
+  const social2Btn = buildSocialBtn(social2);
+
+  const row1 = `
+    <div class="inside-action-row">
+      <button class="btn-action btn-save" onclick="event.stopPropagation(); downloadVCard();" title="주소록에 연락처 저장">
+        <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
+        <span>연락처 저장</span>
       </button>
-      <div class="action-sub-grid">
-        <button class="btn-sub-glass" onclick="event.stopPropagation(); copyCardUrl();" title="명함 링크 복사">
-          <i data-lucide="copy" style="width: 13px; height: 13px; color: #ffd978;"></i>
-          <span>링크 복사</span>
-        </button>
-        <button class="btn-sub-glass" onclick="event.stopPropagation(); shareToKakao();" title="카카오톡으로 공유">
-          ${getSocialIconSvg('kakao')}
-          <span>카톡 전송</span>
-        </button>
-        <button class="btn-sub-glass" onclick="event.stopPropagation(); nativeShare();" title="다른 앱으로 공유">
-          <i data-lucide="share-2" style="width: 13px; height: 13px; color: #38bdf8;"></i>
-          <span>공유하기</span>
-        </button>
-      </div>
-    `;
-  }
+      <a href="${primaryAction.url}" target="_blank" rel="noopener noreferrer" class="btn-action btn-glass" onclick="event.stopPropagation()" title="${primaryAction.label}">
+        <i data-lucide="${primaryAction.icon || 'globe'}" style="width: 14px; height: 14px; color: #38bdf8;"></i>
+        <span>${primaryAction.label}</span>
+      </a>
+    </div>
+  `;
+
+  const row2 = `
+    <div class="inside-action-row">
+      ${social1Btn}
+      ${social2Btn}
+      <button class="btn-action btn-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12);" title="명함 주인에게 연락처 및 문의 남기기">
+        <i data-lucide="message-square" style="width: 14px; height: 14px; color: #c084fc;"></i>
+        <span style="color: #e9d5ff; font-weight: 700;">상담/문의</span>
+      </button>
+    </div>
+  `;
+
+  if (dockFront) dockFront.innerHTML = row1 + row2;
+  if (dockBack) dockBack.innerHTML = row1 + row2;
 }
 
 // 소셜 채널 모달 채우기
@@ -256,15 +280,21 @@ function populateCard(data) {
   cardData = data;
 
   // 레이아웃 적용
-  const layout = data.layout || 'classic';
+  const layout = data.layout || 'plate';
   const layoutStylesheet = document.getElementById('layoutStylesheet');
+  const base = getBasePath();
   if (layoutStylesheet) {
-    layoutStylesheet.href = layout === 'classic' ? '' : `/themes/layout-${layout}.css`;
+    layoutStylesheet.href = layout === 'classic' ? '' : `${base}/themes/layout-${layout}.css`;
   }
   const cardElement = document.getElementById('cardScene');
   if (cardElement) {
-    cardElement.classList.remove('layout-classic', 'layout-metal', 'layout-visual');
+    cardElement.classList.remove('layout-classic', 'layout-metal', 'layout-visual', 'layout-editorial', 'layout-plate');
     cardElement.classList.add(`layout-${layout}`);
+  }
+  const flipper = document.querySelector('.card-flipper');
+  if (flipper) {
+    flipper.classList.remove('layout-classic', 'layout-metal', 'layout-visual', 'layout-editorial', 'layout-plate');
+    flipper.classList.add(`layout-${layout}`);
   }
 
   // 테마 적용
@@ -278,13 +308,14 @@ function populateCard(data) {
   // 워터마크
   renderWatermark(data.companyWatermark || data.company);
 
-  // 로고 이미지 (절대 경로 정규화 & 무한 onerror 루프 완전 차단)
+  // 로고 이미지 (Base Path 정규화 & 무한 onerror 루프 완전 차단)
   function resolveAssetUrl(url) {
     if (!url) return '';
-    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('/')) {
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
       return url;
     }
-    return '/' + url;
+    const cleanUrl = url.startsWith('/') ? url : '/' + url;
+    return base + cleanUrl;
   }
 
   const frontLogoImg = document.getElementById('frontLogoImg');
@@ -293,8 +324,8 @@ function populateCard(data) {
     const fContainer = document.querySelector('.card-medallion-area') || document.querySelector('.front-logo-container');
     if (fContainer) fContainer.style.display = 'none';
   } else if (data.logo) {
-    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/toomcard_symbol.jpg');
-    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/toomcard_symbol.jpg');
+    const primarySrc = resolveAssetUrl(data.logo.src || '/assets/toomcard_hd.gif');
+    const fallbackSrc = resolveAssetUrl(data.logo.fallback || '/assets/toomcard_hd.gif');
 
     if (frontLogoImg) {
       frontLogoImg.onerror = function() {
@@ -317,6 +348,7 @@ function populateCard(data) {
   // 3D 홀로그램 & GIF 모션 연출 바인딩
   const logoMotion = data.logoMotion || data.avatarMotion;
   const fLogoBox = document.querySelector('.card-medallion-box') || document.querySelector('.front-logo-box');
+  const bLogoBox = document.querySelector('.back-medallion-box') || document.querySelector('.back-top-logo');
   if (logoMotion && logoMotion !== 'none') {
     const motionClasses = ['fx-hologram-pulse', 'fx-cyber-shimmer', 'fx-3d-floating', 'fx-gold-sparkle'];
     if (fLogoBox) {
@@ -326,6 +358,30 @@ function populateCard(data) {
       else if (logoMotion === 'float') fLogoBox.classList.add('fx-3d-floating');
       else if (logoMotion === 'gold') fLogoBox.classList.add('fx-gold-sparkle');
     }
+    if (bLogoBox) {
+      motionClasses.forEach(c => bLogoBox.classList.remove(c));
+      if (logoMotion === 'pulse') bLogoBox.classList.add('fx-hologram-pulse');
+      else if (logoMotion === 'shimmer') bLogoBox.classList.add('fx-cyber-shimmer');
+      else if (logoMotion === 'float') bLogoBox.classList.add('fx-3d-floating');
+      else if (logoMotion === 'gold') bLogoBox.classList.add('fx-gold-sparkle');
+    }
+  }
+
+  // Plate 레이아웃 전용 실물 카드 아트워크 바인딩 (Base Path 및 캐시 무효화 적용)
+  const plateImg = document.getElementById('plateArtworkImg');
+  if (plateImg) {
+    const cacheBuster = '?v=3dmaster_' + Date.now().toString(36);
+    let rawPath = '/assets/toomcard_front_plate.png';
+    if (data.plateCardImage) {
+      rawPath = data.plateCardImage;
+    } else if (data.company && data.company.toLowerCase().includes('toomus')) {
+      rawPath = '/assets/toomus_front_plate.png';
+    }
+    plateImg.onerror = function() {
+      this.onerror = null;
+      this.src = './assets/toomcard_front_plate.png' + cacheBuster;
+    };
+    plateImg.src = resolveAssetUrl(rawPath) + cacheBuster;
   }
 
   // 앞면 정보 바인딩 (이름, 직함, 회사명, 슬로건, 에디션)
@@ -410,10 +466,20 @@ function populateCard(data) {
   }
 }
 
-// 3D Flip Card Toggle
-function toggleCardFlip() {
+// 3D Flip Card Toggle with 250ms Debounce & Propagation Protection
+let isCardFlipping = false;
+function toggleCardFlip(e) {
+  if (e && typeof e.stopPropagation === 'function') {
+    e.stopPropagation();
+  }
+  if (isCardFlipping) return;
+  isCardFlipping = true;
+  setTimeout(() => { isCardFlipping = false; }, 250);
+
   const scene = document.getElementById('cardScene');
-  if (scene) scene.classList.toggle('flipped');
+  if (scene) {
+    scene.classList.toggle('flipped');
+  }
 }
 
 // Touch Slide / Swipe Detection for 3D Flip
@@ -437,6 +503,30 @@ function setupSwipe() {
   }, { passive: true });
 }
 
+// 뒷면 로고 ↔ 인스턴트 QR 3D 인터랙티브 플립 토글 (엄격한 이벤트 버블링 방지)
+window.toggleBackLogoQr = function(event) {
+  if (event) {
+    if (typeof event.stopPropagation === 'function') {
+      event.stopPropagation();
+    }
+    if (typeof event.preventDefault === 'function') {
+      event.preventDefault();
+    }
+  }
+  const flipper = document.getElementById('backFlipper');
+  if (!flipper) return;
+
+  const isShowingQr = flipper.classList.toggle('show-qr');
+
+  // QR이 아직 렌더링되지 않았거나 비어있으면 즉시 생성
+  if (isShowingQr) {
+    const qrTarget = document.getElementById('backQrDirectTarget');
+    if (qrTarget && (!qrTarget.hasChildNodes() || qrTarget.children.length === 0)) {
+      renderBackDirectQr();
+    }
+  }
+};
+
 // QR Code Modal (qrcodeObj is declared at top of file)
 function renderBackDirectQr() {
   const target = document.getElementById('backQrDirectTarget');
@@ -446,8 +536,8 @@ function renderBackDirectQr() {
     try {
       new QRCode(target, {
         text: window.location.href,
-        width: 105,
-        height: 105,
+        width: 86,
+        height: 86,
         colorDark: "#0c0a14",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.M
@@ -570,7 +660,7 @@ function shareToKakao() {
   
   const title = (cardData && cardData.meta) ? cardData.meta.title : "TOOMCARD 3D 디지털 명함";
   const desc = (cardData && cardData.meta) ? cardData.meta.ogDescription : "차세대 3D 인터랙티브 스마트 명함";
-  let imageUrl = "https://toomcard.com/assets/toomcard_symbol.jpg";
+  let imageUrl = "https://toomcard.com/assets/toomcard_front.jpg";
   
   if (cardData && cardData.logo && cardData.logo.src) {
     if (cardData.logo.src.startsWith('http')) {
@@ -735,8 +825,8 @@ function populateCardFromCloud(cloud, company) {
     email: p.email || 'hello@toomcard.com',
     moatTags: ['3D 인터랙티브', 'vCard 원클릭 저장', 'NFC 스마트 연동'],
     logo: {
-      src: p.avatar_url || '/assets/toomcard_symbol.jpg',
-      fallback: '/assets/toomcard_symbol.jpg',
+      src: p.avatar_url || '/assets/toomcard_hd.gif',
+      fallback: '/assets/toomcard_hd.gif',
       alt: companyName
     },
     primaryAction: {
@@ -793,8 +883,15 @@ async function initCardEngine() {
     }
   }
 
-  // 2. 로컬 JSON 파일 폴백
-  const paths = company ? [`/cards/${company}_${slug}.json`, `/cards/${slug}.json`] : [`/cards/${slug}.json`];
+  // 2. 로컬 JSON 파일 폴백 (Live Server /toomcard/ 및 루트 환경 동시 지원)
+  const base = getBasePath();
+  const paths = [];
+  if (company) {
+    paths.push(`${base}/cards/${company}_${slug}.json`, `/cards/${company}_${slug}.json`);
+  }
+  paths.push(`${base}/cards/${slug}.json`, `/cards/${slug}.json`);
+  paths.push(`cards/${slug}.json`);
+
   let loaded = false;
   for (const p of paths) {
     try {
@@ -808,15 +905,33 @@ async function initCardEngine() {
     } catch (e) {}
   }
 
-  // 3. 기본 toomus / naeun 명함 폴백
+  // 3. 기본 toomcard / toomus 파일 폴백
   if (!loaded) {
-    try {
-      const fallbackRes = await fetch(`/cards/toomus.json`);
-      const fallbackData = await fallbackRes.json();
-      populateCard(fallbackData);
-    } catch (e) {
-      showToast("명함 데이터를 불러오지 못했습니다.");
+    const fallbackUrls = [
+      `${base}/cards/toomcard.json`,
+      `/cards/toomcard.json`,
+      `cards/toomcard.json`,
+      `${base}/cards/toomus.json`,
+      `/cards/toomus.json`
+    ];
+    for (const fb of fallbackUrls) {
+      try {
+        const fallbackRes = await fetch(fb);
+        if (fallbackRes.ok) {
+          const fallbackData = await fallbackRes.json();
+          populateCard(fallbackData);
+          loaded = true;
+          break;
+        }
+      } catch (e) {}
     }
+  }
+
+  // 4. 완전 오프라인 / 404 차단용 내장 마스터 폴백 (절대 흰 화면 방지)
+  if (!loaded) {
+    console.warn("Using embedded master card fallback");
+    populateCard(DEFAULT_CARD_FALLBACK);
+    loaded = true;
   }
 
   setupSwipe();

@@ -20,8 +20,8 @@
     "M&A 파트너십"
   ],
   "logo": {
-    "src": "/assets/toomcard_symbol.jpg",
-    "fallback": "/assets/toomcard_symbol.jpg",
+    "src": "/assets/toomuslogo.gif",
+    "fallback": "/assets/toomuslogo.gif",
     "alt": "TOOMUS Logo"
   },
   "primaryAction": {
@@ -57,6 +57,7 @@
     "siteName": "TOOMUS",
     "ogTitle": "Sophia Kang | TOOMUS",
     "ogDescription": "Next-Gen Digital Living & Mobility | TOOMUS 공식 디지털 명함",
-    "ogImage": "/assets/toomcard_symbol.jpg"
-  }
+    "ogImage": "/assets/toomcard_front.jpg"
+  },
+  "avatar": "/assets/toomuslogo.gif"
 }

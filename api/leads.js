@@ -11,13 +11,13 @@ const supabaseKey = SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, supabaseKey);
 
 // 백업 원장 파일 경로 (/tmp 는 Vercel Serverless 실행 중 쓰기 가능)
-const BACKUP_LEDGER_PATH = '/tmp/setupod_leads_ledger.jsonl';
+const BACKUP_LEDGER_PATH = '/tmp/toomcard_leads_ledger.jsonl';
 
 function appendToLocalLedger(leadObj) {
   try {
     fs.appendFileSync(BACKUP_LEDGER_PATH, JSON.stringify(leadObj) + '\n', 'utf8');
   } catch (err) {
-    console.warn('[SETUPOD Ledger Warning]:', err.message);
+    console.warn('[TOOMCARD Ledger Warning]:', err.message);
   }
 }
 
@@ -119,7 +119,7 @@ module.exports = async (req, res) => {
           if (!leadsErr) savedToDb = true;
         }
       } catch (dbErr) {
-        console.error('[SETUPOD DB Error]:', dbErr.message);
+        console.error('[TOOMCARD DB Error]:', dbErr.message);
       }
 
       return res.status(200).json({ 
@@ -130,7 +130,7 @@ module.exports = async (req, res) => {
         lead_type: lead_type || 'general'
       });
     } catch (err) {
-      console.error('[SETUPOD Lead Fatal]:', err);
+      console.error('[TOOMCARD Lead Fatal]:', err);
       return res.status(500).json({ success: false, error: 'Server processing error' });
     }
   }

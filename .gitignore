@@ -3,3 +3,6 @@
 .DS_Store
 node_modules
 .vercel
+*.mp4
+*_original.gif
+*_backup.jpg

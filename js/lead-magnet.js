@@ -448,10 +448,10 @@
 
   window.LeadMagnet = LeadMagnet;
 
-  // DOM 준비 시 자동 초기화
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { LeadMagnet.init(); });
-  } else {
-    LeadMagnet.init();
-  }
+  // 자동 실행 비활성화: 명시적으로 필요할 때만 수동 호출
+  // if (document.readyState === 'loading') {
+  //   document.addEventListener('DOMContentLoaded', function() { LeadMagnet.init(); });
+  // } else {
+  //   LeadMagnet.init();
+  // }
 })(window);

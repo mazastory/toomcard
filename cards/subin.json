@@ -19,8 +19,8 @@
     "수익형 플랫폼 빌드"
   ],
   "logo": {
-    "src": "assets/sample_gif_1.gif",
-    "fallback": "assets/sample_client_maza.png",
+    "src": "/assets/toomcard_hd.gif",
+    "fallback": "/assets/toomcard_hd.gif",
     "alt": "MAZA STUDIO Logo"
   },
   "primaryAction": {
@@ -59,5 +59,6 @@
     "ogTitle": "Hannah Scott | MAZA STUDIO",
     "ogDescription": "플립마켓에서 달러자산 플랫폼으로 | MAZA STUDIO 공식 디지털 명함",
     "ogImage": "assets/sample_client_maza.png"
-  }
+  },
+  "avatar": "/assets/toomcard_hd.gif"
 }

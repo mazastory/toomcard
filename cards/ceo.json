@@ -1,22 +1,35 @@
 {
+  "slug": "ceo",
+  "id": "ceo",
   "theme": "obsidian",
-  "layout": "metal",
-  "name": "David Miller",
-  "role": "대표이사 (CEO)",
+  "layout": "plate",
+  "edition": "SWISS TITANIUM PRO",
+  "name": "Andrew K",
+  "role": "투머스 / 대표",
+  "title": "대표",
   "company": "TOOMUS",
   "companyWatermark": "TOOMUS",
   "slogan": "무한한 가능성을 연결하는 비즈니스 플랫폼",
   "tagline": "ENDLESS POTENTIAL",
-  "phone": "02-555-0100",
-  "email": "hello@toomcard.com",
+  "phone": "010-2661-0070",
+  "email": "ceo@toomus.com",
+  "origin": "TOOMUS Global",
   "moatTags": [
     "디지털 자산화",
     "전략적 비즈니스 빌드",
     "글로벌 파트너십"
   ],
+  "logo": {
+    "src": "/assets/toomuslogo.gif",
+    "fallback": "/assets/toomuslogo.gif",
+    "alt": "TOOMUS Logo"
+  },
+  "avatar": "/assets/toomuslogo.gif",
+  "plateCardImage": "/assets/toomus_front_plate.png",
   "primaryAction": {
     "url": "https://toomus.com",
-    "label": "공식 웹사이트"
+    "label": "공식 웹사이트",
+    "icon": "globe"
   },
   "socials": [
     {
@@ -30,19 +43,21 @@
       "label": "인스타그램"
     }
   ],
-  "logo": {
-    "src": "/assets/toomcard_symbol.jpg",
-    "fallback": "/assets/toomcard_symbol.jpg",
-    "alt": "TOOMUS"
-  },
   "vcard": {
-    "firstName": "David",
-    "lastName": "Miller",
+    "firstName": "Andrew",
+    "lastName": "K",
+    "formattedName": "Andrew K",
     "org": "TOOMUS",
     "title": "투머스 대표 / Product Lead",
-    "tel": "02-555-0100",
-    "email": "hello@toomcard.com",
-    "url": "https://setupod.com/ceo",
-    "formattedName": "David Miller"
+    "tel": "010-2661-0070",
+    "email": "ceo@toomus.com",
+    "url": "https://toomus.com"
+  },
+  "meta": {
+    "title": "TOOMUS | Andrew K 대표 디지털 명함",
+    "siteName": "TOOMUS",
+    "ogTitle": "Andrew K | TOOMUS 대표",
+    "ogDescription": "무한한 가능성을 연결하는 비즈니스 플랫폼 | TOOMUS 공식 디지털 명함",
+    "ogImage": "/assets/toomus_card_minimal.jpg"
   }
 }

@@ -25,7 +25,7 @@
   <meta property="og:image" content="https://toomcard.com/assets/business_card_mockup.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,10 +39,10 @@
 
   <!-- Supabase Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/js/supabase.js"></script>
+  <script src="./js/supabase.js"></script>
 
   <!-- Default Theme Stylesheet (동적으로 교체됨) -->
-  <link rel="stylesheet" id="themeStylesheet" href="/themes/violet.css">
+  <link rel="stylesheet" id="themeStylesheet" href="./themes/obsidian.css">
 
   <!-- 레이아웃 전용 스타일시트 (동적 로드) -->
   <link rel="stylesheet" id="layoutStylesheet" href="">
@@ -60,7 +60,8 @@
       font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
       min-height: 100dvh;
-      background: var(--bg-body);
+      background: var(--bg-body, #0a0614);
+      background-color: #0a0614;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -448,6 +449,17 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
+    /* Plate Layout Micro-Elements Fallback */
+    .plate-artwork-container {
+      display: none;
+    }
+    .plate-flip-prompt {
+      display: none;
+    }
+    .back-executive-badge {
+      display: none;
+    }
+
     /* Living Hologram GIF Motion FX */
     @keyframes cardPulseGlow {
       0%, 100% { filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5)); transform: scale(1); }
@@ -519,7 +531,7 @@
     }
 
     /* =========================================
-       BACK FACE
+       BACK FACE (SETUPOD.COM/CEO MASTER SPEC)
        ========================================= */
     .back-wrapper {
       position: relative;
@@ -530,66 +542,218 @@
       justify-content: space-between;
     }
 
-    .back-center-card {
+    .back-top-logo-container {
+      flex: 1;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      margin: 4px 0;
-      position: relative;
-      z-index: 3;
-      width: 100%;
+      justify-content: center;
+      padding-top: 6px;
+      margin-bottom: 6px;
     }
 
-    .back-qr-frame {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 16px;
-      padding: 10px 14px 8px 14px;
+    .back-flipper-container {
+      perspective: 1200px;
+      -webkit-perspective: 1200px;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
-      transition: all 0.25s ease;
-      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
-    .back-qr-frame:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--neon-accent, #c084fc);
-      transform: translateY(-2px);
+    .back-flipper {
+      position: relative;
+      width: 144px;
+      height: 144px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.3, 1.15);
+      border-radius: 26px;
+    }
+
+    .back-flipper.show-qr {
+      transform: rotateY(180deg);
+    }
+
+    .back-flipper-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 26px;
+      background: var(--logo-bg, radial-gradient(circle at 35% 35%, #252838 0%, #0c0d14 100%));
+      border: 1px solid var(--logo-border, rgba(255, 217, 120, 0.4));
+      box-shadow: var(--logo-shadow, 0 16px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(245, 158, 11, 0.25));
+      box-sizing: border-box;
+      padding: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .back-flipper-container:hover .back-flipper-face {
+      border-color: rgba(255, 217, 120, 0.65);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.95), 0 0 32px rgba(245, 158, 11, 0.45);
+    }
+
+    .back-flipper-logo {
+      transform: rotateY(0deg);
+      z-index: 2;
+    }
+
+    .back-top-logo {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .back-top-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 14px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    }
+
+    .back-flipper-qr {
+      transform: rotateY(180deg);
+      z-index: 1;
+      padding: 8px;
     }
 
     .back-qr-box {
       background: #ffffff;
       padding: 6px;
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      margin-bottom: 4px;
     }
 
     .back-qr-box img, .back-qr-box canvas {
       display: block;
-      width: 105px !important;
-      height: 105px !important;
+      width: 92px !important;
+      height: 92px !important;
+    }
+
+    .back-flipper-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 217, 120, 0.35);
+      border-radius: 99px;
+      padding: 3px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gold-accent, #ffd978);
+      letter-spacing: 0.02em;
+      margin-top: 4px;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .back-flipper-container:hover .back-flipper-pill {
+      background: rgba(255, 217, 120, 0.2);
+      border-color: rgba(255, 217, 120, 0.6);
+      color: #ffffff;
+    }
+
+    .qr-return-pill {
+      font-size: 9px;
+      padding: 2px 8px;
+      margin-top: 2px;
+      color: #94a3b8;
     }
 
     .back-qr-caption {
-      font-size: 9.5px;
+      font-size: 8.5px;
       font-weight: 700;
-      color: rgba(255, 255, 255, 0.65);
-      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 2px;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    /* Main Business Info Area (setupod.com/ceo) */
+    .back-info-container {
+      margin-top: auto;
+      margin-bottom: 2px;
+      width: 100%;
+    }
+
+    .back-company-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+      line-height: 1.15;
+    }
+
+    .back-company-slogan {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-accent, #ffd978);
+      margin-bottom: 12px;
       letter-spacing: 0.02em;
+      line-height: 1.35;
+    }
+
+    .profile-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 10px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .name-title {
+      order: 1;
+      font-family: 'Montserrat', 'Pretendard', sans-serif;
+      font-size: 21px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .role-title {
+      order: 2;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--gold-accent, #ffd978);
+      letter-spacing: 0.03em;
+      white-space: normal;
+      word-break: keep-all;
+      line-height: 1.35;
     }
 
     .contact-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
+      margin-bottom: 12px;
       width: 100%;
-      margin-bottom: 8px;
     }
 
     .contact-row {
@@ -601,20 +765,20 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 10px;
-      padding: 8px 12px;
+      padding: 7px 12px;
       transition: all 0.18s ease;
       cursor: pointer;
     }
 
     .contact-row:hover {
       background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 217, 120, 0.35);
       transform: translateX(3px);
     }
 
     .contact-key {
       font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 900;
       color: var(--gold-accent, #ffd978);
       width: 16px;
@@ -631,6 +795,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
 
     /* =========================================
        ACTION DOCK (HIGH-CONVERTING LUXURY)
@@ -685,8 +850,63 @@
       transition: transform 0.2s ease;
     }
 
-    .btn-hero-vcard:hover .vcard-btn-arrow {
-      transform: translateX(3px);
+    .inside-action-row {
+      display: flex;
+      gap: 7px;
+      width: 100%;
+    }
+
+    .btn-action {
+      flex: 1;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      border: none;
+      outline: none;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .btn-action.btn-save {
+      background: var(--save-btn-bg, linear-gradient(135deg, #f59e0b 0%, #d97706 100%));
+      color: var(--save-btn-color, #ffffff);
+      box-shadow: var(--save-btn-shadow, 0 6px 18px rgba(245, 158, 11, 0.4));
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-action.btn-save:hover {
+      transform: translateY(-1.5px);
+      filter: brightness(1.1);
+    }
+
+    .btn-action.btn-save:active {
+      transform: translateY(1px);
+    }
+
+    .btn-action.btn-glass {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+    }
+
+    .btn-action.btn-glass:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.32);
+      transform: translateY(-1.5px);
+    }
+
+    .btn-action.btn-glass:active {
+      transform: translateY(1px);
     }
 
     .action-sub-grid {
@@ -959,20 +1179,30 @@
       transform: translateX(-50%) translateY(0);
     }
   </style>
-  <link rel="stylesheet" href="/css/gnb.css">
+  <link rel="stylesheet" href="./css/gnb.css">
 </head>
 <body>
 
   <div class="container">
 
     <!-- 3D Interactive Unified Flip Card -->
-    <div class="card-scene" id="cardScene" onclick="toggleCardFlip()" title="카드를 탭하거나 슬라이드하면 앞뒤가 뒤집힙니다">
+    <div class="card-scene" id="cardScene" onclick="toggleCardFlip(event)" title="카드를 탭하거나 슬라이드하면 앞뒤가 뒤집힙니다">
       <div class="card-flipper">
         
         <!-- =========================================
              FRONT (앞면)
              ========================================= -->
         <div class="card-face front">
+          <!-- Pure Physical Card Plate Artwork (Layout Plate) -->
+          <div class="plate-artwork-container" id="plateArtworkContainer" title="카드를 탭하면 뒤집힙니다">
+            <img id="plateArtworkImg" src="./assets/toomcard_front_plate.png?v=3dmaster" alt="Metal Card Plate" class="plate-artwork-img" onerror="this.onerror=null; this.src='./assets/toomcard_front_plate.png';">
+            <div class="plate-specular-sheen"></div>
+            <div class="plate-flip-pill" onclick="event.stopPropagation(); toggleCardFlip(event);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M16 21h5v-5"></path></svg>
+              <span>TAP TO FLIP ↺</span>
+            </div>
+          </div>
+
           <!-- 거대 동적 워터마크 -->
           <div class="watermark-dynamic" id="watermarkContainerFront" aria-hidden="true"></div>
 
@@ -995,10 +1225,10 @@
 
             <!-- 3D Luxury Embossed Medallion & Brand Identity -->
             <div class="card-medallion-area">
-              <div class="card-medallion-box" onclick="event.stopPropagation(); openShareModal();" title="QR 코드 열기">
+              <div class="card-medallion-box" onclick="event.stopPropagation(); openShareModal();">
                 <div class="medallion-bevel-outer">
                   <div class="medallion-bevel-inner">
-                    <img id="frontLogoImg" src="/assets/toomcard_symbol.jpg" alt="Logo" class="medallion-img" onerror="this.onerror=null; this.src='/assets/toomcard_symbol.jpg';">
+                    <img id="frontLogoImg" src="/assets/toomcard_hd.gif" alt="Logo" class="medallion-img" onerror="this.onerror=null; this.src='/assets/toomcard_hd.gif';">
                   </div>
                 </div>
               </div>
@@ -1017,6 +1247,12 @@
               <div class="moat-tags" id="frontMoatTags"></div>
             </div>
 
+            <!-- Plate Flip Micro Prompt (Layout Plate) -->
+            <div class="plate-flip-prompt" id="plateFlipPrompt">
+              <span>TAP TO REVEAL DETAILS</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="prompt-icon"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
             <!-- Smart Action Dock on Front -->
             <div class="inside-action-dock" id="insideActionDockFront"></div>
           </div>
@@ -1030,46 +1266,68 @@
           <div class="watermark-dynamic" id="watermarkContainerBack" aria-hidden="true"></div>
 
           <div class="back-wrapper">
-            <!-- Back Hardware Bar -->
-            <div class="card-header-bar">
-              <div class="card-nfc-group">
-                <svg class="nfc-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <path d="M6 8a8.5 8.5 0 0 1 12 0" />
-                  <path d="M8.5 11.5a5 5 0 0 1 7 0" />
-                  <path d="M11 15a1.5 1.5 0 0 1 2 0" />
-                </svg>
-                <span class="nfc-text">DIGITAL VAULT & SCAN</span>
-              </div>
-              <div class="card-edition-badge" onclick="event.stopPropagation(); toggleCardFlip();" style="cursor: pointer;" title="카드를 앞면으로 뒤집기">
-                <span>앞면 보기 ↺</span>
+            <!-- Top Logo on Back (Interactive 3D Flipper) -->
+            <div class="back-top-logo-container">
+              <div class="back-flipper-container" id="backFlipperContainer" onclick="toggleBackLogoQr(event);">
+                <div class="back-flipper" id="backFlipper">
+                  
+                  <!-- [FRONT OF FLIPPER]: Brand Animated 3D Logo Emblem (Default) -->
+                  <div class="back-flipper-face back-flipper-logo" id="backFlipperLogoFace">
+                    <div class="back-top-logo">
+                      <img id="backLogoImg" src="/assets/toomuslogo.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomcard_hd.gif';">
+                    </div>
+                  </div>
+
+                  <!-- [BACK OF FLIPPER]: Instant QR Code (Revealed on Tap) -->
+                  <div class="back-flipper-face back-flipper-qr" id="backFlipperQrFace">
+                    <div id="backQrDirectTarget" class="back-qr-box" onclick="event.stopPropagation(); openShareModal();" title="더블탭하여 QR 크게 보기"></div>
+                    <div class="back-flipper-pill qr-return-pill">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="flipper-pill-icon">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                        <path d="M16 21h5v-5"></path>
+                      </svg>
+                      <span>탭하여 로고 보기 ↺</span>
+                    </div>
+                    <span class="back-qr-caption">스마트폰 카메라로 스캔시 즉시 등록</span>
+                  </div>
+
+                </div>
               </div>
             </div>
 
-            <!-- Back Center: Instant QR Target & Direct Contacts -->
-            <div class="back-center-card">
-              <div class="back-qr-frame" onclick="event.stopPropagation(); openShareModal();" title="QR 코드 크게 보기">
-                <div id="backQrDirectTarget" class="back-qr-box"></div>
-                <span class="back-qr-caption">스마트폰 카메라로 스캔하면 즉시 주소록 등록</span>
+            <!-- Main Business Info (setupod.com/ceo structure) -->
+            <div class="back-info-container">
+              <div class="brand-sub-engraving" id="backTagline"></div>
+              <div class="back-company-name" id="backCompany"></div>
+              <div class="back-company-slogan" id="backSlogan"></div>
+
+              <div class="profile-row">
+                <span class="name-title" id="nameTitle"></span>
+                <span class="role-title" id="roleTitle"></span>
               </div>
 
-              <!-- Direct Contact Quick Links -->
               <div class="contact-group">
+                <!-- Phone -->
                 <a href="#" class="contact-row" id="phoneLink" onclick="event.stopPropagation()" title="전화 걸기">
                   <span class="contact-key" id="phoneKey">T</span>
-                  <span class="contact-value" id="phoneValue">02-555-0199</span>
+                  <span class="contact-value" id="phoneValue"></span>
                 </a>
+
+                <!-- Email -->
                 <a href="#" class="contact-row" id="emailLink" onclick="event.stopPropagation()" title="이메일 보내기">
                   <span class="contact-key" id="emailKey">E</span>
-                  <span class="contact-value" id="emailValue">hello@toomcard.com</span>
+                  <span class="contact-value" id="emailValue"></span>
                 </a>
               </div>
+
+              <!-- Moat Tags on Back -->
+              <div class="moat-tags" id="backMoatTags"></div>
+
+              <!-- Inside-Card Action Dock on Back -->
+              <div class="inside-action-dock" id="insideActionDockBack"></div>
             </div>
-
-            <!-- Moat Tags on Back -->
-            <div class="moat-tags" id="backMoatTags"></div>
-
-            <!-- Inside-Card Action Dock on Back -->
-            <div class="inside-action-dock" id="insideActionDockBack"></div>
           </div>
         </div>
 
@@ -1077,7 +1335,7 @@
     </div>
 
     <!-- Flip Hint Bar -->
-    <div class="flip-hint" onclick="toggleCardFlip()">
+    <div class="flip-hint" onclick="toggleCardFlip(event)">
       <i data-lucide="refresh-cw" class="flip-icon" style="width: 14px; height: 14px;"></i>
       <span>카드를 탭하면 앞면 ↔ 뒷면이 입체로 회전합니다</span>
     </div>
@@ -1219,7 +1477,7 @@
       }
       
       // card-renderer.js에서 slug 추출
-      const slug = typeof getCardSlug === 'function' ? getCardSlug() : (new URLSearchParams(window.location.search).get('id') || 'setupod');
+      const slug = typeof getCardSlug === 'function' ? getCardSlug() : (new URLSearchParams(window.location.search).get('id') || 'toomus');
       
       const success = await saveLeadToCloud(slug, phone, memo);
       if (success) {
@@ -1240,10 +1498,9 @@
   </div>
 
   <!-- Dynamic Card Renderer Engine Script -->
-  <script src="/js/card-renderer.js"></script>
-  <script src="/js/toast.js"></script>
-  <script src="/js/maza-telemetry.js"></script>
-  <script src="/js/lead-magnet.js"></script>
+  <script src="./js/card-renderer.js"></script>
+  <script src="./js/toast.js"></script>
+  <script src="./js/maza-telemetry.js"></script>
   <script>
     if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'simulator') {
       document.body.classList.add('in-simulator');
@@ -1251,6 +1508,13 @@
     if (window.MazaTelemetry) {
       window.MazaTelemetry.init({ podId: 'toomcard3d' });
     }
+    // 비상 안전 타이머: 네트워크 지연이나 예외 발생 시에도 흰 화면 방지 및 카드 강제 노출
+    setTimeout(function() {
+      var c = document.querySelector('.container');
+      if (c && !c.classList.contains('loaded')) {
+        c.classList.add('loaded');
+      }
+    }, 600);
   </script>
 </body>
 </html>

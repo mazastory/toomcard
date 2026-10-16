@@ -1,6 +1,7 @@
 # 🪪 TOOMCARD (toomcard.com)
 > **Next-Gen 3D Interactive Digital Business Card Platform**  
-> 차세대 3D 인터랙티브 디지털 명함 독립 비즈니스 플랫폼
+> *"오늘의 짧은 만남을 내일의 거대한 비즈니스로 잇는 스마트 카드"*  
+> 📖 [브랜드 스토리 & 매니페스토 (BRAND_STORY.md)](./BRAND_STORY.md)  
 
 ---
 
@@ -17,7 +18,7 @@
 ---
 
 ## 2. 시스템 아키텍처 (Zero-Cost Shared Infrastructure)
-셋업팟(SETUPOD)의 인프라를 100% 공유하여 **추가 서버/DB 비용 $0**으로 무인 가동됩니다.
+TOOMUS 생태계의 고성능 Supabase & Vercel Edge 인프라를 활용하여 **추가 서버/DB 비용 $0**으로 무인 가동됩니다.
 
 ```
                     toomcard.com
