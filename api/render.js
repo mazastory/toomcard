@@ -174,10 +174,6 @@ module.exports = async (req, res) => {
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
-    res.setHeader('X-Debug-Slug', slug);
-    res.setHeader('X-Debug-SlugsToTry', encodeURIComponent(slugsToTry.join(',')));
-    res.setHeader('X-Debug-TargetJson', targetJsonPath || 'none');
-    res.setHeader('X-Debug-IsHyangwon', String(isHyangwon));
     return res.status(200).send(html);
 
   } catch (err) {
