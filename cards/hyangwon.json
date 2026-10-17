@@ -2,7 +2,7 @@
   "slug": "hyangwon",
   "id": "hyangwon",
   "theme": "obsidian",
-  "layout": "classic",
+  "layout": "plate",
   "edition": "TITANIUM PRO",
   "name": "이향원",
   "role": "이사(Director)",
@@ -25,7 +25,7 @@
     "alt": "TOOMCARD Logo"
   },
   "avatar": "/assets/toomcard_hd.gif",
-  "plateCardImage": "/assets/toomcard_front_plate.png",
+  "plateCardImage": "/assets/toomcard_front_plate.jpg",
   "primaryAction": {
     "url": "https://toomcard.com",
     "label": "공식 웹사이트",

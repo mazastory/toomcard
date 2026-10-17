@@ -1,0 +1,63 @@
+{
+  "slug": "gold",
+  "id": "gold",
+  "theme": "gold",
+  "layout": "plate",
+  "edition": "GOLD PLATINUM",
+  "name": "Sophia Laurent",
+  "role": "수석 디렉터 / Chief Director",
+  "title": "수석 디렉터",
+  "company": "TOOMCARD VIP",
+  "companyWatermark": "TOOMCARD",
+  "slogan": "하이엔드 비즈니스를 위한 최상위 골드 3D 디지털 명함",
+  "tagline": "EXCLUSIVE VIP ACCESS",
+  "phone": "02-1544-0000",
+  "email": "vip@toomcard.com",
+  "origin": "TOOMCARD Global",
+  "moatTags": [
+    "24K 골드 피니시",
+    "VIP 전용 스마트 명함",
+    "실시간 vCard 저장"
+  ],
+  "logo": {
+    "src": "/assets/toomcard_hd.gif",
+    "fallback": "/assets/toomcard_hd.gif",
+    "alt": "TOOMCARD VIP Logo"
+  },
+  "avatar": "/assets/toomcard_hd.gif",
+  "plateCardImage": "/assets/toomcard_front_plate.jpg",
+  "primaryAction": {
+    "url": "https://toomcard.com",
+    "label": "VIP 쇼룸 보기",
+    "icon": "sparkles"
+  },
+  "socials": [
+    {
+      "type": "kakao",
+      "url": "https://open.kakao.com",
+      "label": "VIP 전용 상담"
+    },
+    {
+      "type": "instagram",
+      "url": "https://instagram.com",
+      "label": "인스타그램"
+    }
+  ],
+  "vcard": {
+    "firstName": "Sophia",
+    "lastName": "Laurent",
+    "formattedName": "Sophia Laurent",
+    "org": "TOOMCARD VIP",
+    "title": "수석 디렉터",
+    "tel": "02-1544-0000",
+    "email": "vip@toomcard.com",
+    "url": "https://toomcard.com"
+  },
+  "meta": {
+    "title": "TOOMCARD VIP | Sophia Laurent 골드 에디션 3D 명함",
+    "siteName": "TOOMCARD VIP",
+    "ogTitle": "TOOMCARD VIP 골드 에디션",
+    "ogDescription": "하이엔드 비즈니스를 위한 최상위 골드 3D 디지털 명함",
+    "ogImage": "/assets/toomcard_front_plate.jpg"
+  }
+}

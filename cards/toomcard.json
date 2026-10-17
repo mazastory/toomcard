@@ -2,7 +2,7 @@
   "slug": "toomcard",
   "id": "toomcard",
   "theme": "obsidian",
-  "layout": "classic",
+  "layout": "plate",
   "edition": "TITANIUM PRO",
   "name": "Alex Rivera",
   "role": "총괄 디렉터 / Managing Director",
@@ -11,7 +11,7 @@
   "companyWatermark": "TOOMCARD",
   "slogan": "오늘의 짧은 만남을 내일의 거대한 비즈니스로 잇는 스마트 카드",
   "tagline": "TO DAY, TO TOMORROW",
-  "phone": "010-5555-0100",
+  "phone": "02-1544-0000",
   "email": "hello@toomcard.com",
   "origin": "TOOMCARD Global",
   "moatTags": [
@@ -25,7 +25,7 @@
     "alt": "TOOMCARD Logo"
   },
   "avatar": "/assets/toomcard_hd.gif",
-  "plateCardImage": "/assets/toomcard_front_plate.png",
+  "plateCardImage": "/assets/toomcard_front_plate.jpg",
   "primaryAction": {
     "url": "https://toomcard.com",
     "label": "공식 웹사이트",

@@ -391,7 +391,7 @@ function populateCard(data) {
   const plateImg = document.getElementById('plateArtworkImg');
   if (plateImg) {
     const cacheBuster = '?v=3dmaster_' + Date.now().toString(36);
-    let rawPath = '/assets/toomcard_front_plate.png';
+    let rawPath = '/assets/toomcard_front_plate.jpg';
     if (data.plateCardImage) {
       rawPath = data.plateCardImage;
     } else if (data.company && data.company.toLowerCase().includes('toomus')) {
@@ -941,7 +941,9 @@ const CARD_ALIAS_MAP = {
   'andrew': 'andrew',
   'toomus': 'toomus',
   'setupod': 'setupod',
-  'toomcard': 'toomcard'
+  'toomcard': 'toomcard',
+  'gold': 'gold',
+  'enterprise': 'enterprise'
 };
 
 // 초기화 진입점

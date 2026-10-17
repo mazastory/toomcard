@@ -91,24 +91,28 @@
 
     /* Simulator Embed Auto-Scaling Mode */
     body.in-simulator {
+      margin: 0 !important;
       padding: 0 !important;
-      min-height: 100% !important;
-      height: 100% !important;
+      width: 100vw !important;
+      height: 100vh !important;
       display: flex !important;
-      justify-content: center !important;
       align-items: center !important;
+      justify-content: center !important;
       overflow: hidden !important;
       background: radial-gradient(circle at 50% 30%, #150d28 0%, #06030c 100%) !important;
     }
     body.in-simulator .container {
-      transform: scale(0.83);
-      transform-origin: center center;
-      margin: 0 auto !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      margin: 0 !important;
       padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transform: none !important;
       gap: 0 !important;
-      width: 375px !important;
-      max-width: 375px !important;
-      height: auto !important;
     }
     body.in-simulator .flip-hint,
     body.in-simulator .viral-badge-link,
@@ -117,20 +121,16 @@
       display: none !important;
     }
 
-    @media (max-height: 570px) {
-      body.in-simulator .container {
-        transform: scale(0.75);
-      }
-    }
-    @media (max-height: 490px) {
-      body.in-simulator .container {
-        transform: scale(0.66);
-      }
-    }
-    @media (max-height: 430px) {
-      body.in-simulator .container {
-        transform: scale(0.58);
-      }
+    body.in-simulator .card-scene {
+      --pad-x: 24px;
+      --pad-y: 24px;
+      --max-w: calc(100vw - var(--pad-x));
+      --max-h: calc(100vh - var(--pad-y));
+      width: min(330px, var(--max-w), calc(var(--max-h) / 1.6036)) !important;
+      height: calc(min(330px, var(--max-w), calc(var(--max-h) / 1.6036)) * 1.6036) !important;
+      min-height: unset !important;
+      max-height: unset !important;
+      margin: auto !important;
     }
 
     /* 3D Vertical Card Scene */
@@ -225,6 +225,227 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    /* Pure Physical Card Plate Artwork (Layout Plate) */
+    .plate-artwork-container {
+      display: none;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      z-index: 2;
+      cursor: pointer;
+      backface-visibility: hidden !important;
+      -webkit-backface-visibility: hidden !important;
+    }
+
+    .layout-plate .plate-artwork-container {
+      display: block !important;
+    }
+
+    .card-scene.flipped .layout-plate .plate-artwork-container,
+    .card-scene.flipped .plate-artwork-container {
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+
+    .plate-artwork-img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+      border-radius: 28px !important;
+      pointer-events: none;
+      filter: contrast(1.03) brightness(1.02);
+    }
+
+    .plate-specular-sheen {
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(115deg, 
+        transparent 36%, 
+        rgba(255, 255, 255, 0.04) 44%, 
+        rgba(255, 255, 255, 0.22) 50%, 
+        rgba(255, 217, 120, 0.18) 53%, 
+        rgba(255, 255, 255, 0.06) 56%, 
+        transparent 64%);
+      pointer-events: none;
+      z-index: 3;
+      transform: rotate(-15deg);
+      animation: plateHoloSweep 6.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      opacity: 0.85;
+    }
+
+    @keyframes plateHoloSweep {
+      0% { transform: translateY(-110%) rotate(-15deg); }
+      28%, 100% { transform: translateY(130%) rotate(-15deg); }
+    }
+
+    .plate-flip-pill {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 18px;
+      background: rgba(10, 10, 16, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 99px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      white-space: nowrap;
+      user-select: none;
+      animation: platePillPulse 3.2s ease-in-out infinite;
+    }
+
+    @keyframes platePillPulse {
+      0%, 100% {
+        border-color: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+        color: rgba(255, 255, 255, 0.85);
+      }
+      50% {
+        border-color: rgba(255, 217, 120, 0.65);
+        box-shadow: 0 8px 24px rgba(255, 217, 120, 0.3);
+        color: #ffffff;
+      }
+    }
+
+    .layout-plate .card-face.front {
+      padding: 0 !important;
+      background: #090a0f !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.24) !important;
+      border-radius: 28px !important;
+      overflow: hidden !important;
+    }
+
+    .layout-plate .card-face.front .front-wrapper,
+    .layout-plate .card-face.front .watermark-dynamic,
+    .layout-plate .card-face.front::before,
+    .layout-plate #insideActionDockFront,
+    .layout-plate .front-info-container {
+      display: none !important;
+    }
+
+    /* Back 3D Flipper (Logo ↔ QR) */
+    .back-flipper-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .back-flipper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.3, 1.15);
+      border-radius: 26px;
+    }
+
+    .back-flipper.show-qr {
+      transform: rotateY(180deg);
+    }
+
+    .back-flipper-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 26px;
+      background: var(--logo-bg, radial-gradient(circle at 35% 35%, #252838 0%, #0c0d14 100%));
+      border: 1px solid var(--logo-border, rgba(255, 217, 120, 0.4));
+      box-shadow: var(--logo-shadow, 0 16px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(245, 158, 11, 0.25));
+      box-sizing: border-box;
+      padding: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .back-flipper-logo {
+      transform: rotateY(0deg);
+      z-index: 2;
+    }
+
+    .back-flipper-logo .back-top-logo {
+      width: 100% !important;
+      height: 100% !important;
+      padding: 0 !important;
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      animation: none !important;
+    }
+
+    .back-flipper-logo .back-top-logo img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      border-radius: 18px !important;
+    }
+
+    .back-flipper-qr {
+      transform: rotateY(180deg);
+      z-index: 1;
+      padding: 8px;
+    }
+
+    .back-qr-box {
+      background: #ffffff;
+      padding: 6px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      margin-bottom: 4px;
+    }
+
+    .back-qr-box img, .back-qr-box canvas {
+      display: block;
+      width: 90px !important;
+      height: 90px !important;
+    }
+
+    .back-flipper-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 8.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
     }
 
     /* =========================================
@@ -814,6 +1035,16 @@
              FRONT (앞면)
              ========================================= -->
         <div class="card-face front">
+          <!-- Pure Physical Card Plate Artwork (Layout Plate) -->
+          <div class="plate-artwork-container" id="plateArtworkContainer" title="카드를 탭하면 뒤집힙니다">
+            <img id="plateArtworkImg" src="/assets/toomcard_front_plate.jpg" alt="Metal Card Plate" class="plate-artwork-img" onerror="this.onerror=null; this.src='/assets/toomcard_front_plate.png';">
+            <div class="plate-specular-sheen"></div>
+            <div class="plate-flip-pill" onclick="event.stopPropagation(); toggleCardFlip(event);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M16 21h5v-5"></path></svg>
+              <span>TAP TO FLIP ↺</span>
+            </div>
+          </div>
+
           <!-- 거대 동적 워터마크 -->
           <div class="watermark-dynamic" id="watermarkContainerFront" aria-hidden="true"></div>
 
@@ -847,10 +1078,31 @@
           <div class="watermark-dynamic" id="watermarkContainerBack" aria-hidden="true"></div>
 
           <div class="back-wrapper">
-            <!-- Top Logo on Back -->
+            <!-- Top Logo on Back (Interactive 3D Flipper) -->
             <div class="back-top-logo-container">
-              <div class="back-top-logo" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR코드가 열립니다">
-                <img id="backLogoImg" src="/assets/toomcard_hd.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomcard.gif';">
+              <div class="back-flipper-container" id="backFlipperContainer" onclick="toggleBackLogoQr(event);">
+                <div class="back-flipper" id="backFlipper">
+                  <!-- [FRONT OF FLIPPER]: Brand Animated 3D Logo Emblem (Default) -->
+                  <div class="back-flipper-face back-flipper-logo" id="backFlipperLogoFace">
+                    <div class="back-top-logo">
+                      <img id="backLogoImg" src="/assets/toomcard_hd.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomcard.gif';">
+                    </div>
+                  </div>
+
+                  <!-- [BACK OF FLIPPER]: Instant QR Code (Revealed on Tap) -->
+                  <div class="back-flipper-face back-flipper-qr" id="backFlipperQrFace">
+                    <div id="backQrDirectTarget" class="back-qr-box" onclick="event.stopPropagation(); openShareModal();" title="더블탭하여 QR 크게 보기"></div>
+                    <div class="back-flipper-pill qr-return-pill">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                        <path d="M16 21h5v-5"></path>
+                      </svg>
+                      <span>탭하여 로고 보기 ↺</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

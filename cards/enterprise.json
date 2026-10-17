@@ -1,0 +1,63 @@
+{
+  "slug": "enterprise",
+  "id": "enterprise",
+  "theme": "obsidian",
+  "layout": "plate",
+  "edition": "ENTERPRISE B2B",
+  "name": "TOOMCARD Enterprise",
+  "role": "기업 B2B 솔루션팀",
+  "title": "기업 B2B 솔루션팀",
+  "company": "TOOMCARD",
+  "companyWatermark": "TOOMCARD",
+  "slogan": "임직원 명함 통합 발급 및 실시간 CRM 리드 관리 솔루션",
+  "tagline": "ENTERPRISE SMART CONSOLE",
+  "phone": "02-1544-0000",
+  "email": "b2b@toomcard.com",
+  "origin": "TOOMCARD Global",
+  "moatTags": [
+    "임직원 통합 발급",
+    "실시간 CRM 분석",
+    "기업 도메인 연동"
+  ],
+  "logo": {
+    "src": "/assets/toomcard_hd.gif",
+    "fallback": "/assets/toomcard_hd.gif",
+    "alt": "TOOMCARD Enterprise Logo"
+  },
+  "avatar": "/assets/toomcard_hd.gif",
+  "plateCardImage": "/assets/toomcard_front_plate.jpg",
+  "primaryAction": {
+    "url": "https://toomcard.com#enterprise",
+    "label": "기업 도입 문의",
+    "icon": "sparkles"
+  },
+  "socials": [
+    {
+      "type": "kakao",
+      "url": "https://open.kakao.com",
+      "label": "B2B 실시간 상담"
+    },
+    {
+      "type": "instagram",
+      "url": "https://instagram.com",
+      "label": "공식 채널"
+    }
+  ],
+  "vcard": {
+    "firstName": "TOOMCARD",
+    "lastName": "Enterprise",
+    "formattedName": "TOOMCARD Enterprise",
+    "org": "TOOMCARD",
+    "title": "기업 B2B 솔루션팀",
+    "tel": "02-1544-0000",
+    "email": "b2b@toomcard.com",
+    "url": "https://toomcard.com"
+  },
+  "meta": {
+    "title": "TOOMCARD Enterprise | 기업용 B2B 3D 디지털 명함 솔루션",
+    "siteName": "TOOMCARD",
+    "ogTitle": "TOOMCARD Enterprise B2B",
+    "ogDescription": "임직원 명함 통합 발급 및 실시간 CRM 리드 관리 솔루션",
+    "ogImage": "/assets/toomcard_front_plate.jpg"
+  }
+}
