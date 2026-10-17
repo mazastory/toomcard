@@ -633,6 +633,16 @@
       border-color: #ffd978 !important;
     }
 
+    @keyframes previewPulseAnim {
+      0% { transform: scale(1); filter: brightness(1); }
+      40% { transform: scale(1.025); filter: brightness(1.2); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+
+    .preview-pulse {
+      animation: previewPulseAnim 0.45s ease-out;
+    }
+
     /* 테마 및 레이아웃 선택 칩 (세련된 컴팩트 가로형 배지 디자인) */
     .theme-selector {
       display: grid;
@@ -2160,14 +2170,14 @@
                 <h2 class="section-title" style="font-size:16.5px; font-weight:800; color:#ffffff; margin:0;">1. 3D 디자인 템플릿 선택</h2>
                 <span class="catalog-badge-pulse">DESIGN FIRST</span>
               </div>
-              <p style="font-size:12px; color:rgba(255,255,255,0.6); margin:4px 0 0 0; line-height:1.4;">
-                마음에 드는 명함 디자인을 먼저 선택하시면, 우측 3D 카드에 즉시 장착되며 기본 정보 입력창으로 이동합니다.
+              <p style="font-size:12.5px; color:rgba(255,255,255,0.7); margin:4px 0 0 0; line-height:1.45;">
+                원하는 디자인을 클릭하면 <strong style="color:#ffd978;">우측 3D 카드에 즉시 장착되어 실시간으로 미리보기</strong>할 수 있습니다. 마음에 드는 디자인을 자유롭게 둘러보신 후 [이 디자인으로 정보 입력하기]를 눌러주세요.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- 8대 완성형 템플릿 그리드 -->
+        <!-- 8대 완성형 템플릿 그리드 (실시간 3D 미리보기 연동) -->
         <div class="design-preset-grid">
           <!-- 1. Obsidian Titanium (Plate) -->
           <div class="design-preset-card active" data-preset="obsidian" onclick="selectDesignPreset('obsidian')">
@@ -2187,8 +2197,8 @@
               <div class="preset-desc">스위스 정밀 미니멀리즘 · 블랙 티타늄 헤어라인과 골드 각인</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
-              <i data-lucide="arrow-right" class="preset-arrow"></i>
+              <span class="preset-action-text" style="color:#ffd978; font-weight:800;"><i data-lucide="check" style="width:12px;height:12px;margin-right:4px;"></i>현재 장착됨</span>
+              <i data-lucide="sparkles" class="preset-arrow" style="color:#ffd978;"></i>
             </div>
           </div>
 
@@ -2210,7 +2220,7 @@
               <div class="preset-desc">글로벌 C-Level의 기품 · 딥 네이비와 샴페인 골드 메탈릭</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
@@ -2232,7 +2242,7 @@
               <div class="preset-desc">감성 부티크 & 디자이너 · 순백 매트 페이퍼 질감과 절제된 여백</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
@@ -2255,7 +2265,7 @@
               <div class="preset-desc">차세대 IT 스타트업 & 테크 빌더 · 몽환적인 3D 앰비언트 글로우</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
@@ -2277,7 +2287,7 @@
               <div class="preset-desc">현대적 감각의 반투명 특수 소재 · 빛을 은은하게 투과하는 아크릴</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
@@ -2300,7 +2310,7 @@
               <div class="preset-desc">자산운용 & 벤처캐피탈 · 번영과 신뢰를 상징하는 딥 에메랄드 메탈</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
@@ -2322,7 +2332,7 @@
               <div class="preset-desc">건축 · 인테리어 · 프리미엄 라이프스타일 · 포근한 샌드 베이지</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
@@ -2345,10 +2355,25 @@
               <div class="preset-desc">프리미엄 살롱 & VIP 프라이빗 컨설팅 · 매혹적인 로즈골드 메탈릭 광택</div>
             </div>
             <div class="preset-action">
-              <span class="preset-action-text">선택 및 정보 입력</span>
+              <span class="preset-action-text"><i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착</span>
               <i data-lucide="arrow-right" class="preset-arrow"></i>
             </div>
           </div>
+        </div>
+
+        <!-- 실시간 선택 완료 및 정보 입력 이동 바 -->
+        <div class="preset-confirm-bar" id="presetConfirmBar" style="margin-top: 14px; background: linear-gradient(135deg, rgba(255, 217, 120, 0.12), rgba(168, 85, 247, 0.08)); border: 1.5px solid rgba(255, 217, 120, 0.35); border-radius: 14px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(255, 217, 120, 0.2); border: 1px solid rgba(255, 217, 120, 0.4); display: flex; align-items: center; justify-content: center; font-size: 16px;">✨</div>
+            <div>
+              <div style="font-size: 11px; font-weight: 800; color: #ffd978; text-transform: uppercase; letter-spacing: 0.5px;" id="confirmBadge">BEST 🔥 장착됨</div>
+              <div style="font-size: 13.5px; font-weight: 900; color: #ffffff;" id="confirmName">스위스 옵시디언 티타늄 (Minimal Plate)</div>
+            </div>
+          </div>
+          <button type="button" onclick="scrollToQuickFill()" class="btn-proceed-cta" style="background: linear-gradient(135deg, #ffd978, #fbbf24); color: #000; border: none; padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(255, 217, 120, 0.35); transition: all 0.2s ease;">
+            <span>이 디자인으로 정보 입력하기</span>
+            <i data-lucide="arrow-down" style="width: 14px; height: 14px;"></i>
+          </button>
         </div>
 
         <!-- 세부 커스텀 (레이아웃 & 컬러 개별 조합) 아코디언 -->
@@ -3243,14 +3268,36 @@
 
     let currentPreset = 'obsidian';
 
-    function selectDesignPreset(key, shouldScroll = true) {
+    function selectDesignPreset(key, shouldScroll = false) {
       const p = DESIGN_PRESETS[key];
       if (!p) return;
       currentPreset = key;
 
-      // 1. 카탈로그 그리드 내 활성화 배지 업데이트
+      // 1. 카탈로그 그리드 내 활성화 배지 및 하단 버튼 텍스트 업데이트
       document.querySelectorAll('.design-preset-card').forEach(c => {
-        c.classList.toggle('active', c.getAttribute('data-preset') === key);
+        const isMatch = c.getAttribute('data-preset') === key;
+        c.classList.toggle('active', isMatch);
+        const actionText = c.querySelector('.preset-action-text');
+        const arrow = c.querySelector('.preset-arrow');
+        if (actionText) {
+          if (isMatch) {
+            actionText.innerHTML = '<i data-lucide="check" style="width:12px;height:12px;margin-right:4px;"></i>현재 장착됨';
+            actionText.style.color = '#ffd978';
+            actionText.style.fontWeight = '800';
+            if (arrow) {
+              arrow.setAttribute('data-lucide', 'sparkles');
+              arrow.style.color = '#ffd978';
+            }
+          } else {
+            actionText.innerHTML = '<i data-lucide="eye" style="width:12px;height:12px;margin-right:4px;"></i>3D 미리보기 장착';
+            actionText.style.color = '';
+            actionText.style.fontWeight = '';
+            if (arrow) {
+              arrow.setAttribute('data-lucide', 'arrow-right');
+              arrow.style.color = '';
+            }
+          }
+        }
       });
 
       // 2. 레이아웃 & 테마 DOM 동기화
@@ -3260,7 +3307,23 @@
       const themeEl = document.querySelector(`.theme-selector-card[data-theme="${p.theme}"]`);
       selectTheme(p.theme, themeEl);
 
-      // 3. Quick-Fill 폼 상단 안내 배너 갱신
+      // 3. 우측 3D 카드를 앞면(Front)으로 회전하여 템플릿 실물 디자인을 바로 보여줌
+      forceCardFront();
+
+      // 4. 우측 3D 카드에 실시간 장착 하이라이트 애니메이션 부여
+      const scene = document.getElementById('cardScene');
+      if (scene) {
+        scene.classList.remove('preview-pulse');
+        void scene.offsetWidth; // trigger reflow
+        scene.classList.add('preview-pulse');
+      }
+
+      // 5. 실시간 진행 확인 바 및 퀵필 상단 배너 갱신
+      const confirmBadge = document.getElementById('confirmBadge');
+      const confirmName = document.getElementById('confirmName');
+      if (confirmBadge) confirmBadge.innerText = `${p.badge} 장착됨`;
+      if (confirmName) confirmName.innerText = `${p.name} (${p.typeLabel})`;
+
       const banner = document.getElementById('selectedDesignBanner');
       if (banner) {
         banner.innerHTML = `
@@ -3275,20 +3338,24 @@
             디자인 변경 ↑
           </a>
         `;
-        banner.style.display = 'flex';
       }
 
-      showToast(`✨ ${p.name} 템플릿이 적용되었습니다. 정보를 입력하세요!`);
+      showToast(`✨ ${p.name} 실시간 3D 장착 완료! (우측 카드 확인)`);
+      if (window.lucide) lucide.createIcons();
 
-      // 4. Quick-Fill 폼으로 부드러운 스크롤 이동
+      // 6. 명시적 요청이 있을 때만 스크롤 (기본값 false: 미리보기 모드 유지)
       if (shouldScroll) {
-        const target = document.getElementById('quickFillSection');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          const nameInput = document.getElementById('inputName');
-          if (nameInput) {
-            setTimeout(() => nameInput.focus(), 450);
-          }
+        scrollToQuickFill();
+      }
+    }
+
+    function scrollToQuickFill() {
+      const target = document.getElementById('quickFillSection');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const nameInput = document.getElementById('inputName');
+        if (nameInput) {
+          setTimeout(() => nameInput.focus(), 450);
         }
       }
     }
