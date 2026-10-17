@@ -179,7 +179,8 @@ module.exports = async (req, res) => {
     // 4. Determine Dynamic OG Meta Tags
     const isHyangwon = slugsToTry.some(s => s === 'hyangwon' || s === '이향원' || s === 'hyanwon' || s === 'won');
 
-    let ogImageUrl = 'https://toomcard.com/assets/toomcard_og_banner.jpg';
+    let cardTheme = 'obsidian';
+    let ogImageUrl = '';
     let ogTitle = `${title} | ${company} - TOOMCARD`;
     let ogDesc = subtitle || '종이 명함의 시대를 끝내는 살아 움직이는 3D 스마트 명함';
 
@@ -190,10 +191,22 @@ module.exports = async (req, res) => {
     } else if (targetJsonPath) {
       try {
         const cJson = JSON.parse(fs.readFileSync(targetJsonPath, 'utf8'));
+        if (cJson.theme) cardTheme = cJson.theme;
         if (cJson.meta?.ogImage) ogImageUrl = cJson.meta.ogImage.startsWith('http') ? cJson.meta.ogImage : `https://toomcard.com${cJson.meta.ogImage}`;
         if (cJson.meta?.ogTitle) ogTitle = cJson.meta.ogTitle;
         if (cJson.meta?.ogDescription) ogDesc = cJson.meta.ogDescription;
       } catch(e) {}
+    }
+
+    // Default to dynamic @vercel/og personalized 3D card image preview
+    if (!ogImageUrl) {
+      const ogParams = new URLSearchParams({
+        title: title || 'TOOMCARD',
+        subtitle: subtitle || '3D 인터랙티브 디지털 명함',
+        company: company || 'TOOMCARD',
+        theme: cardTheme || 'obsidian'
+      });
+      ogImageUrl = `https://toomcard.com/api/og?${ogParams.toString()}`;
     }
 
     html = html.replace(/<title>.*?<\/title>/i, `<title>${ogTitle}</title>`);

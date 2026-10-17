@@ -718,16 +718,22 @@ function shareToKakao() {
     return;
   }
   
-  const title = (cardData && cardData.meta) ? cardData.meta.title : "TOOMCARD 3D 디지털 명함";
-  const desc = (cardData && cardData.meta) ? cardData.meta.ogDescription : "차세대 3D 인터랙티브 스마트 명함";
-  let imageUrl = "https://toomcard.com/assets/toomcard_front.jpg";
+  const title = (cardData && cardData.name) ? `${cardData.name} | ${cardData.company || 'TOOMCARD'}` : ((cardData && cardData.meta) ? cardData.meta.title : "TOOMCARD 3D 디지털 명함");
+  const desc = (cardData && cardData.role) ? `${cardData.role} · ${cardData.slogan || '3D 인터랙티브 스마트 명함'}` : "종이 명함의 시대를 끝내는 살아 움직이는 3D 스마트 명함";
   
-  if (cardData && cardData.logo && cardData.logo.src) {
-    if (cardData.logo.src.startsWith('http')) {
-      imageUrl = cardData.logo.src;
-    } else {
-      imageUrl = "https://toomcard.com/" + cardData.logo.src.replace(/^\/+/, '');
-    }
+  let imageUrl = '';
+  if (cardData && cardData.meta && cardData.meta.ogImage) {
+    imageUrl = cardData.meta.ogImage.startsWith('http') ? cardData.meta.ogImage : `https://toomcard.com/${cardData.meta.ogImage.replace(/^\/+/, '')}`;
+  } else if (cardData && (cardData.slug === 'hyangwon' || cardData.name === '이향원')) {
+    imageUrl = 'https://toomcard.com/assets/toomcard_og_hyangwon.jpg';
+  } else {
+    const ogParams = new URLSearchParams({
+      title: cardData?.name || 'TOOMCARD',
+      subtitle: (cardData?.role || '') + (cardData?.slogan ? ` · ${cardData.slogan}` : ''),
+      company: cardData?.company || 'TOOMCARD',
+      theme: cardData?.theme || 'obsidian'
+    });
+    imageUrl = `https://toomcard.com/api/og?${ogParams.toString()}`;
   }
 
   Kakao.Share.sendDefault({
@@ -841,6 +847,10 @@ URL;TYPE=WORK:${v.url || cardData.website || ''}
 NOTE:${v.note || cardData.slogan || ''}
 END:VCARD`;
 
+  const ua = navigator.userAgent || '';
+  const isKakaoTalk = /KAKAOTALK/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
   const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -849,8 +859,13 @@ END:VCARD`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast("연락처 파일(vCard)이 다운로드되었습니다!");
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  if (isKakaoTalk && isIOS) {
+    showToast("💡 카톡 우측 상단 [···] > [Safari로 열기] 시 주소록에 즉시 자동 저장됩니다.", 4500);
+  } else {
+    showToast("연락처 파일(vCard)이 다운로드되었습니다!");
+  }
 }
 
 // 클라우드 프로필을 3D 명함 모델로 매핑 (profile + components_json 완전 병합)
