@@ -11,8 +11,19 @@ try {
 } catch (e) {}
 
 module.exports = async (req, res) => {
-  let { slug } = req.query;
+  let slug = (req.query && req.query.slug) ? req.query.slug : '';
   const reqUrl = req.url || '';
+
+  if (!slug && reqUrl) {
+    try {
+      const parsed = new URL(reqUrl, 'https://toomcard.com');
+      slug = parsed.searchParams.get('slug') || '';
+      if (!slug) {
+        const parts = parsed.pathname.split('/').filter(p => p && p !== 'api' && p !== 'render');
+        if (parts.length > 0) slug = parts[parts.length - 1];
+      }
+    } catch (e) {}
+  }
 
   if (!slug) {
     slug = 'toomus'; // Default fallback
