@@ -529,6 +529,40 @@ function setupSwipe() {
   }, { passive: true });
 }
 
+// URL 쿼리 파라미터(side=back / flipped=true)에 따른 초기 카드 회전 상태 적용
+function applyInitialFlipState() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const side = urlParams.get('side');
+    const flipped = urlParams.get('flipped');
+    const scene = document.getElementById('cardScene');
+    if (scene) {
+      if (side === 'back' || flipped === 'true' || flipped === '1') {
+        scene.classList.add('flipped');
+      } else if (side === 'front') {
+        scene.classList.remove('flipped');
+      }
+    }
+  } catch (e) {
+    console.error("Flip state initialization error:", e);
+  }
+}
+
+// 부모 프레임(iframe 쇼케이스 등)으로부터 카드 앞/뒷면 제어 메시지 수신 연동
+window.addEventListener('message', (event) => {
+  if (!event || !event.data) return;
+  const scene = document.getElementById('cardScene');
+  if (!scene) return;
+  const action = typeof event.data === 'string' ? event.data : event.data.action;
+  if (action === 'show_back') {
+    scene.classList.add('flipped');
+  } else if (action === 'show_front') {
+    scene.classList.remove('flipped');
+  } else if (action === 'flip') {
+    scene.classList.toggle('flipped');
+  }
+});
+
 // 뒷면 로고 ↔ 인스턴트 QR 3D 인터랙티브 플립 토글 (엄격한 이벤트 버블링 방지)
 window.toggleBackLogoQr = function(event) {
   if (event) {
@@ -971,6 +1005,7 @@ async function initCardEngine() {
         if (cloud && (cloud.profile || cloud.pod)) {
           populateCardFromCloud(cloud, company);
           setupSwipe();
+          applyInitialFlipState();
           const container = document.querySelector('.container');
           if (container) container.classList.add('loaded');
           return;
@@ -1041,6 +1076,7 @@ async function initCardEngine() {
   }
 
   setupSwipe();
+  applyInitialFlipState();
   
   // Reveal the container after rendering
   const container = document.querySelector('.container');

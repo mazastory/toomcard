@@ -82,7 +82,7 @@
         
         <h1 class="hero-title">
           오늘의 짧은 만남을 내일의 거대한 비즈니스로,<br>
-          <span class="gradient-text">살아 움직이는 3D 스마트 명함</span>
+          <span class="gradient-text">살아 움직이는 3D 스마트&nbsp;명함</span>
         </h1>
         
         <p class="hero-desc">
@@ -125,10 +125,10 @@
 
         <!-- Sample Switcher Buttons (디자인 에디션별 쇼케이스) -->
         <div class="sample-switcher">
-          <button class="sample-btn active" onclick="switchSample('toomcard', this)">🖤 블랙 메탈 (Black Metal)</button>
-          <button class="sample-btn" onclick="switchSample('gold', this)">👑 골드 플래티넘 (Gold)</button>
-          <button class="sample-btn" onclick="switchSample('nexus', this)">⚡ 사이버 메탈 (Cyber)</button>
-          <button class="sample-btn" onclick="switchSample('enterprise', this)">🏢 기업 B2B 솔루션</button>
+          <button class="sample-btn active" onclick="switchSample('toomcard', this, 'front')">🖤 블랙 메탈 (Black Metal)</button>
+          <button class="sample-btn" onclick="switchSample('gold', this, 'back')">👑 골드 플래티넘 (Gold)</button>
+          <button class="sample-btn" onclick="switchSample('nexus', this, 'back')">⚡ 사이버 메탈 (Cyber)</button>
+          <button class="sample-btn" onclick="switchSample('enterprise', this, 'back')">🏢 기업 B2B 솔루션</button>
         </div>
       </div>
     </div>
@@ -579,13 +579,13 @@
     lucide.createIcons();
 
     // Sample Card Switcher
-    function switchSample(slug, btn) {
+    function switchSample(slug, btn, side = 'front') {
       document.querySelectorAll('.sample-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
 
       const iframe = document.getElementById('liveCardIframe');
       if (iframe) {
-        iframe.src = `/card?id=${slug}&embed=simulator`;
+        iframe.src = `/card?id=${slug}&embed=simulator&side=${side}`;
       }
     }
 
