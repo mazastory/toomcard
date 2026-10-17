@@ -41,8 +41,8 @@
   <script src="/js/supabase.js"></script>
 
   <!-- 동적 테마 CSS (프리뷰 카드용) -->
-  <link rel="stylesheet" id="themeStylesheet" href="/themes/violet.css">
-  <link rel="stylesheet" id="layoutStylesheet" href="">
+  <link rel="stylesheet" id="themeStylesheet" href="/themes/obsidian.css">
+  <link rel="stylesheet" id="layoutStylesheet" href="/themes/layout-plate.css">
 
   <style>
     :root {
@@ -325,6 +325,312 @@
       border-color: var(--maker-accent);
       box-shadow: 0 0 14px var(--maker-glow);
       background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* ==========================================================================
+       비즈프린트 스타일 완성형 3D 디자인 템플릿 셀렉터 (Design-First Catalog)
+       ========================================================================== */
+    .catalog-badge-pulse {
+      font-size: 10px;
+      font-weight: 900;
+      color: #000;
+      background: linear-gradient(90deg, #ffd978, #fbbf24);
+      padding: 2px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(255, 217, 120, 0.4);
+    }
+
+    .design-preset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 680px) {
+      .design-preset-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .design-preset-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .design-preset-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.06), transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .design-preset-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    .design-preset-card:hover::before {
+      opacity: 1;
+    }
+
+    .design-preset-card.active {
+      background: rgba(255, 217, 120, 0.06);
+      border-color: #ffd978;
+      box-shadow: 0 0 20px rgba(255, 217, 120, 0.22), inset 0 0 0 1px #ffd978;
+    }
+
+    .design-preset-card.active::after {
+      content: '✓ 선택됨';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ffd978;
+      color: #000000;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+    }
+
+    /* Miniature 3D Card Swatch Mockup */
+    .preset-mockup {
+      height: 94px;
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.25s ease;
+    }
+
+    .design-preset-card:hover .preset-mockup {
+      transform: scale(1.02);
+    }
+
+    .mockup-chip {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      align-self: flex-start;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+    .mockup-chip.gold { background: rgba(255, 213, 79, 0.2); color: #ffd54f; border: 1px solid rgba(255, 213, 79, 0.4); }
+    .mockup-chip.dark { background: rgba(0, 0, 0, 0.1); color: #0f172a; border: 1px solid rgba(0, 0, 0, 0.15); }
+    .mockup-chip.neon { background: rgba(168, 85, 247, 0.25); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.5); }
+    .mockup-chip.cyan { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .mockup-chip.emerald { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .mockup-chip.sand { background: rgba(180, 83, 9, 0.15); color: #78350f; border: 1px solid rgba(180, 83, 9, 0.3); }
+    .mockup-chip.rose { background: rgba(244, 114, 182, 0.2); color: #fbcfe8; border: 1px solid rgba(244, 114, 182, 0.4); }
+
+    .mockup-brand {
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.85);
+      z-index: 2;
+    }
+    .mockup-brand.dark { color: #1e293b; }
+    .mockup-brand.gold { color: #ffd54f; }
+    .mockup-brand.neon { color: #d8b4fe; }
+    .mockup-brand.cyan { color: #38bdf8; }
+    .mockup-brand.emerald { color: #34d399; }
+    .mockup-brand.sand { color: #92400e; }
+    .mockup-brand.rose { color: #f472b6; }
+
+    .mockup-name {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #ffffff;
+      z-index: 2;
+    }
+    .mockup-name.dark { color: #0f172a; }
+    .mockup-name.sand { color: #451a03; }
+
+    .mockup-meta {
+      font-size: 8.5px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.5px;
+      z-index: 2;
+    }
+    .mockup-meta.dark { color: rgba(15, 23, 42, 0.55); }
+    .mockup-meta.sand { color: rgba(69, 26, 3, 0.6); }
+
+    /* Mockup Themes */
+    .mockup-obsidian {
+      background: linear-gradient(135deg, #090a0f 0%, #171b26 50%, #090a0f 100%);
+      border: 1px solid #ffd978;
+    }
+    .mockup-hairline {
+      position: absolute;
+      top: 0; right: 0; bottom: 0; width: 35%;
+      background: linear-gradient(90deg, transparent, rgba(255, 217, 120, 0.08));
+      pointer-events: none;
+    }
+
+    .mockup-navy-gold {
+      background: linear-gradient(135deg, #07112c 0%, #0e1e4a 60%, #1e293b 100%);
+      border: 1px solid #ffd54f;
+    }
+    .mockup-sheen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.12) 48%, rgba(255, 213, 79, 0.2) 50%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .mockup-white-minimal {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 60%, #e2e8f0 100%);
+      border: 1px solid #cbd5e1;
+    }
+
+    .mockup-violet {
+      background: linear-gradient(135deg, #18092e 0%, #3b0764 50%, #1e1035 100%);
+      border: 1px solid #a855f7;
+    }
+    .mockup-glow-circle {
+      position: absolute;
+      bottom: -20px; right: -20px; width: 80px; height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .mockup-frosted {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(56, 189, 248, 0.2) 100%);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(125, 211, 252, 0.6);
+    }
+
+    .mockup-emerald {
+      background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #0f172a 100%);
+      border: 1px solid #34d399;
+    }
+
+    .mockup-warm-sand {
+      background: linear-gradient(135deg, #faf6f0 0%, #e7ded3 50%, #d6c6b4 100%);
+      border: 1px solid #b45309;
+    }
+
+    .mockup-rosegold {
+      background: linear-gradient(135deg, #2b1118 0%, #4a1525 50%, #831843 100%);
+      border: 1px solid #f472b6;
+    }
+
+    /* Preset Info Typography */
+    .preset-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .preset-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .preset-badge {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+    }
+    .badge-best { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-executive { background: rgba(255, 213, 79, 0.2); color: #ffd54f; border: 1px solid rgba(255, 213, 79, 0.3); }
+    .badge-atelier { background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .badge-tech { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .badge-special { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-prestige { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-aesthetic { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-vip { background: rgba(244, 114, 182, 0.2); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); }
+
+    .preset-type {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 600;
+    }
+
+    .preset-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+      margin-top: 1px;
+    }
+
+    .preset-desc {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .preset-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s ease;
+    }
+
+    .design-preset-card:hover .preset-action {
+      color: #ffd978;
+    }
+
+    .preset-arrow {
+      width: 13px;
+      height: 13px;
+      transition: transform 0.2s ease;
+    }
+
+    .design-preset-card:hover .preset-arrow {
+      transform: translateX(3px);
+    }
+
+    @keyframes pulseHighlight {
+      0% { box-shadow: 0 0 0 0 rgba(255, 217, 120, 0.6); }
+      70% { box-shadow: 0 0 0 16px rgba(255, 217, 120, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 217, 120, 0); }
+    }
+
+    .highlight-pulse {
+      animation: pulseHighlight 1.5s ease-out;
+      border-color: #ffd978 !important;
     }
 
     /* 테마 및 레이아웃 선택 칩 (세련된 컴팩트 가로형 배지 디자인) */
@@ -1844,108 +2150,333 @@
 
       <div id="panelSingle" style="display:flex;flex-direction:column;gap:28px;">
 
-      <!-- 0. 예시 템플릿 로드 -->
-      <div>
-        <div class="section-title-wrap">
-          <div class="section-icon-box"><i data-lucide="sparkles" style="width:16px;height:16px;color:#a855f7;"></i></div>
-          <h2 class="section-title">0. 미리 채워진 예시 불러오기</h2>
+      <!-- 1. 비즈프린트 스타일 완성형 3D 디자인 템플릿 갤러리 -->
+      <div id="designs" class="design-catalog-section" style="scroll-margin-top: 90px;">
+        <div class="section-title-wrap" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+          <div style="display:flex; align-items:flex-start; gap:10px;">
+            <div class="section-icon-box" style="background: rgba(255, 217, 120, 0.15); border: 1px solid rgba(255, 217, 120, 0.35);"><i data-lucide="palette" style="width:16px;height:16px;color:#ffd978;"></i></div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h2 class="section-title" style="font-size:16.5px; font-weight:800; color:#ffffff; margin:0;">1. 3D 디자인 템플릿 선택</h2>
+                <span class="catalog-badge-pulse">DESIGN FIRST</span>
+              </div>
+              <p style="font-size:12px; color:rgba(255,255,255,0.6); margin:4px 0 0 0; line-height:1.4;">
+                마음에 드는 명함 디자인을 먼저 선택하시면, 우측 3D 카드에 즉시 장착되며 기본 정보 입력창으로 이동합니다.
+              </p>
+            </div>
+          </div>
         </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn-nav btn-nav-ghost" style="height:34px; padding:0 14px; font-size:12px;" onclick="loadPreset('toomcard')">TOOMCARD (기본)</button>
-          <button class="btn-nav btn-nav-ghost" style="height:34px; padding:0 14px; font-size:12px;" onclick="loadPreset('toomus')">TOOMUS (플래티넘 플레이트)</button>
-          <button class="btn-nav btn-nav-ghost" style="height:34px; padding:0 14px; font-size:12px;" onclick="loadPreset('nexus')">NEXUS 글로벌</button>
-          <button class="btn-nav btn-nav-ghost" style="height:34px; padding:0 14px; font-size:12px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="loadPreset('boutique')">감성 부티크 (Editorial)</button>
+
+        <!-- 8대 완성형 템플릿 그리드 -->
+        <div class="design-preset-grid">
+          <!-- 1. Obsidian Titanium (Plate) -->
+          <div class="design-preset-card active" data-preset="obsidian" onclick="selectDesignPreset('obsidian')">
+            <div class="preset-mockup mockup-obsidian">
+              <div class="mockup-chip">PLATE</div>
+              <div class="mockup-hairline"></div>
+              <div class="mockup-brand">TITANIUM PRO</div>
+              <div class="mockup-name">ALEX RIVERA</div>
+              <div class="mockup-meta">SWISS MINIMAL PRECISION</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-best">BEST 🔥</span>
+                <span class="preset-type">Minimal Plate</span>
+              </div>
+              <div class="preset-name">스위스 옵시디언 티타늄</div>
+              <div class="preset-desc">스위스 정밀 미니멀리즘 · 블랙 티타늄 헤어라인과 골드 각인</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 2. Platinum Navy Gold (Metal) -->
+          <div class="design-preset-card" data-preset="navy-gold" onclick="selectDesignPreset('navy-gold')">
+            <div class="preset-mockup mockup-navy-gold">
+              <div class="mockup-chip gold">METAL</div>
+              <div class="mockup-sheen"></div>
+              <div class="mockup-brand gold">EXECUTIVE LEADERSHIP</div>
+              <div class="mockup-name">GLOBAL PARTNER</div>
+              <div class="mockup-meta">CHAMPAGNE GOLD FOIL</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-executive">C-LEVEL 👑</span>
+                <span class="preset-type">Executive Metal</span>
+              </div>
+              <div class="preset-name">플래티넘 네이비 골드</div>
+              <div class="preset-desc">글로벌 C-Level의 기품 · 딥 네이비와 샴페인 골드 메탈릭</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 3. Minimal White Editorial (Editorial) -->
+          <div class="design-preset-card" data-preset="white-minimal" onclick="selectDesignPreset('white-minimal')">
+            <div class="preset-mockup mockup-white-minimal">
+              <div class="mockup-chip dark">EDITORIAL</div>
+              <div class="mockup-brand dark">STUDIO ATELIER</div>
+              <div class="mockup-name dark">CREATIVE DIRECTOR</div>
+              <div class="mockup-meta dark">PURE WHITE COTTON</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-atelier">BOUTIQUE 🤍</span>
+                <span class="preset-type">Editorial Clean</span>
+              </div>
+              <div class="preset-name">미니멀 화이트 에디토리얼</div>
+              <div class="preset-desc">감성 부티크 & 디자이너 · 순백 매트 페이퍼 질감과 절제된 여백</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 4. Cyber Violet Neon (Classic) -->
+          <div class="design-preset-card" data-preset="violet" onclick="selectDesignPreset('violet')">
+            <div class="preset-mockup mockup-violet">
+              <div class="mockup-chip neon">CLASSIC</div>
+              <div class="mockup-glow-circle"></div>
+              <div class="mockup-brand neon">TECH INNOVATION</div>
+              <div class="mockup-name">FOUNDER & CEO</div>
+              <div class="mockup-meta neon">AMBIENT VIOLET GLOW</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-tech">STARTUP ⚡</span>
+                <span class="preset-type">Classic Glass</span>
+              </div>
+              <div class="preset-name">사이버 바이올렛 네온</div>
+              <div class="preset-desc">차세대 IT 스타트업 & 테크 빌더 · 몽환적인 3D 앰비언트 글로우</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 5. Frosted Matte PET (Classic) -->
+          <div class="design-preset-card" data-preset="frosted-acrylic" onclick="selectDesignPreset('frosted-acrylic')">
+            <div class="preset-mockup mockup-frosted">
+              <div class="mockup-chip cyan">PET</div>
+              <div class="mockup-brand cyan">TRANSLUCENT</div>
+              <div class="mockup-name">ARCHITECT & DESIGN</div>
+              <div class="mockup-meta cyan">FROSTED MATTE ACRYLIC</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-special">SPECIAL 🧊</span>
+                <span class="preset-type">Translucent PET</span>
+              </div>
+              <div class="preset-name">프로스티드 매트 PET</div>
+              <div class="preset-desc">현대적 감각의 반투명 특수 소재 · 빛을 은은하게 투과하는 아크릴</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 6. Emerald Executive (Metal) -->
+          <div class="design-preset-card" data-preset="emerald" onclick="selectDesignPreset('emerald')">
+            <div class="preset-mockup mockup-emerald">
+              <div class="mockup-chip emerald">METAL</div>
+              <div class="mockup-sheen"></div>
+              <div class="mockup-brand emerald">VERITAS CAPITAL</div>
+              <div class="mockup-name">MANAGING PARTNER</div>
+              <div class="mockup-meta emerald">BRUSHED STEEL EMERALD</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-prestige">PRESTIGE 💎</span>
+                <span class="preset-type">Executive Metal</span>
+              </div>
+              <div class="preset-name">에메랄드 이그제큐티브</div>
+              <div class="preset-desc">자산운용 & 벤처캐피탈 · 번영과 신뢰를 상징하는 딥 에메랄드 메탈</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 7. Warm Sand Atelier (Editorial) -->
+          <div class="design-preset-card" data-preset="warm-sand" onclick="selectDesignPreset('warm-sand')">
+            <div class="preset-mockup mockup-warm-sand">
+              <div class="mockup-chip sand">EDITORIAL</div>
+              <div class="mockup-brand sand">MAISON ATELIER</div>
+              <div class="mockup-name sand">SPATIAL DIRECTOR</div>
+              <div class="mockup-meta sand">WARM CASHMERE TEXTURE</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-aesthetic">AESTHETIC 🍂</span>
+                <span class="preset-type">Warm Editorial</span>
+              </div>
+              <div class="preset-name">웜샌드 아틀리에</div>
+              <div class="preset-desc">건축 · 인테리어 · 프리미엄 라이프스타일 · 포근한 샌드 베이지</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
+
+          <!-- 8. Rose Gold VIP Luxury (Plate) -->
+          <div class="design-preset-card" data-preset="rosegold" onclick="selectDesignPreset('rosegold')">
+            <div class="preset-mockup mockup-rosegold">
+              <div class="mockup-chip rose">VIP PLATE</div>
+              <div class="mockup-sheen"></div>
+              <div class="mockup-brand rose">AURA PRIVÉ</div>
+              <div class="mockup-name">HEAD DIRECTOR</div>
+              <div class="mockup-meta rose">MIRROR ROSE GOLD</div>
+            </div>
+            <div class="preset-info">
+              <div class="preset-header-row">
+                <span class="preset-badge badge-vip">VIP LUXURY ✨</span>
+                <span class="preset-type">Minimal Plate</span>
+              </div>
+              <div class="preset-name">로즈골드 VIP 럭셔리</div>
+              <div class="preset-desc">프리미엄 살롱 & VIP 프라이빗 컨설팅 · 매혹적인 로즈골드 메탈릭 광택</div>
+            </div>
+            <div class="preset-action">
+              <span class="preset-action-text">선택 및 정보 입력</span>
+              <i data-lucide="arrow-right" class="preset-arrow"></i>
+            </div>
+          </div>
         </div>
+
+        <!-- 세부 커스텀 (레이아웃 & 컬러 개별 조합) 아코디언 -->
+        <details class="advanced-style-details" style="margin-top: 14px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.12); border-radius: 12px; padding: 12px 14px;">
+          <summary style="font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,0.7); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;">
+            <span style="display:flex; align-items:center; gap:6px;">
+              <i data-lucide="sliders" style="width:14px;height:14px;color:rgba(255,255,255,0.5);"></i>
+              세부 옵션 커스텀 (레이아웃 칩 &amp; 컬러 개별 변경 / 예시 불러오기)
+            </span>
+            <span style="font-size: 11px; color: rgba(255,255,255,0.4);">직접 조합하기 ▼</span>
+          </summary>
+          <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 20px;">
+            <!-- 0. 예시 템플릿 로드 -->
+            <div>
+              <div class="section-title-wrap">
+                <div class="section-icon-box"><i data-lucide="sparkles" style="width:14px;height:14px;color:#a855f7;"></i></div>
+                <h4 style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin: 0;">미리 채워진 예시 데이터 로드</h4>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px;">
+                <button type="button" class="btn-nav btn-nav-ghost" style="height:32px; padding:0 12px; font-size:11.5px;" onclick="loadPreset('toomcard')">TOOMCARD (기본)</button>
+                <button type="button" class="btn-nav btn-nav-ghost" style="height:32px; padding:0 12px; font-size:11.5px;" onclick="loadPreset('toomus')">TOOMUS (플래티넘 플레이트)</button>
+                <button type="button" class="btn-nav btn-nav-ghost" style="height:32px; padding:0 12px; font-size:11.5px;" onclick="loadPreset('nexus')">NEXUS 글로벌</button>
+                <button type="button" class="btn-nav btn-nav-ghost" style="height:32px; padding:0 12px; font-size:11.5px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="loadPreset('boutique')">감성 부티크 (Editorial)</button>
+              </div>
+            </div>
+
+            <!-- 1. 레이아웃 칩 -->
+            <div>
+              <div class="section-title-wrap">
+                <div class="section-icon-box"><i data-lucide="layout" style="width:14px;height:14px;"></i></div>
+                <h4 style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin: 0;">3D 구조 레이아웃 선택</h4>
+              </div>
+              <div class="theme-selector" style="margin-top: 8px;">
+                <div class="theme-card layout-selector-card" data-layout="classic" onclick="selectLayout('classic', this)">
+                  <div class="theme-color-dot" style="background: #1e293b; border-radius:4px;"></div>
+                  <span class="theme-name">Classic Glass</span>
+                </div>
+                <div class="theme-card layout-selector-card" data-layout="metal" onclick="selectLayout('metal', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #94a3b8, #334155); border-radius:4px;"></div>
+                  <span class="theme-name">Executive Metal</span>
+                </div>
+                <div class="theme-card layout-selector-card" data-layout="visual" onclick="selectLayout('visual', this)">
+                  <div class="theme-color-dot" style="background: url(../assets/cover.jpg) center/cover; border-radius:4px;"></div>
+                  <span class="theme-name">Visual Hero</span>
+                </div>
+                <div class="theme-card layout-selector-card" data-layout="editorial" onclick="selectLayout('editorial', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #f8fafc, #94a3b8); border:1px solid #cbd5e1; border-radius:4px;"></div>
+                  <span class="theme-name">Editorial</span>
+                </div>
+                <div class="theme-card layout-selector-card active" data-layout="plate" onclick="selectLayout('plate', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #090a0f, #232733); border: 1.5px solid #ffd978; border-radius:4px;"></div>
+                  <span class="theme-name">Minimal Plate</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. 컬러 테마 칩 -->
+            <div>
+              <div class="section-title-wrap">
+                <div class="section-icon-box"><i data-lucide="palette" style="width:14px;height:14px;"></i></div>
+                <h4 style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin: 0;">컬러 &amp; 재질 테마 선택</h4>
+              </div>
+              <div class="theme-selector" style="margin-top: 8px;">
+                <div class="theme-card theme-selector-card" data-theme="white-minimal" onclick="selectTheme('white-minimal', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #ffffff, #e2e8f0); border: 2px solid #cbd5e1;"></div>
+                  <span class="theme-name">White Minimal</span>
+                </div>
+                <div class="theme-card theme-selector-card" data-theme="navy-gold" onclick="selectTheme('navy-gold', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #0e1a3d, #ffd54f); border: 2px solid #ffd54f;"></div>
+                  <span class="theme-name">Navy Gold</span>
+                </div>
+                <div class="theme-card theme-selector-card" data-theme="frosted-acrylic" onclick="selectTheme('frosted-acrylic', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, rgba(255,255,255,0.8), #38bdf8); border: 2px solid #7dd3fc;"></div>
+                  <span class="theme-name">Frosted PET</span>
+                </div>
+                <div class="theme-card theme-selector-card" data-theme="warm-sand" onclick="selectTheme('warm-sand', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #faf6f0, #d6c6b4); border: 2px solid #b45309;"></div>
+                  <span class="theme-name">Warm Sand</span>
+                </div>
+                <div class="theme-card theme-selector-card" data-theme="violet" onclick="selectTheme('violet', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #a855f7, #6b21a8);"></div>
+                  <span class="theme-name">Violet Luxury</span>
+                </div>
+                <div class="theme-card theme-selector-card active" data-theme="obsidian" onclick="selectTheme('obsidian', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #475569, #0f172a);"></div>
+                  <span class="theme-name">Obsidian Dark</span>
+                </div>
+                <div class="theme-card theme-selector-card" data-theme="emerald" onclick="selectTheme('emerald', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #10b981, #064e3b);"></div>
+                  <span class="theme-name">Emerald Tech</span>
+                </div>
+                <div class="theme-card theme-selector-card theme-pro-locked" data-theme="rosegold" onclick="handleProThemeClick('rosegold', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #f59e0b, #ec4899);"></div>
+                  <span class="theme-name">Rose Gold</span>
+                  <span class="pro-badge">PRO</span>
+                </div>
+                <div class="theme-card theme-selector-card theme-pro-locked" data-theme="executive" onclick="handleProThemeClick('executive', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, #c0c0c0, #2d2d2d);"></div>
+                  <span class="theme-name">Executive Metal</span>
+                  <span class="pro-badge">PRO</span>
+                </div>
+                <div class="theme-card theme-selector-card theme-pro-locked" data-theme="glass" onclick="handleProThemeClick('glass', this)">
+                  <div class="theme-color-dot" style="background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(100,100,255,0.2));border:1px solid rgba(255,255,255,0.2);"></div>
+                  <span class="theme-name">Glassmorphism</span>
+                  <span class="pro-badge">PRO</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
       </div>
 
-      <!-- 1. 디자인 레이아웃 (구조) 선택 -->
-      <div>
-        <div class="section-title-wrap">
-          <div class="section-icon-box"><i data-lucide="layout" style="width:16px;height:16px;"></i></div>
-          <h2 class="section-title">1. 프리미엄 레이아웃 선택</h2>
+      <!-- 2. 기본 인적사항 & 회사 (Quick-Fill Form) -->
+      <div id="quickFillSection" style="scroll-margin-top: 80px;">
+        <!-- 선택된 디자인 확인 배너 -->
+        <div id="selectedDesignBanner" class="selected-design-banner" style="display:flex; align-items:center; justify-content:space-between; background: linear-gradient(135deg, rgba(255, 217, 120, 0.12), rgba(168, 85, 247, 0.08)); border: 1px solid rgba(255, 217, 120, 0.35); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:16px;">✨</span>
+            <div>
+              <span style="font-size:11px; font-weight:800; color:#ffd978; text-transform:uppercase; letter-spacing:0.5px;">BEST 🔥 선택됨</span>
+              <div style="font-size:13.5px; font-weight:800; color:#ffffff;">스위스 옵시디언 티타늄 (Minimal Plate)</div>
+            </div>
+          </div>
+          <a href="#designs" style="font-size:11.5px; font-weight:700; color:rgba(255,255,255,0.8); text-decoration:none; padding:5px 10px; border-radius:7px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); transition:all 0.2s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.18)';" onmouseout="this.style.color='rgba(255,255,255,0.8)';this.style.background='rgba(255,255,255,0.08)';">
+            디자인 변경 ↑
+          </a>
         </div>
-        <div class="theme-selector">
-          <div class="theme-card layout-selector-card active" data-layout="classic" onclick="selectLayout('classic', this)">
-            <div class="theme-color-dot" style="background: #1e293b; border-radius:4px;"></div>
-            <span class="theme-name">Classic Glass</span>
-          </div>
-          <div class="theme-card layout-selector-card" data-layout="metal" onclick="selectLayout('metal', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #94a3b8, #334155); border-radius:4px;"></div>
-            <span class="theme-name">Executive Metal</span>
-          </div>
-          <div class="theme-card layout-selector-card" data-layout="visual" onclick="selectLayout('visual', this)">
-            <div class="theme-color-dot" style="background: url(../assets/cover.jpg) center/cover; border-radius:4px;"></div>
-            <span class="theme-name">Visual Hero</span>
-          </div>
-          <div class="theme-card layout-selector-card" data-layout="editorial" onclick="selectLayout('editorial', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #f8fafc, #94a3b8); border:1px solid #cbd5e1; border-radius:4px;"></div>
-            <span class="theme-name">Editorial</span>
-          </div>
-          <div class="theme-card layout-selector-card" data-layout="plate" onclick="selectLayout('plate', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #090a0f, #232733); border: 1.5px solid #ffd978; border-radius:4px;"></div>
-            <span class="theme-name">Minimal Plate</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- 2. 테마 선택 -->
-      <div>
-        <div class="section-title-wrap">
-          <div class="section-icon-box"><i data-lucide="palette" style="width:16px;height:16px;"></i></div>
-          <h2 class="section-title">2. 컬러 & 감성 재질 테마 선택</h2>
-        </div>
-        <div class="theme-selector">
-          <!-- 감성 인쇄 & 특수소재 테마 (포토몬 비즈 감성) -->
-          <div class="theme-card theme-selector-card" data-theme="white-minimal" onclick="selectTheme('white-minimal', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #ffffff, #e2e8f0); border: 2px solid #cbd5e1;"></div>
-            <span class="theme-name">White Minimal</span>
-          </div>
-          <div class="theme-card theme-selector-card" data-theme="navy-gold" onclick="selectTheme('navy-gold', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #0e1a3d, #ffd54f); border: 2px solid #ffd54f;"></div>
-            <span class="theme-name">Navy Gold</span>
-          </div>
-          <div class="theme-card theme-selector-card" data-theme="frosted-acrylic" onclick="selectTheme('frosted-acrylic', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, rgba(255,255,255,0.8), #38bdf8); border: 2px solid #7dd3fc;"></div>
-            <span class="theme-name">Frosted PET</span>
-          </div>
-          <div class="theme-card theme-selector-card" data-theme="warm-sand" onclick="selectTheme('warm-sand', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #faf6f0, #d6c6b4); border: 2px solid #b45309;"></div>
-            <span class="theme-name">Warm Sand</span>
-          </div>
-          <!-- 클래식 다크 테마 -->
-          <div class="theme-card theme-selector-card active" data-theme="violet" onclick="selectTheme('violet', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #a855f7, #6b21a8);"></div>
-            <span class="theme-name">Violet Luxury</span>
-          </div>
-          <div class="theme-card theme-selector-card" data-theme="obsidian" onclick="selectTheme('obsidian', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #475569, #0f172a);"></div>
-            <span class="theme-name">Obsidian Dark</span>
-          </div>
-          <div class="theme-card theme-selector-card" data-theme="emerald" onclick="selectTheme('emerald', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #10b981, #064e3b);"></div>
-            <span class="theme-name">Emerald Tech</span>
-          </div>
-          <!-- PRO Themes -->
-          <div class="theme-card theme-selector-card theme-pro-locked" data-theme="rosegold" onclick="handleProThemeClick('rosegold', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #f59e0b, #ec4899);"></div>
-            <span class="theme-name">Rose Gold</span>
-            <span class="pro-badge">PRO</span>
-          </div>
-          <div class="theme-card theme-selector-card theme-pro-locked" data-theme="executive" onclick="handleProThemeClick('executive', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, #c0c0c0, #2d2d2d);"></div>
-            <span class="theme-name">Executive Metal</span>
-            <span class="pro-badge">PRO</span>
-          </div>
-          <div class="theme-card theme-selector-card theme-pro-locked" data-theme="glass" onclick="handleProThemeClick('glass', this)">
-            <div class="theme-color-dot" style="background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(100,100,255,0.2));border:1px solid rgba(255,255,255,0.2);"></div>
-            <span class="theme-name">Glassmorphism</span>
-            <span class="pro-badge">PRO</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. 기본 인적사항 & 회사 -->
-      <div>
         <div class="section-title-wrap" style="display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="section-icon-box"><i data-lucide="user" style="width:16px;height:16px;"></i></div>
@@ -2397,14 +2928,14 @@
 
       <div class="card-preview-wrap">
         <!-- 3D Card Scene -->
-        <div class="card-scene" id="cardScene" onclick="toggleCardFlip()" title="탭하거나 슬라이드하면 뒤집힙니다">
-          <div class="card-flipper">
+        <div class="card-scene layout-plate" id="cardScene" onclick="toggleCardFlip()" title="탭하거나 슬라이드하면 뒤집힙니다">
+          <div class="card-flipper layout-plate">
             
             <!-- FRONT -->
             <div class="card-face front">
               <!-- Pure Physical Card Plate Artwork (Layout Plate) -->
               <div class="plate-artwork-container" id="plateArtworkContainer" title="카드를 탭하면 뒤집힙니다">
-                <img id="plateArtworkImg" src="/assets/toomus_front_plate.png" alt="Metal Card Plate" class="plate-artwork-img">
+                <img id="plateArtworkImg" src="/assets/toomcard_front_plate.png" alt="Metal Card Plate" class="plate-artwork-img">
                 <div class="plate-specular-sheen"></div>
                 <div class="plate-flip-pill" onclick="event.stopPropagation(); toggleCardFlip(event);">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M16 21h5v-5"></path></svg>
@@ -2545,8 +3076,8 @@
   </style>
 
   <script>
-    let currentLayout = 'classic';
-    let currentTheme = 'violet';
+    let currentLayout = 'plate';
+    let currentTheme = 'obsidian';
     let currentLogoSrc = '/assets/toomcard_hd.gif';
 
     let qrcodeObj = null;
@@ -2645,6 +3176,120 @@
       if (scene) {
         scene.classList.remove('layout-classic', 'layout-metal', 'layout-visual', 'layout-editorial', 'layout-plate');
         scene.classList.add(`layout-${layoutName}`);
+      }
+    }
+
+    // ==========================================
+    // 3D 완성형 디자인 프리셋 카탈로그 시스템 (Bizprint Style)
+    // ==========================================
+    const DESIGN_PRESETS = {
+      'obsidian': {
+        name: '스위스 옵시디언 티타늄',
+        badge: 'BEST 🔥',
+        typeLabel: 'Minimal Plate',
+        layout: 'plate',
+        theme: 'obsidian'
+      },
+      'navy-gold': {
+        name: '플래티넘 네이비 골드',
+        badge: 'C-LEVEL 👑',
+        typeLabel: 'Executive Metal',
+        layout: 'metal',
+        theme: 'navy-gold'
+      },
+      'white-minimal': {
+        name: '미니멀 화이트 에디토리얼',
+        badge: 'BOUTIQUE 🤍',
+        typeLabel: 'Editorial Clean',
+        layout: 'editorial',
+        theme: 'white-minimal'
+      },
+      'violet': {
+        name: '사이버 바이올렛 네온',
+        badge: 'STARTUP ⚡',
+        typeLabel: 'Classic Glass',
+        layout: 'classic',
+        theme: 'violet'
+      },
+      'frosted-acrylic': {
+        name: '프로스티드 매트 PET',
+        badge: 'SPECIAL 🧊',
+        typeLabel: 'Translucent PET',
+        layout: 'classic',
+        theme: 'frosted-acrylic'
+      },
+      'emerald': {
+        name: '에메랄드 이그제큐티브',
+        badge: 'PRESTIGE 💎',
+        typeLabel: 'Executive Metal',
+        layout: 'metal',
+        theme: 'emerald'
+      },
+      'warm-sand': {
+        name: '웜샌드 아틀리에',
+        badge: 'AESTHETIC 🍂',
+        typeLabel: 'Warm Editorial',
+        layout: 'editorial',
+        theme: 'warm-sand'
+      },
+      'rosegold': {
+        name: '로즈골드 VIP 럭셔리',
+        badge: 'VIP LUXURY ✨',
+        typeLabel: 'Minimal Plate',
+        layout: 'plate',
+        theme: 'rosegold'
+      }
+    };
+
+    let currentPreset = 'obsidian';
+
+    function selectDesignPreset(key, shouldScroll = true) {
+      const p = DESIGN_PRESETS[key];
+      if (!p) return;
+      currentPreset = key;
+
+      // 1. 카탈로그 그리드 내 활성화 배지 업데이트
+      document.querySelectorAll('.design-preset-card').forEach(c => {
+        c.classList.toggle('active', c.getAttribute('data-preset') === key);
+      });
+
+      // 2. 레이아웃 & 테마 DOM 동기화
+      const layoutEl = document.querySelector(`.layout-selector-card[data-layout="${p.layout}"]`);
+      selectLayout(p.layout, layoutEl);
+
+      const themeEl = document.querySelector(`.theme-selector-card[data-theme="${p.theme}"]`);
+      selectTheme(p.theme, themeEl);
+
+      // 3. Quick-Fill 폼 상단 안내 배너 갱신
+      const banner = document.getElementById('selectedDesignBanner');
+      if (banner) {
+        banner.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:16px;">✨</span>
+            <div>
+              <span style="font-size:11px; font-weight:800; color:#ffd978; text-transform:uppercase; letter-spacing:0.5px;">${p.badge} 선택됨</span>
+              <div style="font-size:13.5px; font-weight:800; color:#ffffff;">${p.name} (${p.typeLabel})</div>
+            </div>
+          </div>
+          <a href="#designs" style="font-size:11.5px; font-weight:700; color:rgba(255,255,255,0.8); text-decoration:none; padding:5px 10px; border-radius:7px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); transition:all 0.2s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.18)';" onmouseout="this.style.color='rgba(255,255,255,0.8)';this.style.background='rgba(255,255,255,0.08)';">
+            디자인 변경 ↑
+          </a>
+        `;
+        banner.style.display = 'flex';
+      }
+
+      showToast(`✨ ${p.name} 템플릿이 적용되었습니다. 정보를 입력하세요!`);
+
+      // 4. Quick-Fill 폼으로 부드러운 스크롤 이동
+      if (shouldScroll) {
+        const target = document.getElementById('quickFillSection');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const nameInput = document.getElementById('inputName');
+          if (nameInput) {
+            setTimeout(() => nameInput.focus(), 450);
+          }
+        }
       }
     }
 
@@ -3118,6 +3763,29 @@
       document.querySelectorAll('.btn-logo-preset').forEach(b => {
         b.classList.toggle('active', b.getAttribute('data-logo-src') === currentLogoSrc);
       });
+
+      // 템플릿 카탈로그 카드 동기화
+      const targetPresetKey = (type === 'boutique') ? 'white-minimal' : 'obsidian';
+      document.querySelectorAll('.design-preset-card').forEach(c => {
+        c.classList.toggle('active', c.getAttribute('data-preset') === targetPresetKey);
+      });
+      const banner = document.getElementById('selectedDesignBanner');
+      const p = DESIGN_PRESETS[targetPresetKey];
+      if (banner && p) {
+        banner.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:16px;">✨</span>
+            <div>
+              <span style="font-size:11px; font-weight:800; color:#ffd978; text-transform:uppercase; letter-spacing:0.5px;">${p.badge} 선택됨</span>
+              <div style="font-size:13.5px; font-weight:800; color:#ffffff;">${p.name} (${p.typeLabel})</div>
+            </div>
+          </div>
+          <a href="#designs" style="font-size:11.5px; font-weight:700; color:rgba(255,255,255,0.8); text-decoration:none; padding:5px 10px; border-radius:7px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); transition:all 0.2s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.18)';" onmouseout="this.style.color='rgba(255,255,255,0.8)';this.style.background='rgba(255,255,255,0.08)';">
+            디자인 변경 ↑
+          </a>
+        `;
+      }
+
       if (currentMode === 'single') {
         liveUpdate();
       } else {
@@ -3752,6 +4420,18 @@
 
       const savedMotion = localStorage.getItem('setupod_avatar_motion') || 'pulse';
       setCardMotion(savedMotion);
+
+      // URL Hash (#designs) 바로가기 지원
+      if (window.location.hash === '#designs') {
+        setTimeout(() => {
+          const designsSection = document.getElementById('designs');
+          if (designsSection) {
+            designsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            designsSection.classList.add('highlight-pulse');
+            setTimeout(() => designsSection.classList.remove('highlight-pulse'), 2500);
+          }
+        }, 350);
+      }
 
       lucide.createIcons();
       liveUpdate();
