@@ -60,11 +60,11 @@
     },
     {
       "source": "/:slug",
-      "destination": "/api/render?slug=$slug"
+      "destination": "/api/render?slug=:slug"
     },
     {
       "source": "/:company/:slug",
-      "destination": "/api/render?slug=$company/$slug"
+      "destination": "/api/render?slug=:company/:slug"
     }
   ],
   "headers": [

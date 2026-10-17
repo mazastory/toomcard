@@ -11,13 +11,16 @@ try {
 } catch (e) {}
 
 module.exports = async (req, res) => {
-  let slug = (req.query && req.query.slug) ? req.query.slug : '';
+  let slug = (req.query && req.query.slug && !req.query.slug.startsWith('$') && !req.query.slug.startsWith(':')) ? req.query.slug : '';
   const reqUrl = req.url || '';
 
   if (!slug && reqUrl) {
     try {
       const parsed = new URL(reqUrl, 'https://toomcard.com');
-      slug = parsed.searchParams.get('slug') || '';
+      const qSlug = parsed.searchParams.get('slug');
+      if (qSlug && !qSlug.startsWith('$') && !qSlug.startsWith(':')) {
+        slug = qSlug;
+      }
       if (!slug) {
         const parts = parsed.pathname.split('/').filter(p => p && p !== 'api' && p !== 'render');
         if (parts.length > 0) slug = parts[parts.length - 1];
@@ -25,7 +28,15 @@ module.exports = async (req, res) => {
     } catch (e) {}
   }
 
-  if (!slug) {
+  // Also check Vercel matched path header (e.g. /hyangwon)
+  const headers = req.headers || {};
+  const matchedPath = headers['x-matched-path'] || headers['x-vercel-matched-path'] || '';
+  if ((!slug || slug.startsWith('$') || slug.startsWith(':')) && matchedPath) {
+    const parts = matchedPath.split('?')[0].split('/').filter(p => p && p !== 'api' && p !== 'render');
+    if (parts.length > 0) slug = parts[parts.length - 1];
+  }
+
+  if (!slug || slug.startsWith('$') || slug.startsWith(':')) {
     slug = 'toomus'; // Default fallback
   }
 
