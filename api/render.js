@@ -26,6 +26,16 @@ module.exports = async (req, res) => {
   // Safe slug cleaning: allow English, Korean, Numbers, Hyphen, Underscore, Slash
   const cleanSlug = decodedSlug.replace(/[^a-zA-Z0-9_\-\/가-힣]/g, '').trim();
 
+  // Alias 매핑 (한글 및 오타 대응)
+  const ALIAS_MAP = {
+    '이향원': 'hyangwon',
+    'hyanwon': 'hyangwon',
+    'won': 'hyangwon'
+  };
+
+  const aliasTarget = ALIAS_MAP[cleanSlug] || ALIAS_MAP[decodedSlug] || null;
+  const slugsToTry = Array.from(new Set([cleanSlug, decodedSlug, aliasTarget].filter(Boolean)));
+
   let title = "TOOMCARD 3D 명함";
   let subtitle = "Next-Gen 3D Interactive Business Card";
   let company = "TOOMUS";
@@ -33,12 +43,13 @@ module.exports = async (req, res) => {
 
   try {
     // 1. Try local JSON first (instant zero-latency read)
-    const candidates = [
-      path.join(process.cwd(), 'cards', `${cleanSlug.replace('/', '_')}.json`),
-      path.join(process.cwd(), 'cards', `${cleanSlug}.json`),
-      path.join(process.cwd(), 'cards', `${decodedSlug.replace('/', '_')}.json`),
-      path.join(process.cwd(), 'cards', `${decodedSlug}.json`)
-    ];
+    const candidates = [];
+    slugsToTry.forEach(s => {
+      candidates.push(
+        path.join(process.cwd(), 'cards', `${s.replace('/', '_')}.json`),
+        path.join(process.cwd(), 'cards', `${s}.json`)
+      );
+    });
     
     let targetJsonPath = candidates.find(p => fs.existsSync(p)) || null;
 
@@ -58,23 +69,25 @@ module.exports = async (req, res) => {
       let pod = null;
       let profile = null;
 
+      const orFilter = slugsToTry.map(s => `slug.eq.${s}`).join(',');
+
       if (supabase) {
         const { data: pData } = await supabase
           .from('pods')
           .select('components_json')
-          .or(`slug.eq.${decodedSlug},slug.eq.${cleanSlug}`)
+          .or(orFilter)
           .maybeSingle();
         pod = pData;
 
         const { data: prData } = await supabase
           .from('profiles')
           .select('*')
-          .or(`slug.eq.${decodedSlug},slug.eq.${cleanSlug}`)
+          .or(orFilter)
           .maybeSingle();
         profile = prData;
       } else {
         try {
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/pods?or=(slug.eq.${encodeURIComponent(decodedSlug)},slug.eq.${encodeURIComponent(cleanSlug)})&select=components_json&limit=1`, {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/pods?or=(${encodeURIComponent(orFilter)})&select=components_json&limit=1`, {
             headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
           });
           const rows = await res.json();

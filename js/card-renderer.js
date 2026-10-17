@@ -884,44 +884,59 @@ function populateCardFromCloud(cloud, company) {
   populateCard(cardModel);
 }
 
+const CARD_ALIAS_MAP = {
+  '이향원': 'hyangwon',
+  'hyanwon': 'hyangwon',
+  'won': 'hyangwon'
+};
+
 // 초기화 진입점
 async function initCardEngine() {
   const { company, slug } = getCardIdentifier();
+  let decodedSlug = slug;
+  try { decodedSlug = decodeURIComponent(slug); } catch(e) {}
+
+  const alias = CARD_ALIAS_MAP[slug] || CARD_ALIAS_MAP[decodedSlug] || null;
+  const slugsToTry = Array.from(new Set([slug, decodedSlug, alias].filter(Boolean)));
 
   // 1. Supabase 클라우드에서 검색 시도
   if (typeof loadPodFromCloud === 'function') {
-    try {
-      const searchSlug = company ? `${company}/${slug}` : slug;
-      let cloud = await loadPodFromCloud(searchSlug);
-      if (!cloud || (!cloud.profile && !cloud.pod)) {
-        cloud = await loadPodFromCloud(slug);
+    for (const s of slugsToTry) {
+      try {
+        const searchSlug = company ? `${company}/${s}` : s;
+        let cloud = await loadPodFromCloud(searchSlug);
+        if (!cloud || (!cloud.profile && !cloud.pod)) {
+          cloud = await loadPodFromCloud(s);
+        }
+        if (cloud && (cloud.profile || cloud.pod)) {
+          populateCardFromCloud(cloud, company);
+          setupSwipe();
+          const container = document.querySelector('.container');
+          if (container) container.classList.add('loaded');
+          return;
+        }
+      } catch (e) {
+        console.log("Cloud card fetch fallback:", e);
       }
-      if (cloud && (cloud.profile || cloud.pod)) {
-        populateCardFromCloud(cloud, company);
-        setupSwipe();
-        const container = document.querySelector('.container');
-        if (container) container.classList.add('loaded');
-        return;
-      }
-    } catch (e) {
-      console.log("Cloud card fetch fallback:", e);
     }
   }
 
   // 2. 로컬 JSON 파일 폴백 (Live Server /toomcard/ 및 루트 환경 동시 지원)
   const base = getBasePath();
   const paths = [];
-  const encSlug = encodeURIComponent(slug);
-  if (company) {
-    paths.push(`${base}/cards/${company}_${slug}.json`, `/cards/${company}_${slug}.json`);
-    if (encSlug !== slug) {
-      paths.push(`${base}/cards/${company}_${encSlug}.json`, `/cards/${company}_${encSlug}.json`);
+  slugsToTry.forEach(s => {
+    const enc = encodeURIComponent(s);
+    if (company) {
+      paths.push(`${base}/cards/${company}_${s}.json`, `/cards/${company}_${s}.json`);
+      if (enc !== s) {
+        paths.push(`${base}/cards/${company}_${enc}.json`, `/cards/${company}_${enc}.json`);
+      }
     }
-  }
-  paths.push(`${base}/cards/${slug}.json`, `/cards/${slug}.json`, `cards/${slug}.json`);
-  if (encSlug !== slug) {
-    paths.push(`${base}/cards/${encSlug}.json`, `/cards/${encSlug}.json`, `cards/${encSlug}.json`);
-  }
+    paths.push(`${base}/cards/${s}.json`, `/cards/${s}.json`, `cards/${s}.json`);
+    if (enc !== s) {
+      paths.push(`${base}/cards/${enc}.json`, `/cards/${enc}.json`, `cards/${enc}.json`);
+    }
+  });
 
   let loaded = false;
   for (const p of paths) {
