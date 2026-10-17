@@ -3648,40 +3648,67 @@
     function publishSingleCard() {
       // 1. 폼 데이터 추출
       const name = document.getElementById('inputName').value || 'User';
-      let safeName = (document.getElementById('inputSlug')?.value || '').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
-      if (!safeName) safeName = name.replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase() || 'new' + Date.now().toString().slice(-4);
+      let safeName = (document.getElementById('inputSlug')?.value || '').trim();
+      if (!safeName) safeName = name.replace(/[^a-zA-Z0-9가-힣_-]/g, '').trim() || 'new' + Date.now().toString().slice(-4);
       
+      const role = document.getElementById('inputRole').value || '대표';
+      const company = document.getElementById('inputCompany').value || 'TOOMCARD';
+      const watermark = document.getElementById('inputWatermark').value || company;
+      const slogan = document.getElementById('inputSlogan').value || '';
+      const tagline = document.getElementById('inputTagline').value || 'LIFE · CONNECTED';
+      const phone = document.getElementById('inputPhone').value || '';
+      const email = document.getElementById('inputEmail').value || '';
+      const websiteUrl = document.getElementById('inputWebsiteUrl').value || 'https://toomcard.com';
+      const websiteLabel = document.getElementById('inputWebsiteLabel').value || '공식 웹사이트';
+      const affiliateUrl = document.getElementById('inputAffiliateUrl')?.value || '';
+      const affiliateLabel = document.getElementById('inputAffiliateLabel')?.value || '추천 아이템 / 파트너 링크 🛍️';
+      const kakaoUrl = document.getElementById('inputKakaoUrl').value || '';
+      const kakaoLabel = document.getElementById('inputKakaoLabel').value || '카카오톡 상담';
+      const instaUrl = document.getElementById('inputInstaUrl').value || '';
+      const instaLabel = document.getElementById('inputInstaLabel').value || '인스타그램';
+
       const profileData = {
         name: name,
-        handle: document.getElementById('inputRole').value,
-        bio: document.getElementById('inputCompany').value,
+        handle: role,
+        bio: company,
         theme: currentTheme
       };
 
-      const componentsData = {
+      const cardModel = {
+        name: name,
+        role: role,
+        title: role,
+        company: company,
+        companyWatermark: watermark,
+        slogan: slogan,
+        tagline: tagline,
+        phone: phone,
+        email: email,
+        theme: currentTheme,
         layout: currentLayout,
-        companyWatermark: document.getElementById('inputWatermark').value,
-        slogan: document.getElementById('inputSlogan').value,
-        tagline: document.getElementById('inputTagline').value,
-        phone: document.getElementById('inputPhone').value,
-        email: document.getElementById('inputEmail').value,
+        edition: 'TITANIUM PRO',
         moatTags: [
           document.getElementById('inputTag1').value,
           document.getElementById('inputTag2').value,
           document.getElementById('inputTag3').value
         ].filter(Boolean),
         primaryAction: {
-          url: document.getElementById('inputWebsiteUrl').value,
-          label: document.getElementById('inputWebsiteLabel').value
+          url: websiteUrl,
+          label: websiteLabel
         },
         affiliateAction: {
-          url: document.getElementById('inputAffiliateUrl')?.value || '',
-          label: document.getElementById('inputAffiliateLabel')?.value || '추천 아이템 / 파트너 링크 🛍️'
+          url: affiliateUrl,
+          label: affiliateLabel
         },
         socials: [
-          { type: 'kakao', url: document.getElementById('inputKakaoUrl').value, label: document.getElementById('inputKakaoLabel').value },
-          { type: 'instagram', url: document.getElementById('inputInstaUrl').value, label: document.getElementById('inputInstaLabel').value }
+          { type: 'kakao', url: kakaoUrl, label: kakaoLabel, color: '#ffd978' },
+          { type: 'instagram', url: instaUrl, label: instaLabel, color: '#f472b6' }
         ]
+      };
+
+      const componentsData = {
+        ...cardModel,
+        card: cardModel
       };
 
       // 2. 로그인 여부 확인 및 클라우드 동기화

@@ -62,19 +62,28 @@ function getBasePath() {
 // URL 파라미터 또는 경로에서 회사 및 카드 slug 추출 (Live Server /card.html 호환)
 function getCardIdentifier() {
   const urlParams = new URLSearchParams(window.location.search);
-  const qId = urlParams.get('id') || urlParams.get('card');
-  const qComp = urlParams.get('company') || urlParams.get('org');
-  if (qId) return { company: qComp || null, slug: qId.toLowerCase() };
+  let qId = urlParams.get('id') || urlParams.get('card');
+  let qComp = urlParams.get('company') || urlParams.get('org');
+  if (qId) {
+    try { qId = decodeURIComponent(qId); } catch(e) {}
+    if (qComp) { try { qComp = decodeURIComponent(qComp); } catch(e) {} }
+    return { company: qComp || null, slug: qId.trim().toLowerCase() };
+  }
 
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  let rawPath = window.location.pathname;
+  try {
+    rawPath = decodeURIComponent(rawPath);
+  } catch(e) {}
+
+  const pathParts = rawPath.split('/').filter(Boolean);
   // toomcard 폴더명 제외
   const filteredParts = pathParts.filter(p => p !== 'toomcard');
 
   if (filteredParts.length >= 2 && !filteredParts[filteredParts.length - 1].includes('.html')) {
-    return { company: filteredParts[0].toLowerCase(), slug: filteredParts[1].toLowerCase() };
+    return { company: filteredParts[0].trim().toLowerCase(), slug: filteredParts[1].trim() };
   }
   if (filteredParts.length === 1 && !filteredParts[0].includes('.html')) {
-    return { company: null, slug: filteredParts[0].toLowerCase() };
+    return { company: null, slug: filteredParts[0].trim() };
   }
   return { company: null, slug: 'toomcard' };
 }
@@ -793,66 +802,82 @@ END:VCARD`;
   showToast("연락처 파일(vCard)이 다운로드되었습니다!");
 }
 
-// 클라우드 프로필을 3D 명함 모델로 매핑
+// 클라우드 프로필을 3D 명함 모델로 매핑 (profile + components_json 완전 병합)
 function populateCardFromCloud(cloud, company) {
   const p = cloud.profile || {};
-  const podJson = (cloud.pod && cloud.pod.components_json) ? cloud.pod.components_json : null;
+  const podJson = (cloud.pod && cloud.pod.components_json) ? cloud.pod.components_json : {};
+  const innerCard = podJson.card || podJson;
 
-  // 1. 직접 저장된 고품질 명함 객체(card)가 있는 경우 바로 렌더링
-  if (podJson && podJson.card && podJson.card.company && podJson.card.name) {
-    populateCard(podJson.card);
-    return;
-  }
-  if (podJson && podJson.company && podJson.name) {
-    populateCard(podJson);
+  // 1. 직접 저장된 고품질 명함 객체(card)가 유효한 경우 바로 렌더링
+  if (innerCard && innerCard.name && (innerCard.role || innerCard.company)) {
+    populateCard(innerCard);
     return;
   }
 
-  const role = p.handle ? p.handle.replace(/@\w+\s*[·•-]?\s*/, '').trim() : 'Member';
-  const companyName = company ? company.toUpperCase() : (p.handle && p.handle.includes('@') ? p.handle.split('·')[0].replace('@', '').trim().toUpperCase() : 'TOOMCARD');
+  // 2. profile과 components_json을 누락 없이 지능형 병합 (단일 명함 발행 지원)
+  const name = innerCard.name || p.name || 'Member';
+  const role = innerCard.role || (p.handle ? p.handle.replace(/@\w+\s*[·•-]?\s*/, '').trim() : '대표');
+  const companyName = innerCard.company || company || p.bio || (p.handle && p.handle.includes('@') ? p.handle.split('·')[0].replace('@', '').trim() : 'TOOMCARD');
+  const layout = innerCard.layout || p.layout || 'plate';
+  const theme = innerCard.theme || p.theme || 'obsidian';
+  const watermark = innerCard.companyWatermark || companyName;
+  const slogan = innerCard.slogan || p.bio || '종이 명함의 시대를 끝내는 살아 움직이는 3D 명함';
+  const tagline = innerCard.tagline || 'LIFE · CONNECTED';
+  const phone = innerCard.phone || p.phone || '010-0000-0000';
+  const email = innerCard.email || p.email || 'hello@toomcard.com';
+  const moatTags = innerCard.moatTags || ['3D 인터랙티브', 'vCard 주소록 저장', '올인원 멀티링크'];
+  const primaryAction = innerCard.primaryAction || {
+    url: 'https://toomcard.com',
+    label: '공식 웹사이트',
+    icon: 'globe'
+  };
+  const affiliateAction = innerCard.affiliateAction || null;
+  const socials = innerCard.socials || [
+    { type: 'kakao', url: 'https://open.kakao.com', label: '카카오톡 상담', color: '#ffd978' },
+    { type: 'instagram', url: 'https://instagram.com', label: '인스타그램', color: '#f472b6' }
+  ];
 
   const cardModel = {
-    slug: p.slug,
-    layout: p.layout || 'classic',
-    theme: p.theme || 'violet',
+    slug: p.slug || cloud.pod?.slug || '',
+    layout: layout,
+    theme: theme,
+    name: name,
+    role: role,
+    title: role,
     company: companyName,
-    companyWatermark: companyName,
-    slogan: p.bio || 'ALL-IN-ONE 3D SMART BUSINESS CARD',
-    tagline: '3D SMART IDENTITY',
-    role: role || '대표',
-    name: p.name || 'Member',
-    phone: p.phone || '010-0000-0000',
-    email: p.email || 'hello@toomcard.com',
-    moatTags: ['3D 인터랙티브', 'vCard 원클릭 저장', 'NFC 스마트 연동'],
-    logo: {
+    companyWatermark: watermark,
+    slogan: slogan,
+    tagline: tagline,
+    phone: phone,
+    email: email,
+    origin: 'TOOMCARD Global',
+    moatTags: moatTags,
+    primaryAction: primaryAction,
+    affiliateAction: affiliateAction,
+    socials: socials,
+    logo: innerCard.logo || {
       src: p.avatar_url || '/assets/toomcard_hd.gif',
       fallback: '/assets/toomcard_hd.gif',
       alt: companyName
     },
-    primaryAction: {
-      url: `/card.html?id=${p.slug}`,
-      label: '3D 명함 확인',
-      icon: 'layers'
-    },
-    socials: [
-      {
-        type: 'kakao',
-        url: 'https://open.kakao.com',
-        label: '카카오톡 상담',
-        color: '#ffd978'
-      }
-    ],
+    plateCardImage: innerCard.plateCardImage || '/assets/toomcard_front_plate.png',
     vcard: {
-      firstName: p.name || 'Member',
+      firstName: name.length > 2 ? name.slice(1) : name,
+      lastName: name.length > 2 ? name.slice(0, 1) : '',
+      formattedName: name,
       org: companyName,
-      title: role || '대표',
-      tel: p.phone || '010-0000-0000',
-      email: p.email || 'hello@toomcard.com',
-      note: p.bio || ''
+      title: role,
+      tel: phone,
+      email: email,
+      url: primaryAction.url || window.location.href,
+      note: `${companyName} | ${slogan}`
     },
     meta: {
-      title: `${companyName} | ${p.name} 3D 스마트 명함`,
-      siteName: companyName
+      title: `${companyName} | ${name} 3D 스마트 명함`,
+      siteName: companyName,
+      ogTitle: `${name} ${role} | ${companyName}`,
+      ogDescription: `${slogan} | ${companyName} 공식 3D 디지털 명함`,
+      ogImage: '/assets/toomcard_front_plate.png'
     }
   };
 
@@ -886,11 +911,17 @@ async function initCardEngine() {
   // 2. 로컬 JSON 파일 폴백 (Live Server /toomcard/ 및 루트 환경 동시 지원)
   const base = getBasePath();
   const paths = [];
+  const encSlug = encodeURIComponent(slug);
   if (company) {
     paths.push(`${base}/cards/${company}_${slug}.json`, `/cards/${company}_${slug}.json`);
+    if (encSlug !== slug) {
+      paths.push(`${base}/cards/${company}_${encSlug}.json`, `/cards/${company}_${encSlug}.json`);
+    }
   }
-  paths.push(`${base}/cards/${slug}.json`, `/cards/${slug}.json`);
-  paths.push(`cards/${slug}.json`);
+  paths.push(`${base}/cards/${slug}.json`, `/cards/${slug}.json`, `cards/${slug}.json`);
+  if (encSlug !== slug) {
+    paths.push(`${base}/cards/${encSlug}.json`, `/cards/${encSlug}.json`, `cards/${encSlug}.json`);
+  }
 
   let loaded = false;
   for (const p of paths) {

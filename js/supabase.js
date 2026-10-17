@@ -169,19 +169,42 @@ async function syncTeamPodsToCloud(companySlug, companyData, members) {
 
 // 8. 클라우드에서 팟 불러오기 (공개 페이지 조회)
 async function loadPodFromCloud(slug) {
-  if (!supabaseClient) return null;
+  if (!supabaseClient || !slug) return null;
 
-  const { data: profile } = await supabaseClient
+  let decoded = slug;
+  try {
+    decoded = decodeURIComponent(slug);
+  } catch (e) {}
+
+  // 1. 디코딩된 slug로 조회 (한글 슬러그 지원)
+  let { data: profile } = await supabaseClient
     .from('profiles')
     .select('*')
-    .eq('slug', slug)
-    .single();
+    .eq('slug', decoded)
+    .maybeSingle();
 
-  const { data: pod } = await supabaseClient
+  let { data: pod } = await supabaseClient
     .from('pods')
     .select('*')
-    .eq('slug', slug)
-    .single();
+    .eq('slug', decoded)
+    .maybeSingle();
+
+  // 2. 만약 없으면 원본 slug로 재시도
+  if (!pod && !profile && decoded !== slug) {
+    const resPod = await supabaseClient
+      .from('pods')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
+    pod = resPod?.data || null;
+
+    const resProfile = await supabaseClient
+      .from('profiles')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
+    profile = resProfile?.data || null;
+  }
 
   return { profile, pod };
 }
