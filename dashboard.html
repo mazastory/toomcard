@@ -581,6 +581,46 @@
       background: rgba(255,255,255,0.05);
       transform: translateY(-2px);
     }
+
+    /* Company Grouping & Filter Styles */
+    .comp-filter-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .comp-filter-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .comp-filter-btn.active {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
+    }
+    .company-group-banner {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.025);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 14px;
+      margin-bottom: -6px;
+    }
+    .company-group-banner:first-child {
+      margin-top: 0;
+    }
     
     .pod-header {
       display: flex;
@@ -957,8 +997,14 @@
           <h2 id="cardsSectionTitle" style="font-size:20px; font-weight:800;">내 스마트 명함 목록</h2>
           <p id="cardsSectionSubtitle" style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:3px;">발급된 모든 3D 명함의 라이브 링크와 상태를 관리합니다.</p>
         </div>
-        <div id="cardsSectionFilterWrap" style="display:flex; gap:10px; align-items:center;">
-          <input type="text" id="staffSearchInput" placeholder="임직원 성함, 직책 검색..." oninput="handleStaffSearch(this.value)" style="display:none; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:8px 12px; font-size:13px; color:#fff; width:200px; outline:none;">
+        <div id="cardsSectionFilterWrap" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <!-- 회사별 필터 탭 (기업/대행사 모드 시 노출) -->
+          <div id="companyFilterTabs" style="display:none; gap:6px; align-items:center; background:rgba(255,255,255,0.05); padding:4px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+            <button type="button" class="comp-filter-btn active" data-company="all" onclick="setCompanyFilter('all')">전체 소속 (<span id="cntAllComp">8</span>)</button>
+            <button type="button" class="comp-filter-btn" data-company="TOOMUS" onclick="setCompanyFilter('TOOMUS')">🏢 TOOMUS (<span id="cntToomusComp">1</span>)</button>
+            <button type="button" class="comp-filter-btn" data-company="MAZA STUDIO" onclick="setCompanyFilter('MAZA STUDIO')">🚀 MAZA STUDIO (<span id="cntMazaComp">7</span>)</button>
+          </div>
+          <input type="text" id="staffSearchInput" placeholder="성함, 직책, 회사 검색..." oninput="handleStaffSearch(this.value)" style="display:none; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:8px 12px; font-size:13px; color:#fff; width:180px; outline:none;">
         </div>
       </div>
 
@@ -1112,76 +1158,86 @@
   <script>
     lucide.createIcons();
     
-    // Default TOOMUS Enterprise Team Roster (Enriched when in enterprise view)
-    // ⚠️ MAZA STUDIO와 TOOMUS는 별개 회사이므로 조윤서 대표 등 MAZA 인물은 절대 포함하지 않음
+    // Default Enterprise & Multi-Agency Team Roster
+    // 🏢 이향원 이사: 투머스(TOOMUS) 소속 / 🚀 조윤서 대표 외 6인: 마자 스튜디오(MAZA STUDIO) 소속
     const DEFAULT_ENTERPRISE_ROSTER = [
       {
         slug: 'hyangwon',
         name: '이향원',
-        role: '투머스 / 이사',
+        role: '이사',
         company: 'TOOMUS',
-        phone: '010-3882-9907',
+        phone: '010-8816-0822',
         email: 'hyangwon@toomus.com',
         views: 142,
         assigned_email: 'hyangwon@toomus.com'
       },
       {
+        slug: 'yunseo',
+        name: '조윤서',
+        role: '대표',
+        company: 'MAZA STUDIO',
+        phone: '010-8970-9449',
+        email: 'ceo@mazastudio.kr',
+        views: 185,
+        assigned_email: 'ceo@mazastudio.kr'
+      },
+      {
         slug: 'subin',
         name: '박수빈',
-        role: '투머스 / 매니저',
-        company: 'TOOMUS',
-        phone: '010-9123-4567',
-        email: 'subin@toomus.com',
+        role: '매니저',
+        company: 'MAZA STUDIO',
+        phone: '010-4838-2334',
+        email: 'renii@mazastudio.kr',
         views: 98,
-        assigned_email: 'subin@toomus.com'
+        assigned_email: 'renii@mazastudio.kr'
       },
       {
         slug: 'hyunsoo',
         name: '김현수',
-        role: '투머스 / 테크리드',
-        company: 'TOOMUS',
-        phone: '010-8234-5678',
-        email: 'hyunsoo@toomus.com',
+        role: '테크리드',
+        company: 'MAZA STUDIO',
+        phone: '010-8243-0601',
+        email: 'hsk0309@mazastudio.kr',
         views: 84,
-        assigned_email: 'hyunsoo@toomus.com'
+        assigned_email: 'hsk0309@mazastudio.kr'
       },
       {
         slug: 'yongsu',
         name: '김용수',
-        role: '투머스 / 팀장',
-        company: 'TOOMUS',
+        role: '팀장',
+        company: 'MAZA STUDIO',
         phone: '010-3456-7890',
-        email: 'yongsu@toomus.com',
+        email: 'yongsu@mazastudio.kr',
         views: 65,
         assigned_email: ''
       },
       {
         slug: 'jiyeon',
         name: '유지연',
-        role: '투머스 / 책임',
-        company: 'TOOMUS',
+        role: '책임',
+        company: 'MAZA STUDIO',
         phone: '010-4567-8901',
-        email: 'jiyeon@toomus.com',
+        email: 'jiyeon@mazastudio.kr',
         views: 52,
         assigned_email: ''
       },
       {
         slug: 'naeun',
         name: '김나은',
-        role: '투머스 / 선임',
-        company: 'TOOMUS',
+        role: '선임',
+        company: 'MAZA STUDIO',
         phone: '010-6789-0123',
-        email: 'naeun@toomus.com',
+        email: 'naeun@mazastudio.kr',
         views: 39,
         assigned_email: ''
       },
       {
         slug: 'nahyun',
         name: '김나현',
-        role: '투머스 / 매니저',
-        company: 'TOOMUS',
+        role: '매니저',
+        company: 'MAZA STUDIO',
         phone: '010-7890-1234',
-        email: 'nahyun@toomus.com',
+        email: 'nahyun@mazastudio.kr',
         views: 33,
         assigned_email: ''
       }
@@ -1190,6 +1246,7 @@
     // Enterprise Team Member Slugs & Names (절대 개인 명함으로 자동 배정되거나 개인 목록에 노출되지 않도록 철저히 차단)
     const ENTERPRISE_STAFF_IDENTIFIERS = new Set([
       'hyangwon', '이향원',
+      'yunseo', '조윤서',
       'subin', '박수빈',
       'hyunsoo', '김현수',
       'yongsu', '김용수',
@@ -1212,6 +1269,7 @@
 
     // Global state
     window._dashboardMode = localStorage.getItem('toomcard_dashboard_mode') || 'personal';
+    window._currentCompanyFilter = 'all';
     window._currentUser = null;
     window._allPods = [];
     window._personalPod = null;
@@ -1319,6 +1377,8 @@
       const crmTitle = document.getElementById('crmSectionTitle');
       const crmSubtitle = document.getElementById('crmSectionSubtitle');
 
+      const companyFilterTabs = document.getElementById('companyFilterTabs');
+
       if (mode === 'personal') {
         btnPers.className = 'mode-switch-btn active';
         btnCorp.className = 'mode-switch-btn';
@@ -1338,6 +1398,7 @@
         
         if (personalHeroSection) personalHeroSection.style.display = 'block';
         if (enterpriseBannerSection) enterpriseBannerSection.style.display = 'none';
+        if (companyFilterTabs) companyFilterTabs.style.display = 'none';
         if (staffSearchInput) staffSearchInput.style.display = 'none';
         if (leadsStaffFilter) leadsStaffFilter.style.display = 'none';
         if (thStaffCol) thStaffCol.textContent = '대상 명함';
@@ -1354,14 +1415,14 @@
       } else {
         btnPers.className = 'mode-switch-btn';
         btnCorp.className = 'mode-switch-btn active corp-active';
-        if (headerBreadcrumb) headerBreadcrumb.textContent = '기업 관리자 콘솔 (TOOMUS)';
+        if (headerBreadcrumb) headerBreadcrumb.textContent = '기업·대행사 관리자 콘솔 (TOOMUS · MAZA)';
         if (headerBadge) {
-          headerBadge.textContent = '🏢 ENTERPRISE MASTER CONSOLE';
+          headerBadge.textContent = '🏢 ENTERPRISE & MULTI-AGENCY CONSOLE';
           headerBadge.parentElement.style.borderColor = 'rgba(56,189,248,0.35)';
           headerBadge.parentElement.style.background = 'rgba(56,189,248,0.15)';
         }
-        if (headerTitle) headerTitle.textContent = '전사 임직원 3D 명함 & 영업 파이프라인 관리';
-        if (headerDesc) headerDesc.textContent = '기업 관리자로서 모든 팀원의 명함 발급 현황, 조직별 미팅 리드, NFC 실물 카드 제작을 통합 관제합니다.';
+        if (headerTitle) headerTitle.textContent = '소속 기업·고객사별 3D 명함 & 영업 파이프라인 관리';
+        if (headerDesc) headerDesc.textContent = '관리자로서 투머스(TOOMUS), 마자 스튜디오(MAZA STUDIO) 등 소속사별 임직원 명함 발급, 조직별 리드, NFC 실물 카드 제작을 통합 관제합니다.';
         if (headerActionBtn) {
           headerActionBtn.href = '/maker?mode=team';
           headerActionBtn.style.background = 'linear-gradient(135deg,#0284c7,#38bdf8)';
@@ -1370,6 +1431,7 @@
         
         if (personalHeroSection) personalHeroSection.style.display = 'none';
         if (enterpriseBannerSection) enterpriseBannerSection.style.display = 'block';
+        if (companyFilterTabs) companyFilterTabs.style.display = 'flex';
         if (staffSearchInput) staffSearchInput.style.display = 'block';
         if (leadsStaffFilter) leadsStaffFilter.style.display = 'inline-block';
         if (thStaffCol) thStaffCol.textContent = '담당 임직원 / 소속';
@@ -1380,8 +1442,8 @@
         document.getElementById('kpiLabel2').textContent = '전사 연락처 저장율';
         document.getElementById('kpiLabel3').textContent = '전사 B2B 미팅 리드';
         document.getElementById('kpiLabel4').textContent = '임직원 실물 NFC 발급';
-        document.getElementById('cardsSectionTitle').textContent = '전사 임직원 3D 스마트 명함 통합 관리';
-        document.getElementById('cardsSectionSubtitle').textContent = '모든 소속 임직원의 스마트 명함 상태와 개별 로그인 권한 위임을 관리합니다.';
+        document.getElementById('cardsSectionTitle').textContent = '소속 기업별 3D 스마트 명함 통합 관리';
+        document.getElementById('cardsSectionSubtitle').textContent = '투머스(TOOMUS), 마자 스튜디오(MAZA STUDIO) 등 회사별 임직원 스마트 명함 상태와 권한을 관리합니다.';
       }
 
       renderModeView();
@@ -1463,6 +1525,8 @@
         const name = (card.name || '').trim();
         if (p.slug === '이향원' || p.slug === 'hyangwon' || name === '이향원') {
           matchKey = 'hyangwon';
+        } else if (p.slug === '조윤서' || p.slug === 'yunseo' || name === '조윤서') {
+          matchKey = 'yunseo';
         } else if (p.slug === '박수빈' || p.slug === 'subin' || name === '박수빈') {
           matchKey = 'subin';
         } else if (p.slug === '김현수' || p.slug === 'hyunsoo' || name === '김현수') {
@@ -1597,22 +1661,39 @@
       const select = document.getElementById('leadsStaffFilter');
       if (!select) return;
 
-      select.innerHTML = `<option value="all" style="background:#110c1f;">👥 전체 담당 임직원 보기</option>`;
-      
-      const allMembers = [];
-      if (window._personalPod) allMembers.push(window._personalPod);
-      (window._enterprisePods || []).forEach(p => allMembers.push(p));
+      select.innerHTML = `
+        <option value="all" style="background:#110c1f;">👥 전체 담당 임직원 보기</option>
+        <option value="company:TOOMUS" style="background:#110c1f; color:#7dd3fc; font-weight:800;">🏢 [회사 필터] 투머스 (TOOMUS) 전체</option>
+        <option value="company:MAZA STUDIO" style="background:#110c1f; color:#fde047; font-weight:800;">🚀 [회사 필터] 마자 스튜디오 (MAZA) 전체</option>
+      `;
 
-      allMembers.forEach(m => {
+      const toomusGroup = document.createElement('optgroup');
+      toomusGroup.label = '🏢 투머스 (TOOMUS)';
+      toomusGroup.style.background = '#110c1f';
+
+      const mazaGroup = document.createElement('optgroup');
+      mazaGroup.label = '🚀 마자 스튜디오 (MAZA STUDIO)';
+      mazaGroup.style.background = '#110c1f';
+
+      (window._enterprisePods || []).forEach(m => {
         const data = m.components_json?.card || {};
         const name = data.name || m.slug;
-        const role = data.role ? ` (${data.role.split('/')[0].trim()})` : '';
+        const comp = data.company || (m.slug === 'hyangwon' ? 'TOOMUS' : 'MAZA STUDIO');
+        const role = data.role ? ` (${data.role})` : '';
         const opt = document.createElement('option');
         opt.value = m.slug;
         opt.textContent = `${name}${role}`;
         opt.style.background = '#110c1f';
-        select.appendChild(opt);
+
+        if (comp.includes('TOOMUS')) {
+          toomusGroup.appendChild(opt);
+        } else {
+          mazaGroup.appendChild(opt);
+        }
       });
+
+      if (toomusGroup.children.length > 0) select.appendChild(toomusGroup);
+      if (mazaGroup.children.length > 0) select.appendChild(mazaGroup);
     }
 
     // Render Mode View (Personal vs Enterprise)
@@ -1881,12 +1962,35 @@
       lucide.createIcons();
     }
 
-    // 🏢 Enterprise Staff Grid
+    // 🏢 Company Filter Switcher
+    function setCompanyFilter(comp) {
+      window._currentCompanyFilter = comp;
+      document.querySelectorAll('.comp-filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-company') === comp);
+      });
+      renderEnterpriseStaffGrid(document.getElementById('staffSearchInput')?.value || '');
+    }
+
+    // 🏢 Enterprise & Multi-Agency Staff Grid (회사 소속별 그룹화 및 필터 렌더링)
     function renderEnterpriseStaffGrid(searchQuery = '') {
       const grid = document.getElementById('podsList');
       if (!grid) return;
-      let staffList = window._enterprisePods || [];
+      const allStaff = window._enterprisePods || [];
 
+      // Update count badges
+      const toomusTotal = allStaff.filter(s => (s.components_json?.card?.company || (s.slug === 'hyangwon' ? 'TOOMUS' : '')).includes('TOOMUS')).length;
+      const mazaTotal = allStaff.filter(s => (s.components_json?.card?.company || (s.slug !== 'hyangwon' ? 'MAZA STUDIO' : '')).includes('MAZA')).length;
+      
+      const cntAll = document.getElementById('cntAllComp');
+      if (cntAll) cntAll.textContent = allStaff.length;
+      const cntToomus = document.getElementById('cntToomusComp');
+      if (cntToomus) cntToomus.textContent = toomusTotal;
+      const cntMaza = document.getElementById('cntMazaComp');
+      if (cntMaza) cntMaza.textContent = mazaTotal;
+
+      let staffList = [...allStaff];
+
+      // 1. Search Query Filter
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
         staffList = staffList.filter(s => {
@@ -1894,26 +1998,43 @@
           const name = (card.name || s.slug).toLowerCase();
           const role = (card.role || '').toLowerCase();
           const email = (card.email || s.assigned_email || '').toLowerCase();
-          return name.includes(q) || role.includes(q) || email.includes(q);
+          const comp = (card.company || '').toLowerCase();
+          return name.includes(q) || role.includes(q) || email.includes(q) || comp.includes(q);
         });
+      }
+
+      // 2. Company Tab Filter
+      const compFilter = window._currentCompanyFilter || 'all';
+      if (compFilter === 'TOOMUS') {
+        staffList = staffList.filter(s => (s.components_json?.card?.company || (s.slug === 'hyangwon' ? 'TOOMUS' : '')).includes('TOOMUS'));
+      } else if (compFilter === 'MAZA STUDIO') {
+        staffList = staffList.filter(s => (s.components_json?.card?.company || (s.slug !== 'hyangwon' ? 'MAZA STUDIO' : '')).includes('MAZA'));
       }
 
       grid.innerHTML = '';
       if (staffList.length === 0) {
         grid.innerHTML = `
-          <div class="empty-state">
-            <p style="color:rgba(255,255,255,0.5);">검색된 임직원 명함이 없습니다.</p>
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <p style="color:rgba(255,255,255,0.5);">해당 조건의 소속 임직원 명함이 없습니다.</p>
           </div>
         `;
         return;
       }
 
-      staffList.forEach(staff => {
+      // Function to render a single staff card
+      function createStaffCard(staff) {
         const card = staff.components_json?.card || {};
         const name = card.name || staff.slug;
-        const role = card.role || card.company || '투머스 임직원';
+        const comp = card.company || (staff.slug === 'hyangwon' ? 'TOOMUS' : 'MAZA STUDIO');
+        const isToomus = comp.includes('TOOMUS');
+        const role = card.role || (isToomus ? '이사' : '매니저');
+        const displayRole = `${comp} · ${role}`;
         const url = `https://toomcard.com/${staff.slug}`;
         const assignedEmail = staff.assigned_email || card.assigned_email || '';
+
+        const badgeStyle = isToomus
+          ? 'background:rgba(56,189,248,0.2); color:#7dd3fc; border:1px solid rgba(56,189,248,0.35);'
+          : 'background:rgba(234,179,8,0.2); color:#fde047; border:1px solid rgba(234,179,8,0.35);';
 
         const cardEl = document.createElement('div');
         cardEl.className = 'pod-card';
@@ -1922,11 +2043,11 @@
             <div>
               <div style="display:flex; align-items:center; gap:8px;">
                 <div class="pod-title">${name}</div>
-                <span style="font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(56,189,248,0.2); color:#7dd3fc; border:1px solid rgba(56,189,248,0.35);">
-                  TOOMUS
+                <span style="font-size:10px; font-weight:800; padding:2px 7px; border-radius:4px; ${badgeStyle}">
+                  ${isToomus ? 'TOOMUS' : 'MAZA STUDIO'}
                 </span>
               </div>
-              <div class="pod-role">${role}</div>
+              <div class="pod-role">${displayRole}</div>
             </div>
             <button onclick="openStaffInviteModal('${staff.slug}', '${name.replace(/'/g, "\\'")}', '${assignedEmail}')" class="staff-invite-pill ${assignedEmail ? 'staff-assigned' : 'staff-unassigned'}" title="직원 개별 로그인 권한 위임 관리">
               ${assignedEmail ? `
@@ -1968,8 +2089,62 @@
             </button>
           </div>
         `;
-        grid.appendChild(cardEl);
-      });
+        return cardEl;
+      }
+
+      // Group into TOOMUS vs MAZA STUDIO
+      const toomusStaff = staffList.filter(s => (s.components_json?.card?.company || (s.slug === 'hyangwon' ? 'TOOMUS' : '')).includes('TOOMUS'));
+      const mazaStaff = staffList.filter(s => (s.components_json?.card?.company || (s.slug !== 'hyangwon' ? 'MAZA STUDIO' : '')).includes('MAZA'));
+      const otherStaff = staffList.filter(s => !toomusStaff.includes(s) && !mazaStaff.includes(s));
+
+      // If rendering all or TOOMUS, show TOOMUS group banner and cards
+      if (toomusStaff.length > 0) {
+        const toomusBanner = document.createElement('div');
+        toomusBanner.className = 'company-group-banner';
+        toomusBanner.style.borderLeft = '4px solid #38bdf8';
+        toomusBanner.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:20px;">🏢</span>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:15px; font-weight:800; color:#fff;">투머스 (TOOMUS)</span>
+                <span style="font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; background:rgba(56,189,248,0.2); color:#7dd3fc; border:1px solid rgba(56,189,248,0.35);">${toomusStaff.length}명 등록</span>
+              </div>
+              <div style="font-size:11.5px; color:rgba(255,255,255,0.45); margin-top:2px;">스마트 NFC 하이브리드 솔루션 개발사</div>
+            </div>
+          </div>
+          <div style="font-size:12px; color:#38bdf8; font-weight:700;">소속 전원 3D 활성</div>
+        `;
+        grid.appendChild(toomusBanner);
+        toomusStaff.forEach(s => grid.appendChild(createStaffCard(s)));
+      }
+
+      // If rendering all or MAZA STUDIO, show MAZA STUDIO group banner and cards
+      if (mazaStaff.length > 0) {
+        const mazaBanner = document.createElement('div');
+        mazaBanner.className = 'company-group-banner';
+        mazaBanner.style.borderLeft = '4px solid #eab308';
+        mazaBanner.innerHTML = `
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:20px;">🚀</span>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:15px; font-weight:800; color:#fff;">마자 스튜디오 (MAZA STUDIO)</span>
+                <span style="font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:4px; background:rgba(234,179,8,0.2); color:#fde047; border:1px solid rgba(234,179,8,0.35);">${mazaStaff.length}명 등록</span>
+              </div>
+              <div style="font-size:11.5px; color:rgba(255,255,255,0.45); margin-top:2px;">수익형 디지털 자산 구축 & 플랫폼 스케일</div>
+            </div>
+          </div>
+          <div style="font-size:12px; color:#fde047; font-weight:700;">전사 3D 송출</div>
+        `;
+        grid.appendChild(mazaBanner);
+        mazaStaff.forEach(s => grid.appendChild(createStaffCard(s)));
+      }
+
+      if (otherStaff.length > 0) {
+        otherStaff.forEach(s => grid.appendChild(createStaffCard(s)));
+      }
+
       lucide.createIcons();
     }
 
@@ -2282,7 +2457,8 @@
         const matchedStaff = (window._enterprisePods || []).find(s => s.slug === targetSlug) || (window._personalPod?.slug === targetSlug ? window._personalPod : null);
         if (matchedStaff) {
           const cardData = matchedStaff.components_json?.card || {};
-          staffNameLabel = `${cardData.name || targetSlug} (${targetSlug})`;
+          const comp = cardData.company || (targetSlug === 'hyangwon' ? 'TOOMUS' : 'MAZA STUDIO');
+          staffNameLabel = `[${comp}] ${cardData.name || targetSlug}`;
         }
 
         const isPhone = contactVal && /^[0-9\-\+\s]{8,15}$/.test(contactVal.trim());
@@ -2321,7 +2497,23 @@
       } else {
         // In Enterprise Mode: filter by staff dropdown if selected
         if (staffFilter !== 'all') {
-          allLeads = allLeads.filter(l => (l.target_slug === staffFilter || (l.domain && l.domain.includes(staffFilter))));
+          if (staffFilter === 'company:TOOMUS') {
+            allLeads = allLeads.filter(l => {
+              const target = l.target_slug || (l.domain || '').replace('toomcard.com/', '').replace('/', '');
+              const matchedStaff = (window._enterprisePods || []).find(s => s.slug === target);
+              const comp = matchedStaff?.components_json?.card?.company || (target === 'hyangwon' ? 'TOOMUS' : '');
+              return comp.includes('TOOMUS');
+            });
+          } else if (staffFilter === 'company:MAZA STUDIO') {
+            allLeads = allLeads.filter(l => {
+              const target = l.target_slug || (l.domain || '').replace('toomcard.com/', '').replace('/', '');
+              const matchedStaff = (window._enterprisePods || []).find(s => s.slug === target);
+              const comp = matchedStaff?.components_json?.card?.company || (target !== 'hyangwon' ? 'MAZA STUDIO' : '');
+              return comp.includes('MAZA');
+            });
+          } else {
+            allLeads = allLeads.filter(l => (l.target_slug === staffFilter || (l.domain && l.domain.includes(staffFilter))));
+          }
         }
       }
 
