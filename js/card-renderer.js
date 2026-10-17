@@ -239,14 +239,25 @@ function renderActionDocks(data) {
     </div>
   `;
 
+  const leadBtn = `
+    <button class="btn-action btn-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12);" title="명함 주인에게 연락처 및 문의 남기기">
+      <i data-lucide="message-square" style="width: 14px; height: 14px; color: #c084fc;"></i>
+      <span style="color: #e9d5ff; font-weight: 700;">상담/문의</span>
+    </button>
+  `;
+
+  let row2Buttons = '';
+  if (social1Btn && social2Btn) {
+    row2Buttons = `${social1Btn}${social2Btn}`;
+  } else if (social1Btn) {
+    row2Buttons = `${social1Btn}${leadBtn}`;
+  } else {
+    row2Buttons = `${leadBtn}`;
+  }
+
   const row2 = `
     <div class="inside-action-row">
-      ${social1Btn}
-      ${social2Btn}
-      <button class="btn-action btn-glass" onclick="event.stopPropagation(); document.getElementById('leadModal').classList.add('active');" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12);" title="명함 주인에게 연락처 및 문의 남기기">
-        <i data-lucide="message-square" style="width: 14px; height: 14px; color: #c084fc;"></i>
-        <span style="color: #e9d5ff; font-weight: 700;">상담/문의</span>
-      </button>
+      ${row2Buttons}
     </div>
   `;
 
