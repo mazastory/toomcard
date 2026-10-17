@@ -1001,8 +1001,8 @@
           <!-- 회사별 필터 탭 (기업/대행사 모드 시 노출) -->
           <div id="companyFilterTabs" style="display:none; gap:6px; align-items:center; background:rgba(255,255,255,0.05); padding:4px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
             <button type="button" class="comp-filter-btn active" data-company="all" onclick="setCompanyFilter('all')">전체 소속 (<span id="cntAllComp">8</span>)</button>
-            <button type="button" class="comp-filter-btn" data-company="TOOMUS" onclick="setCompanyFilter('TOOMUS')">🏢 TOOMUS (<span id="cntToomusComp">1</span>)</button>
-            <button type="button" class="comp-filter-btn" data-company="MAZA STUDIO" onclick="setCompanyFilter('MAZA STUDIO')">🚀 MAZA STUDIO (<span id="cntMazaComp">7</span>)</button>
+            <button type="button" class="comp-filter-btn" data-company="TOOMUS" onclick="setCompanyFilter('TOOMUS')">🏢 TOOMUS (<span id="cntToomusComp">3</span>)</button>
+            <button type="button" class="comp-filter-btn" data-company="MAZA STUDIO" onclick="setCompanyFilter('MAZA STUDIO')">🚀 MAZA STUDIO (<span id="cntMazaComp">5</span>)</button>
           </div>
           <input type="text" id="staffSearchInput" placeholder="성함, 직책, 회사 검색..." oninput="handleStaffSearch(this.value)" style="display:none; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:8px 12px; font-size:13px; color:#fff; width:180px; outline:none;">
         </div>
@@ -1158,8 +1158,9 @@
   <script>
     lucide.createIcons();
     
-    // Default Enterprise & Multi-Agency Team Roster
-    // 🏢 이향원 이사: 투머스(TOOMUS) 소속 / 🚀 조윤서 대표 외 6인: 마자 스튜디오(MAZA STUDIO) 소속
+    // Default Enterprise & Multi-Agency Team Roster (cards/*.json 데이터 기준)
+    // 🏢 투머스 (TOOMUS, 3인): 이향원(이사), 김나은(매니저), 김나현(매니저)
+    // 🚀 마자 스튜디오 (MAZA STUDIO, 5인): 조윤서(대표), 박수빈(매니저), 김현수(매니저), 김용수(매니저), 유지연(매니저)
     const DEFAULT_ENTERPRISE_ROSTER = [
       {
         slug: 'hyangwon',
@@ -1170,6 +1171,26 @@
         email: 'hyangwon@toomus.com',
         views: 142,
         assigned_email: 'hyangwon@toomus.com'
+      },
+      {
+        slug: 'naeun',
+        name: '김나은',
+        role: '매니저',
+        company: 'TOOMUS',
+        phone: '010-4985-0712',
+        email: 'naeun@toomus.com',
+        views: 39,
+        assigned_email: 'naeun@toomus.com'
+      },
+      {
+        slug: 'nahyun',
+        name: '김나현',
+        role: '매니저',
+        company: 'TOOMUS',
+        phone: '010-7413-0806',
+        email: 'nahyun@toomus.com',
+        views: 33,
+        assigned_email: 'nahyun@toomus.com'
       },
       {
         slug: 'yunseo',
@@ -1194,7 +1215,7 @@
       {
         slug: 'hyunsoo',
         name: '김현수',
-        role: '테크리드',
+        role: '매니저',
         company: 'MAZA STUDIO',
         phone: '010-8243-0601',
         email: 'hsk0309@mazastudio.kr',
@@ -1204,41 +1225,21 @@
       {
         slug: 'yongsu',
         name: '김용수',
-        role: '팀장',
+        role: '매니저',
         company: 'MAZA STUDIO',
-        phone: '010-3456-7890',
-        email: 'yongsu@mazastudio.kr',
+        phone: '010-4772-1411',
+        email: 'dydtn919@mazastudio.kr',
         views: 65,
         assigned_email: ''
       },
       {
         slug: 'jiyeon',
         name: '유지연',
-        role: '책임',
-        company: 'MAZA STUDIO',
-        phone: '010-4567-8901',
-        email: 'jiyeon@mazastudio.kr',
-        views: 52,
-        assigned_email: ''
-      },
-      {
-        slug: 'naeun',
-        name: '김나은',
-        role: '선임',
-        company: 'MAZA STUDIO',
-        phone: '010-6789-0123',
-        email: 'naeun@mazastudio.kr',
-        views: 39,
-        assigned_email: ''
-      },
-      {
-        slug: 'nahyun',
-        name: '김나현',
         role: '매니저',
         company: 'MAZA STUDIO',
-        phone: '010-7890-1234',
-        email: 'nahyun@mazastudio.kr',
-        views: 33,
+        phone: '010-8212-1468',
+        email: 'annay35@mazastudio.kr',
+        views: 52,
         assigned_email: ''
       }
     ];
@@ -1678,14 +1679,15 @@
       (window._enterprisePods || []).forEach(m => {
         const data = m.components_json?.card || {};
         const name = data.name || m.slug;
-        const comp = data.company || (m.slug === 'hyangwon' ? 'TOOMUS' : 'MAZA STUDIO');
+        const isToomus = (data.company || '').includes('TOOMUS') || ['hyangwon', 'naeun', 'nahyun'].includes(m.slug);
+        const comp = isToomus ? 'TOOMUS' : 'MAZA STUDIO';
         const role = data.role ? ` (${data.role})` : '';
         const opt = document.createElement('option');
         opt.value = m.slug;
         opt.textContent = `${name}${role}`;
         opt.style.background = '#110c1f';
 
-        if (comp.includes('TOOMUS')) {
+        if (isToomus) {
           toomusGroup.appendChild(opt);
         } else {
           mazaGroup.appendChild(opt);
@@ -1976,10 +1978,11 @@
       const grid = document.getElementById('podsList');
       if (!grid) return;
       const allStaff = window._enterprisePods || [];
+      const isToomusSlug = s => ['hyangwon', 'naeun', 'nahyun', '이향원', '김나은', '김나현'].includes(s);
 
       // Update count badges
-      const toomusTotal = allStaff.filter(s => (s.components_json?.card?.company || (s.slug === 'hyangwon' ? 'TOOMUS' : '')).includes('TOOMUS')).length;
-      const mazaTotal = allStaff.filter(s => (s.components_json?.card?.company || (s.slug !== 'hyangwon' ? 'MAZA STUDIO' : '')).includes('MAZA')).length;
+      const toomusTotal = allStaff.filter(s => (s.components_json?.card?.company || '').includes('TOOMUS') || isToomusSlug(s.slug)).length;
+      const mazaTotal = allStaff.filter(s => !((s.components_json?.card?.company || '').includes('TOOMUS') || isToomusSlug(s.slug))).length;
       
       const cntAll = document.getElementById('cntAllComp');
       if (cntAll) cntAll.textContent = allStaff.length;
@@ -2006,9 +2009,9 @@
       // 2. Company Tab Filter
       const compFilter = window._currentCompanyFilter || 'all';
       if (compFilter === 'TOOMUS') {
-        staffList = staffList.filter(s => (s.components_json?.card?.company || (s.slug === 'hyangwon' ? 'TOOMUS' : '')).includes('TOOMUS'));
+        staffList = staffList.filter(s => (s.components_json?.card?.company || '').includes('TOOMUS') || isToomusSlug(s.slug));
       } else if (compFilter === 'MAZA STUDIO') {
-        staffList = staffList.filter(s => (s.components_json?.card?.company || (s.slug !== 'hyangwon' ? 'MAZA STUDIO' : '')).includes('MAZA'));
+        staffList = staffList.filter(s => !((s.components_json?.card?.company || '').includes('TOOMUS') || isToomusSlug(s.slug)));
       }
 
       grid.innerHTML = '';
@@ -2025,9 +2028,9 @@
       function createStaffCard(staff) {
         const card = staff.components_json?.card || {};
         const name = card.name || staff.slug;
-        const comp = card.company || (staff.slug === 'hyangwon' ? 'TOOMUS' : 'MAZA STUDIO');
-        const isToomus = comp.includes('TOOMUS');
-        const role = card.role || (isToomus ? '이사' : '매니저');
+        const isToomus = (card.company || '').includes('TOOMUS') || isToomusSlug(staff.slug);
+        const comp = isToomus ? 'TOOMUS' : 'MAZA STUDIO';
+        const role = card.role || (staff.slug === 'hyangwon' ? '이사' : (staff.slug === 'yunseo' ? '대표' : '매니저'));
         const displayRole = `${comp} · ${role}`;
         const url = `https://toomcard.com/${staff.slug}`;
         const assignedEmail = staff.assigned_email || card.assigned_email || '';
@@ -2093,8 +2096,8 @@
       }
 
       // Group into TOOMUS vs MAZA STUDIO
-      const toomusStaff = staffList.filter(s => (s.components_json?.card?.company || (s.slug === 'hyangwon' ? 'TOOMUS' : '')).includes('TOOMUS'));
-      const mazaStaff = staffList.filter(s => (s.components_json?.card?.company || (s.slug !== 'hyangwon' ? 'MAZA STUDIO' : '')).includes('MAZA'));
+      const toomusStaff = staffList.filter(s => (s.components_json?.card?.company || '').includes('TOOMUS') || isToomusSlug(s.slug));
+      const mazaStaff = staffList.filter(s => !toomusStaff.includes(s));
       const otherStaff = staffList.filter(s => !toomusStaff.includes(s) && !mazaStaff.includes(s));
 
       // If rendering all or TOOMUS, show TOOMUS group banner and cards
@@ -2457,7 +2460,8 @@
         const matchedStaff = (window._enterprisePods || []).find(s => s.slug === targetSlug) || (window._personalPod?.slug === targetSlug ? window._personalPod : null);
         if (matchedStaff) {
           const cardData = matchedStaff.components_json?.card || {};
-          const comp = cardData.company || (targetSlug === 'hyangwon' ? 'TOOMUS' : 'MAZA STUDIO');
+          const isToomus = (cardData.company || '').includes('TOOMUS') || ['hyangwon', 'naeun', 'nahyun'].includes(targetSlug);
+          const comp = isToomus ? 'TOOMUS' : 'MAZA STUDIO';
           staffNameLabel = `[${comp}] ${cardData.name || targetSlug}`;
         }
 
@@ -2501,15 +2505,15 @@
             allLeads = allLeads.filter(l => {
               const target = l.target_slug || (l.domain || '').replace('toomcard.com/', '').replace('/', '');
               const matchedStaff = (window._enterprisePods || []).find(s => s.slug === target);
-              const comp = matchedStaff?.components_json?.card?.company || (target === 'hyangwon' ? 'TOOMUS' : '');
-              return comp.includes('TOOMUS');
+              const comp = matchedStaff?.components_json?.card?.company || '';
+              return comp.includes('TOOMUS') || ['hyangwon', 'naeun', 'nahyun'].includes(target);
             });
           } else if (staffFilter === 'company:MAZA STUDIO') {
             allLeads = allLeads.filter(l => {
               const target = l.target_slug || (l.domain || '').replace('toomcard.com/', '').replace('/', '');
               const matchedStaff = (window._enterprisePods || []).find(s => s.slug === target);
-              const comp = matchedStaff?.components_json?.card?.company || (target !== 'hyangwon' ? 'MAZA STUDIO' : '');
-              return comp.includes('MAZA');
+              const comp = matchedStaff?.components_json?.card?.company || '';
+              return !comp.includes('TOOMUS') && !['hyangwon', 'naeun', 'nahyun'].includes(target);
             });
           } else {
             allLeads = allLeads.filter(l => (l.target_slug === staffFilter || (l.domain && l.domain.includes(staffFilter))));
