@@ -51,6 +51,10 @@
   <link rel="stylesheet" id="layoutStylesheet" href="">
 
   <style>
+    :root {
+      --watermark-color: rgba(255, 255, 255, 0.035);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -218,7 +222,7 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 72px;
       font-weight: 900;
-      color: var(--watermark-color);
+      color: var(--watermark-color, rgba(255, 255, 255, 0.035)) !important;
       transform: rotate(-90deg);
       width: 72px;
       height: 72px;

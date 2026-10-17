@@ -1,0 +1,39 @@
+:root {
+  /* ========================================================
+     THEME: GOLD PLATINUM (럭셔리 24K 골드 & 딥 옵시디언)
+     ======================================================== */
+  --bg-body: radial-gradient(circle at 50% 12%, #1c180e 0%, #0a0805 65%, #020201 100%);
+  --bg-card: #0d0b07;
+  --card-gradient: linear-gradient(155deg, #1f1a10 0%, #110e08 50%, #060503 100%);
+  --neon-accent: #ffd978;
+  --neon-glow: rgba(255, 217, 120, 0.35);
+  --border-accent: rgba(255, 217, 120, 0.38);
+  --border-subtle: rgba(255, 217, 120, 0.18);
+  --gold-accent: #ffd978;
+  --tagline-color: #ffe082;
+  --logo-bg: radial-gradient(circle at 35% 35%, #2a2312 0%, #0c0a05 100%);
+  --logo-border: rgba(255, 217, 120, 0.45);
+  --logo-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 28px rgba(255, 217, 120, 0.28);
+  --key-color: #fff8e1;
+  --moat-bg: rgba(255, 217, 120, 0.1);
+  --moat-border: rgba(255, 217, 120, 0.28);
+  --moat-text: #fffdf7;
+  --save-btn-bg: linear-gradient(135deg, #ffe082 0%, #ffca28 40%, #ffb300 70%, #ffa000 100%);
+  --save-btn-color: #2e1700;
+  --save-btn-shadow: 0 6px 20px rgba(255, 179, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  --watermark-color: rgba(255, 217, 120, 0.045);
+}
+
+.card-face {
+  background: var(--card-gradient) !important;
+  border: 1.5px solid rgba(255, 217, 120, 0.35) !important;
+  box-shadow: 
+    0 28px 70px rgba(0, 0, 0, 0.95),
+    0 0 35px rgba(255, 217, 120, 0.22),
+    inset 0 1px 2px rgba(255, 235, 150, 0.3) !important;
+}
+
+.card-face::before {
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.08) 44%, rgba(255, 224, 130, 0.3) 50%, rgba(255, 179, 0, 0.2) 53%, rgba(255, 255, 255, 0.08) 56%, transparent 65%) !important;
+  opacity: 0.85 !important;
+}
