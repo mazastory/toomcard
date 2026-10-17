@@ -1256,8 +1256,32 @@
       font-size: 12.5px;
       font-weight: 700;
       color: var(--gold-accent);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       letter-spacing: 0.02em;
+    }
+
+    /* Authentic Front Profile Hero (Gallery Matching) */
+    .front-profile-hero {
+      margin: 8px 0 10px 0;
+      padding: 6px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: left;
+    }
+    .front-role {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-accent, #ffd978);
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .front-name {
+      font-size: 21px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.4px;
+      line-height: 1.15;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
 
     .profile-row {
@@ -3206,6 +3230,12 @@
                 <div class="front-info-container">
                   <div class="brand-sub-engraving" id="frontTagline">LIFE · CONNECTED</div>
                   <div class="front-company" id="frontCompany">TOOMCARD</div>
+                  
+                  <div class="front-profile-hero" id="frontProfileHero">
+                    <div class="front-role" id="frontRole">대표이사 (CEO)</div>
+                    <div class="front-name" id="frontName">Alex Rivera</div>
+                  </div>
+
                   <div class="front-slogan" id="frontSlogan">종이 명함의 시대를 끝내는 살아 움직이는 3D 명함</div>
 
                   <div class="moat-tags" id="frontMoatTags"></div>
@@ -3439,63 +3469,143 @@
         name: '스위스 옵시디언 티타늄',
         badge: 'BEST 🔥',
         typeLabel: 'Minimal Plate',
-        layout: 'plate',
-        theme: 'obsidian'
+        layout: 'metal',
+        theme: 'obsidian',
+        company: 'TOOMCARD',
+        namePerson: 'Alex Rivera',
+        role: '대표이사 (CEO)',
+        slogan: '종이 명함의 시대를 끝내는 살아 움직이는 3D 스마트 명함',
+        tagline: 'SWISS TITANIUM',
+        watermark: 'TOOMCARD',
+        phone: '010-8204-1234',
+        email: 'alex@toomcard.com',
+        tags: ['#3D인터랙티브', '#스마트NFC', '#옵시디언티타늄'],
+        logo: '/assets/toomcard_hd.gif'
       },
       'navy-gold': {
         name: '플래티넘 네이비 골드',
         badge: 'C-LEVEL 👑',
         typeLabel: 'Executive Metal',
         layout: 'metal',
-        theme: 'navy-gold'
+        theme: 'navy-gold',
+        company: 'TOOMUS',
+        namePerson: 'Andrew K',
+        role: '투머스 / 대표',
+        slogan: '글로벌 C-Level의 품격을 담은 프리미엄 메탈릭 스마트 명함',
+        tagline: 'EXECUTIVE GOLD',
+        watermark: 'TOOMUS',
+        phone: '010-7788-9900',
+        email: 'andrew@toomus.com',
+        tags: ['#글로벌네트워크', '#C_Level', '#메탈릭골드'],
+        logo: '/assets/toomuslogo.gif'
       },
       'white-minimal': {
         name: '미니멀 화이트 에디토리얼',
         badge: 'BOUTIQUE 🤍',
         typeLabel: 'Editorial Clean',
         layout: 'editorial',
-        theme: 'white-minimal'
+        theme: 'white-minimal',
+        company: 'MAISON ATELIER',
+        namePerson: '한수민',
+        role: '크리에이티브 디렉터',
+        slogan: '순백 코튼 페이퍼 질감과 절제된 여백의 감성 에디토리얼',
+        tagline: 'EDITORIAL CLEAN',
+        watermark: 'ATELIER',
+        phone: '010-3344-5566',
+        email: 'sumin@maisonatelier.kr',
+        tags: ['#브랜딩', '#에디토리얼', '#부티크'],
+        logo: '/assets/toomcard.gif'
       },
       'violet': {
         name: '사이버 바이올렛 네온',
         badge: 'STARTUP ⚡',
         typeLabel: 'Classic Glass',
         layout: 'classic',
-        theme: 'violet'
+        theme: 'violet',
+        company: 'NEON DYNAMICS',
+        namePerson: '김민준',
+        role: '테크 리드 (Tech Lead)',
+        slogan: '차세대 IT 스타트업을 위한 몽환적인 3D 앰비언트 글로우',
+        tagline: 'STARTUP TECH',
+        watermark: 'DYNAMICS',
+        phone: '010-4455-6677',
+        email: 'minjun@neondynamics.io',
+        tags: ['#IT스타트업', '#3D앰비언트', '#테크빌더'],
+        logo: '/assets/toomcard_hd.gif'
       },
       'frosted-acrylic': {
         name: '프로스티드 매트 PET',
         badge: 'SPECIAL 🧊',
         typeLabel: 'Translucent PET',
         layout: 'classic',
-        theme: 'frosted-acrylic'
+        theme: 'frosted-acrylic',
+        company: 'TRANSLUCENT LAB',
+        namePerson: '이서연',
+        role: '수석 연구원 (Lead Researcher)',
+        slogan: '빛을 은은하게 투과하는 반투명 아크릴 신소재 글래스모피즘',
+        tagline: 'FROSTED PET',
+        watermark: 'FROSTED',
+        phone: '010-9988-7766',
+        email: 'seoyeon@translucent.design',
+        tags: ['#특수소재', '#반투명아크릴', '#글래스모피즘'],
+        logo: '/assets/toomcard.gif'
       },
       'emerald': {
         name: '에메랄드 이그제큐티브',
         badge: 'PRESTIGE 💎',
         typeLabel: 'Executive Metal',
         layout: 'metal',
-        theme: 'emerald'
+        theme: 'emerald',
+        company: 'VERDANT PARTNERS',
+        namePerson: '최진우',
+        role: '대표 파트너 (Managing Partner)',
+        slogan: '번영과 신뢰를 상징하는 딥 에메랄드 그린 브러시드 스틸',
+        tagline: 'PRESTIGE METAL',
+        watermark: 'VERDANT',
+        phone: '010-6677-8899',
+        email: 'jinwoo@verdant.vc',
+        tags: ['#벤처캐피탈', '#자산운용', '#딥에메랄드'],
+        logo: '/assets/toomuslogo.gif'
       },
       'warm-sand': {
         name: '웜샌드 아틀리에',
         badge: 'AESTHETIC 🍂',
         typeLabel: 'Warm Editorial',
         layout: 'editorial',
-        theme: 'warm-sand'
+        theme: 'warm-sand',
+        company: 'TERRA STUDIO',
+        namePerson: '박소희',
+        role: '공간 디렉터 (Spatial Director)',
+        slogan: '포근한 샌드 베이지와 모카 브라운의 감성 타이포그래피',
+        tagline: 'WARM ATELIER',
+        watermark: 'TERRA',
+        phone: '010-1122-3344',
+        email: 'sohee@terrastudio.kr',
+        tags: ['#공간인테리어', '#라이프스타일', '#웜베이지'],
+        logo: '/assets/toomcard.gif'
       },
       'rosegold': {
         name: '로즈골드 VIP 럭셔리',
         badge: 'VIP LUXURY ✨',
         typeLabel: 'Minimal Plate',
-        layout: 'plate',
-        theme: 'rosegold'
+        layout: 'metal',
+        theme: 'rosegold',
+        company: 'L\'ECLAT PRIVÉ',
+        namePerson: '강다은',
+        role: '총괄 수석 실장 (Head Director)',
+        slogan: '매혹적인 미러 로즈골드 메탈릭 광택과 프라이빗 럭셔리',
+        tagline: 'VIP LUXURY',
+        watermark: 'LECLAT',
+        phone: '010-2233-4455',
+        email: 'daeun@leclat.vip',
+        tags: ['#프라이빗살롱', '#VIP컨설팅', '#로즈골드'],
+        logo: '/assets/toomcard_hd.gif'
       }
     };
 
     let currentPreset = 'obsidian';
 
-    function selectDesignPreset(key, shouldScroll = false) {
+    function selectDesignPreset(key, shouldScroll = false, applyData = true) {
       const p = DESIGN_PRESETS[key];
       if (!p) return;
       currentPreset = key;
@@ -3527,17 +3637,40 @@
         }
       });
 
-      // 2. 레이아웃 & 테마 DOM 동기화
+      // 2. 템플릿 실물 데이터(회사명, 이름, 직함, 슬로건, 태그, 연락처, 로고) 자동 입력 (갤러리 디자인 즉시 사용 가능)
+      if (applyData) {
+        if (p.company && document.getElementById('inputCompany')) document.getElementById('inputCompany').value = p.company;
+        if (p.namePerson && document.getElementById('inputName')) document.getElementById('inputName').value = p.namePerson;
+        if (p.role && document.getElementById('inputRole')) document.getElementById('inputRole').value = p.role;
+        if (p.slogan && document.getElementById('inputSlogan')) document.getElementById('inputSlogan').value = p.slogan;
+        if (p.tagline && document.getElementById('inputTagline')) document.getElementById('inputTagline').value = p.tagline;
+        if (p.watermark && document.getElementById('inputWatermark')) document.getElementById('inputWatermark').value = p.watermark;
+        if (p.phone && document.getElementById('inputPhone')) document.getElementById('inputPhone').value = p.phone;
+        if (p.email && document.getElementById('inputEmail')) document.getElementById('inputEmail').value = p.email;
+        if (p.tags && p.tags.length > 0) {
+          if (document.getElementById('inputTag1')) document.getElementById('inputTag1').value = p.tags[0] || '';
+          if (document.getElementById('inputTag2')) document.getElementById('inputTag2').value = p.tags[1] || '';
+          if (document.getElementById('inputTag3')) document.getElementById('inputTag3').value = p.tags[2] || '';
+        }
+        if (p.logo) {
+          selectBrandLogo(p.logo, p.company, null);
+        }
+      }
+
+      // 3. 레이아웃 & 테마 DOM 동기화
       const layoutEl = document.querySelector(`.layout-selector-card[data-layout="${p.layout}"]`);
       selectLayout(p.layout, layoutEl);
 
       const themeEl = document.querySelector(`.theme-selector-card[data-theme="${p.theme}"]`);
       selectTheme(p.theme, themeEl);
 
-      // 3. 우측 3D 카드를 앞면(Front)으로 회전하여 템플릿 실물 디자인을 바로 보여줌
+      // 4. 실시간 렌더링 호출
+      liveUpdate();
+
+      // 5. 우측 3D 카드를 앞면(Front)으로 회전하여 템플릿 실물 디자인을 바로 보여줌
       forceCardFront();
 
-      // 4. 우측 3D 카드에 실시간 장착 하이라이트 애니메이션 부여
+      // 6. 우측 3D 카드에 실시간 장착 하이라이트 애니메이션 부여
       const scene = document.getElementById('cardScene');
       if (scene) {
         scene.classList.remove('preview-pulse');
@@ -3545,7 +3678,7 @@
         scene.classList.add('preview-pulse');
       }
 
-      // 5. 실시간 진행 확인 바 및 퀵필 상단 배너 갱신
+      // 7. 실시간 진행 확인 바 및 퀵필 상단 배너 갱신
       const confirmBadge = document.getElementById('confirmBadge');
       const confirmName = document.getElementById('confirmName');
       if (confirmBadge) confirmBadge.innerText = `${p.badge} 장착됨`;
@@ -3557,20 +3690,20 @@
           <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:16px;">✨</span>
             <div>
-              <span style="font-size:11px; font-weight:800; color:#ffd978; text-transform:uppercase; letter-spacing:0.5px;">${p.badge} 선택됨</span>
-              <div style="font-size:13.5px; font-weight:800; color:#ffffff;">${p.name} (${p.typeLabel})</div>
+              <span style="font-size:11px; font-weight:800; color:#ffd978; text-transform:uppercase; letter-spacing:0.5px;">${p.badge} 디자인 세팅됨</span>
+              <div style="font-size:13.5px; font-weight:800; color:#ffffff;">${p.name} (${p.typeLabel}) · 아래 폼에서 내 정보로 수정하세요!</div>
             </div>
           </div>
           <a href="#designs" style="font-size:11.5px; font-weight:700; color:rgba(255,255,255,0.8); text-decoration:none; padding:5px 10px; border-radius:7px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); transition:all 0.2s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.18)';" onmouseout="this.style.color='rgba(255,255,255,0.8)';this.style.background='rgba(255,255,255,0.08)';">
-            디자인 변경 ↑
+            다른 디자인 선택 ↑
           </a>
         `;
       }
 
-      showToast(`✨ ${p.name} 실시간 3D 장착 완료! (우측 카드 확인)`);
+      showToast(`✨ [${p.name}] 디자인이 세팅되었습니다. 이름/연락처만 수정하면 바로 완성됩니다!`);
       if (window.lucide) lucide.createIcons();
 
-      // 6. 명시적 요청이 있을 때만 스크롤 (기본값 false: 미리보기 모드 유지)
+      // 8. 명시적 요청이 있을 때만 스크롤
       if (shouldScroll) {
         scrollToQuickFill();
       }
@@ -3889,6 +4022,12 @@
       // 텍스트 바인딩
       document.getElementById('frontCompany').innerText = company;
       document.getElementById('backCompany').innerText = company;
+      
+      const frontRoleEl = document.getElementById('frontRole');
+      if (frontRoleEl) frontRoleEl.innerText = role;
+      const frontNameEl = document.getElementById('frontName');
+      if (frontNameEl) frontNameEl.innerText = name;
+
       document.getElementById('frontSlogan').innerText = slogan;
       document.getElementById('backSlogan').innerText = slogan;
       document.getElementById('frontTagline').innerText = tagline;
@@ -4769,13 +4908,6 @@
       }
 
       const presetParam = urlParams.get('preset') || urlParams.get('template') || urlParams.get('design');
-      if (presetParam && DESIGN_PRESETS[presetParam]) {
-        if (modeParam === 'team' || modeParam === 'enterprise') {
-          if (typeof selectTeamDesignPreset === 'function') selectTeamDesignPreset(presetParam);
-        } else {
-          if (typeof selectDesignPreset === 'function') selectDesignPreset(presetParam);
-        }
-      }
       
       let savedData = null;
       
@@ -4797,13 +4929,22 @@
         }
       }
       
-      // 2. 임시 저장된 카드 데이터 복구 로직 (로그인 전 작성본 유실 방지 - fallback)
-      if (!savedData) {
+      // 2. 임시 저장된 카드 데이터 복구 로직 (단, URL로 갤러리 프리셋을 선택해 들어온 경우는 제외)
+      if (!savedData && !presetParam) {
         const savedCardDataStr = localStorage.getItem('setupod_card_data');
         if (savedCardDataStr) {
           try {
             savedData = JSON.parse(savedCardDataStr);
           } catch(e) { console.error(e); }
+        }
+      }
+
+      // 3. 갤러리 프리셋 파라미터가 명시된 경우 해당 디자인 및 데이터를 최우선 적용
+      if (presetParam && DESIGN_PRESETS[presetParam] && !editSlug) {
+        if (modeParam === 'team' || modeParam === 'enterprise') {
+          if (typeof selectTeamDesignPreset === 'function') selectTeamDesignPreset(presetParam);
+        } else {
+          if (typeof selectDesignPreset === 'function') selectDesignPreset(presetParam, false, true);
         }
       }
 

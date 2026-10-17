@@ -27,19 +27,28 @@
   inset: 0 !important;
 }
 
-/* Hide HTML typography & buttons on the front to reveal the pure card artwork */
-.layout-plate .card-face.front .front-wrapper,
-.layout-plate .card-face.front .watermark-dynamic,
-.layout-plate .card-face.front::before,
-.layout-plate #insideActionDockFront,
-.layout-plate .card-executive-section,
-.layout-plate .plate-flip-prompt,
-.layout-plate #frontActionDock,
-.layout-plate .front-info-container {
-  display: none !important;
+/* Front typography & overlay on plate texture */
+.layout-plate .card-face.front .front-wrapper {
+  position: relative !important;
+  z-index: 5 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
 }
 
-/* Photorealistic Card Plate Artwork Container */
+.layout-plate .card-face.front .watermark-dynamic {
+  display: block !important;
+  z-index: 2 !important;
+}
+
+.layout-plate .front-info-container {
+  display: flex !important;
+  flex-direction: column !important;
+  z-index: 5 !important;
+}
+
+/* Photorealistic Card Plate Artwork Container as Background Texture */
 .plate-artwork-container {
   display: none;
   position: absolute;
