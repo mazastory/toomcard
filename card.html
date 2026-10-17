@@ -15,7 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TOOMCARD | 3D 디지털 명함</title>
   <link rel="canonical" href="https://toomcard.com">
-  <meta name="description" content="TOOMCARD - 차세대 인터랙티브 3D 디지털 명함 솔루션. 스마트폰에서 입체로 회전하는 메탈 명함.">
+  <meta name="description" content="TOOMCARD - 카카오톡, 인스타그램, 3D 명함까지 한 번에 셋업하는 올인원 비즈니스 자산 플랫폼">
 
   <!-- OpenGraph Placeholder -->
   <meta property="og:type" content="website">
@@ -42,10 +42,10 @@
 
   <!-- Supabase Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./js/supabase.js"></script>
+  <script src="/js/supabase.js"></script>
 
   <!-- Default Theme Stylesheet (동적으로 교체됨) -->
-  <link rel="stylesheet" id="themeStylesheet" href="./themes/obsidian.css">
+  <link rel="stylesheet" id="themeStylesheet" href="/themes/obsidian.css">
 
   <!-- 레이아웃 전용 스타일시트 (동적 로드) -->
   <link rel="stylesheet" id="layoutStylesheet" href="">
@@ -63,14 +63,14 @@
       font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
       min-height: 100dvh;
-      background: var(--bg-body, #0a0614);
-      background-color: #0a0614;
+      background: var(--bg-body, #07040d);
+      background-color: #07040d;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       color: #ffffff;
-      padding: 20px 16px;
+      padding: 24px 16px;
       overflow-x: hidden;
       transition: background 0.4s ease;
     }
@@ -81,7 +81,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       opacity: 0;
       transition: opacity 0.4s ease;
     }
@@ -113,9 +113,9 @@
     /* 3D Vertical Card Scene */
     .card-scene {
       width: 100%;
-      height: 590px;
-      min-height: 580px;
-      max-height: 600px;
+      height: 645px;
+      min-height: 620px;
+      max-height: 660px;
       perspective: 1400px;
       cursor: pointer;
     }
@@ -126,14 +126,14 @@
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.75s cubic-bezier(0.2, 0.85, 0.3, 1.05);
-      border-radius: 24px;
+      border-radius: 28px;
     }
 
     .card-scene.flipped .card-flipper {
       transform: rotateY(180deg);
     }
 
-    /* Card Faces (Front & Back) - Luxury Physical Metal Finish */
+    /* Card Faces (Front & Back) */
     .card-face {
       position: absolute;
       inset: 0;
@@ -141,49 +141,16 @@
       height: 100%;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      border-radius: 24px;
-      border: 1.5px solid rgba(255, 255, 255, 0.22);
-      background: 
-        /* Specular Anisotropic Light Reflection Beam */
-        linear-gradient(128deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.02) 28%, transparent 48%, rgba(255,255,255,0.06) 68%, rgba(255,255,255,0.2) 100%),
-        /* Brushed Metal Linear Micro-Grain */
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px),
-        /* Base Theme Depth Gradient */
-        var(--card-gradient);
-      background-blend-mode: overlay, normal, normal;
-      box-shadow: 
-        inset 0 1px 2px rgba(255, 255, 255, 0.5),
-        inset 0 -2px 3px rgba(0, 0, 0, 0.9),
-        inset 0 0 35px rgba(0, 0, 0, 0.65),
-        0 26px 65px rgba(0, 0, 0, 0.9),
-        0 0 35px var(--neon-glow);
-      padding: 22px 20px 20px 20px;
+      border-radius: 28px;
+      border: 1px solid var(--border-accent);
+      background: var(--card-gradient);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85), 0 0 40px var(--neon-glow), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      padding: 34px 26px 26px 26px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
       transition: background 0.4s ease, border-color 0.4s ease;
-    }
-
-    /* Prismatic Hologram Light Sweep */
-    .card-face::before {
-      content: '';
-      position: absolute;
-      top: -60%;
-      left: -60%;
-      width: 220%;
-      height: 220%;
-      background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.08) 46%, rgba(168, 85, 247, 0.18) 50%, rgba(56, 189, 248, 0.18) 53%, rgba(255, 255, 255, 0.08) 56%, transparent 64%);
-      pointer-events: none;
-      z-index: 1;
-      transform: rotate(-15deg);
-      animation: cardHoloSweep 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      opacity: 0.75;
-    }
-
-    @keyframes cardHoloSweep {
-      0% { transform: translateY(-75%) rotate(-15deg); }
-      32%, 100% { transform: translateY(75%) rotate(-15deg); }
     }
 
     .card-face.front {
@@ -195,7 +162,7 @@
       z-index: 1;
       pointer-events: none;
       transform: rotateY(180deg);
-      padding: 22px 20px 20px 20px;
+      padding: 34px 26px 26px 26px;
     }
 
     .card-scene.flipped .card-face.front {
@@ -208,11 +175,11 @@
       pointer-events: auto;
     }
 
-    /* Subdued Elegant Watermark */
+    /* Dynamic Watermark on Card */
     .watermark-dynamic {
       position: absolute;
       right: -8px;
-      top: 50%;
+      top: 45%;
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
@@ -222,7 +189,6 @@
       pointer-events: none;
       z-index: 1;
       user-select: none;
-      opacity: 0.45;
     }
 
     .watermark-dynamic span {
@@ -239,228 +205,58 @@
     }
 
     /* =========================================
-       CARD HARDWARE HEADER (NFC & EDITION)
-       ========================================= */
-    .card-header-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      position: relative;
-      z-index: 3;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      flex-shrink: 0;
-    }
-
-    .card-nfc-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .nfc-icon-svg {
-      width: 15px;
-      height: 15px;
-      color: var(--gold-accent, #ffd978);
-    }
-
-    .nfc-text {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      color: rgba(255, 255, 255, 0.65);
-      text-transform: uppercase;
-    }
-
-    .card-edition-badge {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 99px;
-      padding: 3px 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 8.5px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      color: var(--gold-accent, #ffd978);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
-
-    .edition-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold-accent, #ffd978);
-      box-shadow: 0 0 6px var(--gold-accent, #ffd978);
-    }
-
-    /* =========================================
-       FRONT FACE LAYOUT
+       FRONT FACE
        ========================================= */
     .front-wrapper {
       position: relative;
-      z-index: 3;
+      z-index: 2;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    /* 3D Embossed Luxury Medallion */
-    .card-medallion-area {
+    .front-logo-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 10px;
+    }
+
+    .front-logo-box, .back-top-logo {
+      width: 148px;
+      height: 148px;
+      background: var(--logo-bg);
+      border: 1px solid var(--logo-border);
+      border-radius: 26px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
-      margin: 10px 0 8px 0;
-      position: relative;
-      z-index: 3;
-    }
-
-    .card-medallion-box {
+      justify-content: center;
+      box-shadow: var(--logo-shadow);
+      overflow: hidden;
+      padding: 10px;
       cursor: pointer;
-      margin-bottom: 8px;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      animation: logoPulse 4.5s ease-in-out infinite;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .card-medallion-box:hover {
+    .front-logo-box:hover, .back-top-logo:hover {
       transform: scale(1.05);
     }
 
-    .card-medallion-box:active {
+    .front-logo-box:active, .back-top-logo:active {
       transform: scale(0.96);
     }
 
-    .medallion-bevel-outer {
-      width: 90px;
-      height: 90px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.06) 45%, rgba(0,0,0,0.6) 100%);
-      padding: 2px;
-      box-shadow: 0 14px 32px rgba(0,0,0,0.85), 0 0 24px var(--neon-glow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .medallion-bevel-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 20px;
-      background: var(--logo-bg, #0e0e14);
-      border: 1px solid var(--logo-border, rgba(255,255,255,0.2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.25), inset 0 0 16px rgba(0,0,0,0.8);
-    }
-
-    .medallion-img {
+    .front-logo-box img, .back-top-logo img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
-    }
-
-    .card-brand-name {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: #ffffff;
-      line-height: 1.15;
-    }
-
-    .card-brand-slogan {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--gold-accent, #ffd978);
-      letter-spacing: 0.04em;
-      margin-top: 2px;
-    }
-
-    /* Executive Identity Tier */
-    .card-executive-section {
-      position: relative;
-      z-index: 3;
-      margin-bottom: 8px;
-    }
-
-    .executive-divider {
-      height: 1px;
-      width: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0.2) 80%, transparent);
-      margin-bottom: 8px;
-    }
-
-    .executive-info-row {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .executive-name {
-      font-family: 'Montserrat', 'Pretendard', sans-serif;
-      font-size: 19px;
-      font-weight: 900;
-      letter-spacing: 0.03em;
-      color: #ffffff;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      line-height: 1.2;
-    }
-
-    .executive-role {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--gold-accent, #ffd978);
-      letter-spacing: 0.04em;
-      margin-top: 2px;
-      text-transform: uppercase;
-    }
-
-    /* Moat Tags */
-    .moat-tags {
-      display: flex;
-      gap: 5px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .moat-tag {
-      background: var(--moat-bg, rgba(255, 255, 255, 0.08));
-      border: 1px solid var(--moat-border, rgba(255, 255, 255, 0.18));
-      border-radius: 7px;
-      padding: 3px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--moat-text, #f1f5f9);
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-
-    /* Plate Layout Micro-Elements Fallback */
-    .plate-artwork-container {
-      display: none;
-    }
-    .plate-flip-prompt {
-      display: none;
-    }
-    .back-executive-badge {
-      display: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
     }
 
     /* Living Hologram GIF Motion FX */
@@ -534,11 +330,11 @@
     }
 
     /* =========================================
-       BACK FACE (SETUPOD.COM/CEO MASTER SPEC)
+       BACK FACE
        ========================================= */
     .back-wrapper {
       position: relative;
-      z-index: 3;
+      z-index: 2;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -551,150 +347,36 @@
       align-items: center;
       justify-content: center;
       padding-top: 6px;
-      margin-bottom: 6px;
-    }
-
-    .back-flipper-container {
-      perspective: 1200px;
-      -webkit-perspective: 1200px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    .back-flipper {
-      position: relative;
-      width: 144px;
-      height: 144px;
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.3, 1.15);
-      border-radius: 26px;
-    }
-
-    .back-flipper.show-qr {
-      transform: rotateY(180deg);
-    }
-
-    .back-flipper-face {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 26px;
-      background: var(--logo-bg, radial-gradient(circle at 35% 35%, #252838 0%, #0c0d14 100%));
-      border: 1px solid var(--logo-border, rgba(255, 217, 120, 0.4));
-      box-shadow: var(--logo-shadow, 0 16px 36px rgba(0, 0, 0, 0.9), 0 0 24px rgba(245, 158, 11, 0.25));
-      box-sizing: border-box;
-      padding: 10px;
-      transition: all 0.3s ease;
-    }
-
-    .back-flipper-container:hover .back-flipper-face {
-      border-color: rgba(255, 217, 120, 0.65);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.95), 0 0 32px rgba(245, 158, 11, 0.45);
-    }
-
-    .back-flipper-logo {
-      transform: rotateY(0deg);
-      z-index: 2;
     }
 
     .back-top-logo {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 144px;
+      height: 144px;
+      background: var(--logo-bg);
+      border-radius: 26px;
       overflow: hidden;
-      border-radius: 18px;
-    }
-
-    .back-top-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 14px;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-    }
-
-    .back-flipper-qr {
-      transform: rotateY(180deg);
-      z-index: 1;
-      padding: 8px;
-    }
-
-    .back-qr-box {
-      background: #ffffff;
-      padding: 6px;
-      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-      margin-bottom: 4px;
+      border: 1px solid var(--logo-border);
+      box-shadow: var(--logo-shadow);
+      padding: 12px;
+      cursor: pointer;
+      animation: logoPulse 4.5s ease-in-out infinite;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .back-qr-box img, .back-qr-box canvas {
-      display: block;
-      width: 92px !important;
-      height: 92px !important;
+    .back-top-logo:hover {
+      transform: scale(1.05);
     }
 
-    .back-flipper-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 217, 120, 0.35);
-      border-radius: 99px;
-      padding: 3px 10px;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--gold-accent, #ffd978);
-      letter-spacing: 0.02em;
-      margin-top: 4px;
-      white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    .back-top-logo:active {
+      transform: scale(0.96);
     }
 
-    .back-flipper-container:hover .back-flipper-pill {
-      background: rgba(255, 217, 120, 0.2);
-      border-color: rgba(255, 217, 120, 0.6);
-      color: #ffffff;
-    }
-
-    .qr-return-pill {
-      font-size: 9px;
-      padding: 2px 8px;
-      margin-top: 2px;
-      color: #94a3b8;
-    }
-
-    .back-qr-caption {
-      font-size: 8.5px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: 2px;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-    }
-
-    /* Main Business Info Area (setupod.com/ceo) */
     .back-info-container {
       margin-top: auto;
       margin-bottom: 2px;
-      width: 100%;
     }
 
     .back-company-name {
@@ -706,57 +388,48 @@
       margin-bottom: 4px;
       text-transform: uppercase;
       text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-      line-height: 1.15;
     }
 
     .back-company-slogan {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
-      color: var(--gold-accent, #ffd978);
-      margin-bottom: 12px;
+      color: var(--gold-accent);
+      margin-bottom: 16px;
       letter-spacing: 0.02em;
-      line-height: 1.35;
     }
 
     .profile-row {
       display: flex;
-      flex-wrap: wrap;
       align-items: baseline;
-      gap: 4px 10px;
+      gap: 10px;
       margin-bottom: 14px;
-      width: 100%;
-    }
-
-    .name-title {
-      order: 1;
-      font-family: 'Montserrat', 'Pretendard', sans-serif;
-      font-size: 21px;
-      font-weight: 900;
-      color: #ffffff;
-      letter-spacing: 0.03em;
-      line-height: 1.2;
-      white-space: nowrap;
-      flex-shrink: 0;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     .role-title {
-      order: 2;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--gold-accent, #ffd978);
-      letter-spacing: 0.03em;
-      white-space: normal;
-      word-break: keep-all;
-      line-height: 1.35;
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.75);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+
+    .name-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     .contact-group {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      margin-bottom: 12px;
-      width: 100%;
+      gap: 10px;
+      margin-bottom: 22px;
     }
 
     .contact-row {
@@ -765,105 +438,71 @@
       gap: 10px;
       text-decoration: none;
       color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      padding: 7px 12px;
-      transition: all 0.18s ease;
+      transition: transform 0.15s ease;
       cursor: pointer;
     }
 
     .contact-row:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 217, 120, 0.35);
-      transform: translateX(3px);
+      transform: translateX(4px);
     }
 
     .contact-key {
       font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 900;
-      color: var(--gold-accent, #ffd978);
-      width: 16px;
+      color: var(--key-color);
+      width: 18px;
       flex-shrink: 0;
       letter-spacing: 0.05em;
     }
 
     .contact-value {
-      font-size: 13px;
+      font-size: 14.5px;
       font-weight: 600;
       color: rgba(255, 255, 255, 0.95);
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      letter-spacing: 0.02em;
     }
 
+    /* Moat Tags */
+    .moat-tags {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
 
-    /* =========================================
-       ACTION DOCK (HIGH-CONVERTING LUXURY)
-       ========================================= */
+    .moat-tag {
+      background: var(--moat-bg);
+      border: 1px solid var(--moat-border);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--moat-text);
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      text-align: center;
+      flex: 1;
+    }
+
+    /* 2x2 Inside Action Dock */
     .inside-action-dock {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       width: 100%;
-      position: relative;
-      z-index: 3;
-    }
-
-    .btn-hero-vcard {
-      width: 100%;
-      height: 40px;
-      background: var(--save-btn-bg, linear-gradient(135deg, #f59e0b 0%, #d97706 100%));
-      color: var(--save-btn-color, #ffffff);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      cursor: pointer;
-      box-shadow: var(--save-btn-shadow, 0 6px 18px rgba(245, 158, 11, 0.4));
-      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      outline: none;
-    }
-
-    .btn-hero-vcard:hover {
-      transform: translateY(-1.5px);
-      filter: brightness(1.1);
-    }
-
-    .btn-hero-vcard:active {
-      transform: translateY(1px);
-    }
-
-    .vcard-btn-left {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .vcard-btn-arrow {
-      font-size: 13px;
-      opacity: 0.85;
-      transition: transform 0.2s ease;
     }
 
     .inside-action-row {
       display: flex;
-      gap: 7px;
+      gap: 8px;
       width: 100%;
     }
 
     .btn-action {
       flex: 1;
-      height: 40px;
+      height: 42px;
       border-radius: 12px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -875,26 +514,24 @@
       border: none;
       outline: none;
       letter-spacing: 0.01em;
-      white-space: nowrap;
     }
 
-    .btn-action.btn-save {
-      background: var(--save-btn-bg, linear-gradient(135deg, #f59e0b 0%, #d97706 100%));
+    .btn-save {
+      background: var(--save-btn-bg);
       color: var(--save-btn-color, #ffffff);
-      box-shadow: var(--save-btn-shadow, 0 6px 18px rgba(245, 158, 11, 0.4));
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: var(--save-btn-shadow);
     }
 
-    .btn-action.btn-save:hover {
-      transform: translateY(-1.5px);
+    .btn-save:hover {
+      transform: translateY(-2px);
       filter: brightness(1.1);
     }
 
-    .btn-action.btn-save:active {
+    .btn-save:active {
       transform: translateY(1px);
     }
 
-    .btn-action.btn-glass {
+    .btn-glass {
       background: rgba(255, 255, 255, 0.07);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -902,54 +539,13 @@
       color: #ffffff;
     }
 
-    .btn-action.btn-glass:hover {
+    .btn-glass:hover {
       background: rgba(255, 255, 255, 0.14);
       border-color: rgba(255, 255, 255, 0.32);
-      transform: translateY(-1.5px);
+      transform: translateY(-2px);
     }
 
-    .btn-action.btn-glass:active {
-      transform: translateY(1px);
-    }
-
-    .action-sub-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
-      width: 100%;
-    }
-
-    .btn-sub-glass {
-      height: 35px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      color: #f8fafc;
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      padding: 0 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      outline: none;
-    }
-
-    .btn-sub-glass:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.28);
-      transform: translateY(-1px);
-    }
-
-    .btn-sub-glass:active {
+    .btn-glass:active {
       transform: translateY(1px);
     }
 
@@ -958,16 +554,16 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.55);
-      margin-top: 2px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 4px;
       cursor: pointer;
       transition: color 0.2s;
     }
 
     .flip-hint:hover {
-      color: rgba(255, 255, 255, 0.95);
+      color: rgba(255, 255, 255, 0.85);
     }
 
     /* Viral Powered-By Badge */
@@ -1182,82 +778,41 @@
       transform: translateX(-50%) translateY(0);
     }
   </style>
-  <link rel="stylesheet" href="./css/gnb.css">
 </head>
 <body>
 
   <div class="container">
 
     <!-- 3D Interactive Unified Flip Card -->
-    <div class="card-scene" id="cardScene" onclick="toggleCardFlip(event)" title="카드를 탭하거나 슬라이드하면 앞뒤가 뒤집힙니다">
+    <div class="card-scene" id="cardScene" onclick="toggleCardFlip()" title="카드를 탭하거나 슬라이드하면 앞뒤가 뒤집힙니다">
       <div class="card-flipper">
         
         <!-- =========================================
              FRONT (앞면)
              ========================================= -->
         <div class="card-face front">
-          <!-- Pure Physical Card Plate Artwork (Layout Plate) -->
-          <div class="plate-artwork-container" id="plateArtworkContainer" title="카드를 탭하면 뒤집힙니다">
-            <img id="plateArtworkImg" src="./assets/toomcard_front_plate.png?v=3dmaster" alt="Metal Card Plate" class="plate-artwork-img" onerror="this.onerror=null; this.src='./assets/toomcard_front_plate.png';">
-            <div class="plate-specular-sheen"></div>
-            <div class="plate-flip-pill" onclick="event.stopPropagation(); toggleCardFlip(event);">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M16 21h5v-5"></path></svg>
-              <span>TAP TO FLIP ↺</span>
-            </div>
-          </div>
-
           <!-- 거대 동적 워터마크 -->
           <div class="watermark-dynamic" id="watermarkContainerFront" aria-hidden="true"></div>
 
           <div class="front-wrapper">
-            <!-- Card Top Hardware Bar (NFC + Edition) -->
-            <div class="card-header-bar">
-              <div class="card-nfc-group">
-                <svg class="nfc-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <path d="M6 8a8.5 8.5 0 0 1 12 0" />
-                  <path d="M8.5 11.5a5 5 0 0 1 7 0" />
-                  <path d="M11 15a1.5 1.5 0 0 1 2 0" />
-                </svg>
-                <span class="nfc-text" id="frontNfcLabel">SMART NFC 3D</span>
-              </div>
-              <div class="card-edition-badge">
-                <span class="edition-dot"></span>
-                <span id="frontEditionText">TITANIUM PRO</span>
+            <!-- 로고 박스 (탭 시 QR 팝업) -->
+            <div class="front-logo-container">
+              <div class="front-logo-box" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR코드가 열립니다">
+                <img id="frontLogoImg" src="/assets/toomcard_hd.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomcard.gif';">
               </div>
             </div>
 
-            <!-- 3D Luxury Embossed Medallion & Brand Identity -->
-            <div class="card-medallion-area">
-              <div class="card-medallion-box" onclick="event.stopPropagation(); openShareModal();">
-                <div class="medallion-bevel-outer">
-                  <div class="medallion-bevel-inner">
-                    <img id="frontLogoImg" src="/assets/toomcard_hd.gif" alt="Logo" class="medallion-img" onerror="this.onerror=null; this.src='/assets/toomcard_hd.gif';">
-                  </div>
-                </div>
-              </div>
-              <div class="card-brand-name" id="frontCompany">TOOMUS</div>
-              <div class="card-brand-slogan" id="frontSlogan">Life, Connected</div>
-            </div>
+            <div class="front-info-container">
+              <div class="brand-sub-engraving" id="frontTagline"></div>
+              <div class="front-company" id="frontCompany"></div>
+              <div class="front-slogan" id="frontSlogan"></div>
 
-            <!-- Executive Identity Tier -->
-            <div class="card-executive-section">
-              <div class="executive-divider"></div>
-              <div class="executive-info-row">
-                <div class="executive-name" id="frontName">Sophia Kang</div>
-                <div class="executive-role" id="frontRole">Global Managing Director</div>
-              </div>
               <!-- Moat Tags on Front -->
               <div class="moat-tags" id="frontMoatTags"></div>
-            </div>
 
-            <!-- Plate Flip Micro Prompt (Layout Plate) -->
-            <div class="plate-flip-prompt" id="plateFlipPrompt">
-              <span>TAP TO REVEAL DETAILS</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="prompt-icon"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <!-- 2x2 Buttons on Front -->
+              <div class="inside-action-dock" id="insideActionDockFront"></div>
             </div>
-
-            <!-- Smart Action Dock on Front -->
-            <div class="inside-action-dock" id="insideActionDockFront"></div>
           </div>
         </div>
 
@@ -1269,46 +824,22 @@
           <div class="watermark-dynamic" id="watermarkContainerBack" aria-hidden="true"></div>
 
           <div class="back-wrapper">
-            <!-- Top Logo on Back (Interactive 3D Flipper) -->
+            <!-- Top Logo on Back -->
             <div class="back-top-logo-container">
-              <div class="back-flipper-container" id="backFlipperContainer" onclick="toggleBackLogoQr(event);">
-                <div class="back-flipper" id="backFlipper">
-                  
-                  <!-- [FRONT OF FLIPPER]: Brand Animated 3D Logo Emblem (Default) -->
-                  <div class="back-flipper-face back-flipper-logo" id="backFlipperLogoFace">
-                    <div class="back-top-logo">
-                      <img id="backLogoImg" src="/assets/toomuslogo.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomcard_hd.gif';">
-                    </div>
-                  </div>
-
-                  <!-- [BACK OF FLIPPER]: Instant QR Code (Revealed on Tap) -->
-                  <div class="back-flipper-face back-flipper-qr" id="backFlipperQrFace">
-                    <div id="backQrDirectTarget" class="back-qr-box" onclick="event.stopPropagation(); openShareModal();" title="더블탭하여 QR 크게 보기"></div>
-                    <div class="back-flipper-pill qr-return-pill">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="flipper-pill-icon">
-                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                        <path d="M3 3v5h5"></path>
-                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
-                        <path d="M16 21h5v-5"></path>
-                      </svg>
-                      <span>탭하여 로고 보기 ↺</span>
-                    </div>
-                    <span class="back-qr-caption">스마트폰 카메라로 스캔시 즉시 등록</span>
-                  </div>
-
-                </div>
+              <div class="back-top-logo" onclick="event.stopPropagation(); openShareModal();" title="로고를 탭하면 QR코드가 열립니다">
+                <img id="backLogoImg" src="/assets/toomcard_hd.gif" alt="Logo" onerror="this.onerror=null; this.src='/assets/toomcard.gif';">
               </div>
             </div>
 
-            <!-- Main Business Info (setupod.com/ceo structure) -->
+            <!-- Main Business Info -->
             <div class="back-info-container">
               <div class="brand-sub-engraving" id="backTagline"></div>
               <div class="back-company-name" id="backCompany"></div>
               <div class="back-company-slogan" id="backSlogan"></div>
 
               <div class="profile-row">
-                <span class="name-title" id="nameTitle"></span>
                 <span class="role-title" id="roleTitle"></span>
+                <span class="name-title" id="nameTitle"></span>
               </div>
 
               <div class="contact-group">
@@ -1328,8 +859,9 @@
               <!-- Moat Tags on Back -->
               <div class="moat-tags" id="backMoatTags"></div>
 
-              <!-- Inside-Card Action Dock on Back -->
+              <!-- Inside-Card 2x2 Buttons on Back -->
               <div class="inside-action-dock" id="insideActionDockBack"></div>
+
             </div>
           </div>
         </div>
@@ -1338,13 +870,13 @@
     </div>
 
     <!-- Flip Hint Bar -->
-    <div class="flip-hint" onclick="toggleCardFlip(event)">
+    <div class="flip-hint" onclick="toggleCardFlip()">
       <i data-lucide="refresh-cw" class="flip-icon" style="width: 14px; height: 14px;"></i>
-      <span>카드를 탭하면 앞면 ↔ 뒷면이 입체로 회전합니다</span>
+      <span>카드를 탭하거나 슬라이드하면 앞면 ↔ 뒷면이 뒤집힙니다</span>
     </div>
 
     <!-- Install App Hint -->
-    <div class="flip-hint flip-hint-install" onclick="openInstallModal()" style="color: #ffd978; margin-top: 10px; margin-bottom: -4px;">
+    <div class="flip-hint flip-hint-install" onclick="openInstallModal()" style="color: #ffd978; margin-top: 12px; margin-bottom: -4px;">
       <i data-lucide="smartphone" style="width: 14px; height: 14px;"></i>
       <span>내 폰 홈 화면에 명함 앱 설치하기 📱</span>
     </div>
@@ -1363,10 +895,10 @@
       </a>
     </div>
 
-    <!-- Viral Powered-By High-Conversion Badge -->
-    <a href="/maker" class="viral-badge-link" title="나도 30초 만에 3D 명함 만들기" style="text-decoration:none;">
-      <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #ffd978;"></i>
-      <span>나도 30초 만에 3D 명함 만들기 ➔ <strong style="color:#ffd978;">TOOMCARD</strong></span>
+    <!-- Viral Powered-By Badge -->
+    <a href="/maker" class="viral-badge-link" title="TOOMCARD에서 나만의 3D 명함 만들기">
+      <i data-lucide="sparkles" style="width: 13px; height: 13px; color: var(--neon-accent);"></i>
+      <span>Build your 3D card with <strong>TOOMCARD</strong></span>
     </a>
 
   </div>
@@ -1442,6 +974,7 @@
       <button class="modal-close-btn" onclick="document.getElementById('leadModal').classList.remove('active')">취소</button>
     </div>
   </div>
+
   <!-- Install App Modal -->
   <div class="modal-overlay" id="installModal" onclick="if(event.target===this) closeInstallModal()">
     <div class="modal-box">
@@ -1479,7 +1012,6 @@
         return;
       }
       
-      // card-renderer.js에서 slug 추출
       const slug = typeof getCardSlug === 'function' ? getCardSlug() : (new URLSearchParams(window.location.search).get('id') || 'toomus');
       
       const success = await saveLeadToCloud(slug, phone, memo);
@@ -1517,7 +1049,7 @@
       if (c && !c.classList.contains('loaded')) {
         c.classList.add('loaded');
       }
-    }, 600);
+    }, 500);
   </script>
 </body>
 </html>

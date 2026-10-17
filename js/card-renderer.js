@@ -11,7 +11,7 @@ const DEFAULT_CARD_FALLBACK = {
   slug: "toomcard",
   id: "toomcard",
   theme: "obsidian",
-  layout: "plate",
+  layout: "classic",
   edition: "TITANIUM PRO",
   name: "Alex Rivera",
   role: "총괄 디렉터 / Managing Director",
@@ -288,8 +288,8 @@ function renderSocialModal(data) {
 function populateCard(data) {
   cardData = data;
 
-  // 레이아웃 적용
-  const layout = data.layout || 'plate';
+  // 레이아웃 적용 (기본: SETUPOD 정통 3D 카드)
+  const layout = data.layout || 'classic';
   const layoutStylesheet = document.getElementById('layoutStylesheet');
   const base = getBasePath();
   if (layoutStylesheet) {
@@ -393,13 +393,15 @@ function populateCard(data) {
     plateImg.src = resolveAssetUrl(rawPath) + cacheBuster;
   }
 
-  // 앞면 정보 바인딩 (이름, 직함, 회사명, 슬로건, 에디션)
+  // 앞면 정보 바인딩 (태그라인, 회사명, 슬로건, 이름, 직함)
+  const frontTagline = document.getElementById('frontTagline');
   const frontCompany = document.getElementById('frontCompany');
   const frontSlogan = document.getElementById('frontSlogan');
   const frontName = document.getElementById('frontName');
   const frontRole = document.getElementById('frontRole');
   const frontEditionText = document.getElementById('frontEditionText');
 
+  if (frontTagline) frontTagline.innerText = data.tagline || '';
   if (frontCompany) frontCompany.innerText = data.company || '';
   if (frontSlogan) frontSlogan.innerText = data.slogan || '';
   if (frontName) frontName.innerText = data.name || '';
