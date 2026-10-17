@@ -150,6 +150,43 @@
   border-color: rgba(120, 53, 15, 0.22) !important;
 }
 
+/* Glass buttons on Warm Sand */
+.btn-glass,
+.btn-action.btn-glass {
+  background: rgba(120, 53, 15, 0.06) !important;
+  border: 1px solid rgba(120, 53, 15, 0.16) !important;
+  color: #271b12 !important;
+}
+
+.btn-glass span,
+.btn-action.btn-glass span {
+  color: #271b12 !important;
+}
+
+.btn-glass:hover,
+.btn-action.btn-glass:hover {
+  background: rgba(120, 53, 15, 0.11) !important;
+  border-color: rgba(120, 53, 15, 0.26) !important;
+}
+
+/* Moat Tags on Warm Sand */
+.moat-tag {
+  background: rgba(120, 53, 15, 0.05) !important;
+  border: 1px solid rgba(120, 53, 15, 0.14) !important;
+  color: #2d1c10 !important;
+}
+
+/* Watermark Typography on Warm Sand */
+.watermark-dynamic span {
+  color: rgba(120, 53, 15, 0.04) !important;
+  -webkit-text-stroke: 1px rgba(120, 53, 15, 0.08) !important;
+}
+
+/* Taglines and Engravings on Warm Sand */
+.brand-sub-engraving {
+  color: #78350f !important;
+}
+
 @keyframes logoPulse {
   0%, 100% {
     box-shadow: 0 8px 20px rgba(67, 34, 12, 0.08);

@@ -150,6 +150,43 @@
   border-color: rgba(15, 23, 42, 0.2) !important;
 }
 
+/* Glass buttons on White Minimal */
+.btn-glass,
+.btn-action.btn-glass {
+  background: rgba(15, 23, 42, 0.05) !important;
+  border: 1px solid rgba(15, 23, 42, 0.14) !important;
+  color: #0f172a !important;
+}
+
+.btn-glass span,
+.btn-action.btn-glass span {
+  color: #0f172a !important;
+}
+
+.btn-glass:hover,
+.btn-action.btn-glass:hover {
+  background: rgba(15, 23, 42, 0.09) !important;
+  border-color: rgba(15, 23, 42, 0.22) !important;
+}
+
+/* Moat Tags on White Minimal */
+.moat-tag {
+  background: rgba(15, 23, 42, 0.05) !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  color: #1e293b !important;
+}
+
+/* Watermark Typography on White Minimal */
+.watermark-dynamic span {
+  color: rgba(15, 23, 42, 0.04) !important;
+  -webkit-text-stroke: 1px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Taglines and Engravings on White Minimal */
+.brand-sub-engraving {
+  color: #64748b !important;
+}
+
 @keyframes logoPulse {
   0%, 100% {
     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
