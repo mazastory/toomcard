@@ -113,16 +113,39 @@ module.exports = async (req, res) => {
     const htmlPath = path.join(process.cwd(), 'card.html');
     let html = fs.readFileSync(htmlPath, 'utf8');
 
-    // 4. Inject Dynamic OG Meta Tags (Replace existing placeholder tags)
-    const ogImageUrl = `https://toomcard.com/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(subtitle)}&company=${encodeURIComponent(company)}`;
-    
-    html = html.replace(/<title>.*?<\/title>/i, `<title>${title} | ${company} - TOOMCARD</title>`);
-    html = html.replace(/<meta\s+property=["']og:title["'].*?>/i, `<meta property="og:title" content="${title} | ${company}" />`);
-    html = html.replace(/<meta\s+property=["']og:description["'].*?>/i, `<meta property="og:description" content="${subtitle}" />`);
+    // 4. Determine Dynamic OG Meta Tags
+    const isHyangwon = slugsToTry.some(s => s === 'hyangwon' || s === '이향원' || s === 'hyanwon' || s === 'won');
+
+    let ogImageUrl = 'https://toomcard.com/assets/toomcard_og_banner.jpg';
+    let ogTitle = `${title} | ${company} - TOOMCARD`;
+    let ogDesc = subtitle || '종이 명함의 시대를 끝내는 살아 움직이는 3D 스마트 명함';
+
+    if (isHyangwon) {
+      ogImageUrl = 'https://toomcard.com/assets/toomcard_og_hyangwon.jpg';
+      ogTitle = '이향원 이사(Director) | TOOMCARD 3D 디지털 명함';
+      ogDesc = '종이 명함의 시대를 끝내는 살아 움직이는 3D 스마트 명함 · 탭하여 연락처 저장 및 프로필 확인';
+    } else if (targetJsonPath) {
+      try {
+        const cJson = JSON.parse(fs.readFileSync(targetJsonPath, 'utf8'));
+        if (cJson.meta?.ogImage) ogImageUrl = cJson.meta.ogImage.startsWith('http') ? cJson.meta.ogImage : `https://toomcard.com${cJson.meta.ogImage}`;
+        if (cJson.meta?.ogTitle) ogTitle = cJson.meta.ogTitle;
+        if (cJson.meta?.ogDescription) ogDesc = cJson.meta.ogDescription;
+      } catch(e) {}
+    }
+
+    html = html.replace(/<title>.*?<\/title>/i, `<title>${ogTitle}</title>`);
+    html = html.replace(/<meta\s+property=["']og:title["'].*?>/i, `<meta property="og:title" content="${ogTitle}" />`);
+    html = html.replace(/<meta\s+property=["']og:description["'].*?>/i, `<meta property="og:description" content="${ogDesc}" />`);
     html = html.replace(/<meta\s+property=["']og:image["'].*?>/i, `<meta property="og:image" content="${ogImageUrl}" />`);
 
     const extraTags = `
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="675" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:url" content="https://toomcard.com/${isHyangwon ? 'hyangwon' : (cleanSlug || 'toomus')}" />
       <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:title" content="${ogTitle}" />
+      <meta property="twitter:description" content="${ogDesc}" />
       <meta property="twitter:image" content="${ogImageUrl}" />
     `;
     html = html.replace('</head>', `${extraTags}\n</head>`);

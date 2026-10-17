@@ -63,8 +63,8 @@
   "meta": {
     "title": "TOOMCARD | 이향원 이사(Director) 3D 디지털 명함",
     "siteName": "TOOMCARD",
-    "ogTitle": "이향원 이사(Director) | TOOMCARD",
-    "ogDescription": "종이 명함의 시대를 끝내는 살아 움직이는 3D 명함 | TOOMCARD 공식 3D 디지털 명함",
-    "ogImage": "/assets/toomcard_front_plate.png"
+    "ogTitle": "이향원 이사(Director) | TOOMCARD 3D 디지털 명함",
+    "ogDescription": "종이 명함의 시대를 끝내는 살아 움직이는 3D 스마트 명함 · 탭하여 연락처 저장 및 프로필 확인",
+    "ogImage": "https://toomcard.com/assets/toomcard_og_hyangwon.jpg"
   }
 }
