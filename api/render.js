@@ -198,15 +198,17 @@ module.exports = async (req, res) => {
       } catch(e) {}
     }
 
-    // Default to dynamic @vercel/og personalized 3D card image preview
+    // Default theme-matched high-res 3D card preview banner
     if (!ogImageUrl) {
-      const ogParams = new URLSearchParams({
-        title: title || 'TOOMCARD',
-        subtitle: subtitle || '3D 인터랙티브 디지털 명함',
-        company: company || 'TOOMCARD',
-        theme: cardTheme || 'obsidian'
-      });
-      ogImageUrl = `https://toomcard.com/api/og?${ogParams.toString()}`;
+      if (cardTheme === 'gold') {
+        ogImageUrl = 'https://toomcard.com/assets/toomcard_front_plate.jpg';
+      } else if (cardTheme === 'nexus' || cardTheme === 'cyber') {
+        ogImageUrl = 'https://toomcard.com/assets/toomcard_card_hybrid.jpg';
+      } else if (cardTheme === 'corporate' || cardTheme === 'enterprise') {
+        ogImageUrl = 'https://toomcard.com/assets/toomcard_card_3d.jpg';
+      } else {
+        ogImageUrl = 'https://toomcard.com/assets/toomcard_og_banner.jpg';
+      }
     }
 
     html = html.replace(/<title>.*?<\/title>/i, `<title>${ogTitle}</title>`);
@@ -215,9 +217,6 @@ module.exports = async (req, res) => {
     html = html.replace(/<meta\s+property=["']og:image["'].*?>/i, `<meta property="og:image" content="${ogImageUrl}" />`);
 
     const extraTags = `
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="675" />
-      <meta property="og:image:type" content="image/jpeg" />
       <meta property="og:url" content="https://toomcard.com/${isHyangwon ? 'hyangwon' : (cleanSlug || 'toomus')}" />
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:title" content="${ogTitle}" />
