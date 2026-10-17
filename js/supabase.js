@@ -398,17 +398,75 @@ async function getAnalyticsHistory(slug, days = 7) {
   }));
 }
 
-// 10. 내 명함 목록 불러오기 (대시보드용)
+// 10. 내 명함 목록 불러오기 (대시보드용 - 본인 소유 명함 + 위임받은 직원 명함)
 async function getMyPods() {
   const user = await getCurrentUser();
   if (!user) return null;
-  const { data: pods, error } = await supabaseClient
-    .from('pods')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('updated_at', { ascending: false });
-  if (error) console.error("Error fetching pods:", error);
-  return pods;
+  try {
+    const { data: ownPods, error: ownErr } = await supabaseClient
+      .from('pods')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('updated_at', { ascending: false });
+    if (ownErr) console.error("Error fetching own pods:", ownErr);
+    let allPods = ownPods || [];
+
+    // 위임받은 직원 이메일 체크 (관리자가 이메일로 권한을 부여한 명함)
+    if (user.email) {
+      try {
+        const { data: assignedPods } = await supabaseClient
+          .from('pods')
+          .select('*')
+          .contains('components_json', { assigned_email: user.email.toLowerCase() });
+        if (assignedPods && assignedPods.length > 0) {
+          assignedPods.forEach(ap => {
+            if (!allPods.find(p => p.slug === ap.slug)) {
+              ap._isAssignedStaff = true;
+              allPods.push(ap);
+            }
+          });
+        }
+      } catch(e) {}
+    }
+
+    return allPods;
+  } catch (err) {
+    console.error("getMyPods exception:", err);
+    return [];
+  }
+}
+
+// 10-2. 임직원 이메일 권한 위임 저장 (기업 관리자가 직원에게 개별 관리 권한 부여)
+async function assignStaffEmailToPod(slug, staffEmail) {
+  const user = await getCurrentUser();
+  if (!user) return { error: "로그인이 필요합니다." };
+  try {
+    const { data: pod, error: getErr } = await supabaseClient
+      .from('pods')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
+
+    if (getErr || !pod) return { error: "해당 명함을 찾을 수 없습니다." };
+
+    const comp = pod.components_json || {};
+    const cleanEmail = (staffEmail || '').trim().toLowerCase();
+    comp.assigned_email = cleanEmail;
+    if (comp.card) comp.card.assigned_email = cleanEmail;
+
+    const { error: updateErr } = await supabaseClient
+      .from('pods')
+      .update({
+        components_json: comp,
+        updated_at: new Date().toISOString()
+      })
+      .eq('slug', slug);
+
+    if (updateErr) return { error: updateErr.message };
+    return { success: true };
+  } catch(e) {
+    return { error: e.message };
+  }
 }
 
 // 11. 내 명함 삭제하기

@@ -4400,9 +4400,15 @@
 
     // 초기화
     window.addEventListener('DOMContentLoaded', async () => {
-      // 1. URL에서 edit 파라미터 확인 및 클라우드 연동
+      // 1. URL에서 edit 파라미터 및 mode 파라미터 확인 및 클라우드 연동
       const urlParams = new URLSearchParams(window.location.search);
       const editSlug = urlParams.get('edit');
+      const modeParam = urlParams.get('mode');
+      if (modeParam === 'team' || modeParam === 'enterprise') {
+        if (typeof switchMakerMode === 'function') switchMakerMode('team');
+      } else if (modeParam === 'single' || modeParam === 'personal') {
+        if (typeof switchMakerMode === 'function') switchMakerMode('single');
+      }
       
       let savedData = null;
       

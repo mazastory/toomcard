@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>TOOMCARD | 내 명함 관리 (대시보드)</title>
+  <title>TOOMCARD | 스마트 명함 대시보드 (개인 & 기업 콘솔)</title>
   
   <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.344.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   
   <!-- Chart.js & Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -123,13 +124,13 @@
     .container {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 110px 24px 60px;
+      padding: 105px 24px 60px;
       flex: 1;
       width: 100%;
     }
     
     .header-box {
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
     .header-box h1 {
       font-size: 28px;
@@ -140,6 +141,205 @@
     .header-box p {
       color: rgba(255,255,255,0.6);
       font-size: 15px;
+    }
+
+    /* 🌟 Mode Switcher: 개인 대시보드 vs 기업 관리자 콘솔 */
+    .mode-switch-wrapper {
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .mode-switch-track {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 6px;
+      display: inline-flex;
+      gap: 8px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    .mode-switch-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 22px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: left;
+    }
+    .mode-switch-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+    .mode-switch-btn.active {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(126, 34, 206, 0.4) 100%);
+      border-color: rgba(168, 85, 247, 0.55);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+    }
+    .mode-switch-btn.active.corp-active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(3, 105, 161, 0.4) 100%);
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+    }
+    .mode-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+    .mode-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .mode-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+    .mode-desc {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+    .mode-tag {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: rgba(168, 85, 247, 0.25);
+      color: #d8b4fe;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      margin-left: 6px;
+    }
+    .mode-tag.tag-corp {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    /* 👤 Personal Hero Showcase Card */
+    .personal-hero-card {
+      background: radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.12) 0%, rgba(18, 12, 32, 0.7) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    .personal-hero-preview {
+      width: 190px;
+      height: 275px;
+      background: linear-gradient(145deg, #181324 0%, #0d0817 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+      transform: perspective(600px) rotateY(-8deg) rotateX(3deg);
+      transition: transform 0.4s ease;
+    }
+    .personal-hero-preview:hover {
+      transform: perspective(600px) rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+    .hero-info-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .hero-actions-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .btn-hero {
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-hero-primary {
+      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(168, 85, 247, 0.35);
+    }
+    .btn-hero-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(168, 85, 247, 0.45);
+    }
+    .btn-hero-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+    }
+    .btn-hero-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-1px);
+    }
+    .btn-hero-nfc {
+      background: rgba(255, 217, 120, 0.12);
+      border: 1px solid rgba(255, 217, 120, 0.3);
+      color: #ffd978;
+    }
+    .btn-hero-nfc:hover {
+      background: rgba(255, 217, 120, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* 🏢 Enterprise Admin Master Banner */
+    .enterprise-banner {
+      background: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.12) 0%, rgba(13, 20, 35, 0.7) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .staff-invite-pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+    }
+    .staff-assigned {
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+    .staff-unassigned {
+      background: rgba(251, 146, 60, 0.15);
+      color: #fb923c;
+      border: 1px solid rgba(251, 146, 60, 0.3);
+      cursor: pointer;
     }
 
     /* KPI Summary Cards */
@@ -300,6 +500,34 @@
         grid-template-columns: 1fr;
       }
     }
+    @media (max-width: 768px) {
+      .personal-hero-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .personal-hero-preview {
+        margin: 0 auto;
+        transform: none;
+      }
+      .hero-actions-row {
+        justify-content: center;
+      }
+      .mode-switch-wrapper {
+        width: 100%;
+      }
+      .mode-switch-track {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .mode-switch-btn {
+        padding: 10px 10px;
+        gap: 6px;
+      }
+      .mode-desc {
+        display: none;
+      }
+    }
     @media (max-width: 600px) {
       .kpi-grid {
         grid-template-columns: 1fr;
@@ -335,8 +563,8 @@
     /* Grid */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
     }
     .pod-card {
       background: rgba(255,255,255,0.03);
@@ -371,7 +599,7 @@
       margin-top: 4px;
     }
     .pod-slug-box {
-      margin-top: 16px;
+      margin-top: 14px;
       background: rgba(0,0,0,0.4);
       padding: 10px 14px;
       border-radius: 10px;
@@ -408,12 +636,12 @@
     }
     .btn-action {
       flex: 1;
-      padding: 12px 10px;
+      padding: 11px 8px;
       border-radius: 10px;
       background: rgba(255,255,255,0.08);
       color: white;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       text-align: center;
       border: none;
@@ -421,7 +649,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       transition: background 0.2s;
     }
     .btn-action:hover { background: rgba(255,255,255,0.15); }
@@ -455,7 +683,7 @@
           <img src="/assets/toomcard_hd.gif" alt="TOOMCARD" style="width:100%; height:100%; object-fit:cover; border-radius:10px; display:block;">
         </div>
         <span style="font-family:'Montserrat', sans-serif; font-weight:900; letter-spacing:0.5px;">TOOM<span style="background:linear-gradient(135deg,#c084fc,#ec4899); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">CARD</span></span>
-        <span class="brand-badge">대시보드</span>
+        <span class="brand-badge" id="navDashboardBadge">대시보드</span>
       </a>
 
       <!-- Center Nav Links -->
@@ -475,7 +703,7 @@
           <i data-lucide="arrow-left" style="width:15px;height:15px;"></i>
           <span>홈으로 나가기</span>
         </a>
-        <a href="/maker" class="btn-create" style="padding:9px 18px; font-size:13px; font-weight:800; background:linear-gradient(135deg,#a855f7,#ec4899); box-shadow:0 4px 16px rgba(168,85,247,0.35);">
+        <a href="/maker" id="navTopNewCardBtn" class="btn-create" style="padding:9px 18px; font-size:13px; font-weight:800; background:linear-gradient(135deg,#a855f7,#ec4899); box-shadow:0 4px 16px rgba(168,85,247,0.35);">
           <i data-lucide="plus" style="width:14px;height:14px;"></i>
           <span>새 명함</span>
         </a>
@@ -490,7 +718,7 @@
     <div id="loginRequired">
       <i data-lucide="lock" style="width: 48px; height: 48px; color: rgba(255,255,255,0.2); margin-bottom: 20px;"></i>
       <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">로그인이 필요합니다</h2>
-      <p style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">내 3D 스마트 명함을 관리하려면 Google 계정으로 1초 만에 시작하세요.</p>
+      <p style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">내 3D 스마트 명함과 기업 관리자 콘솔을 시작하려면 Google 계정으로 1초 만에 로그인하세요.</p>
       <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
         <button class="btn-create" style="background:#ffffff; color:#0f0b1a; font-weight:800; font-size:15px; padding:14px 28px; border-radius:12px; display:inline-flex; align-items:center; gap:10px; box-shadow:0 4px 20px rgba(0,0,0,0.3); border:none; cursor:pointer;" onclick="signInWithGoogle()">
           <svg style="width:20px;height:20px;" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
@@ -504,6 +732,29 @@
     </div>
     
     <div id="dashboardContent">
+      <!-- 🌟 Segmented Mode Switcher: [ 👤 내 개인 명함 ] vs [ 🏢 기업 관리자 콘솔 ] -->
+      <div class="mode-switch-wrapper">
+        <div class="mode-switch-track">
+          <button id="btnSwitchPersonal" class="mode-switch-btn active" onclick="switchDashboardViewMode('personal')">
+            <span class="mode-icon">👤</span>
+            <div class="mode-text">
+              <span class="mode-title">내 개인 명함</span>
+              <span class="mode-desc">1:1 비즈니스 & 개인 리드</span>
+            </div>
+            <span class="mode-tag" id="badgePersonalStatus">대표 명함</span>
+          </button>
+          <button id="btnSwitchEnterprise" class="mode-switch-btn" onclick="switchDashboardViewMode('enterprise')">
+            <span class="mode-icon">🏢</span>
+            <div class="mode-text">
+              <span class="mode-title">기업 관리자 콘솔</span>
+              <span class="mode-desc">TOOMUS 임직원 통합 관제</span>
+            </div>
+            <span class="mode-tag tag-corp" id="badgeEnterpriseCount">마스터 권한</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Header Box (Dynamically switches text based on mode) -->
       <div class="header-box" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
         <div>
           <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:12px;">
@@ -511,28 +762,61 @@
               <i data-lucide="home" style="width:13px;height:13px;"></i> TOOMCARD 메인 홈
             </a>
             <span>›</span>
-            <span style="color:#fff; font-weight:600;">대시보드</span>
+            <span style="color:#fff; font-weight:600;" id="headerBreadcrumbMode">내 개인 명함</span>
           </div>
-          <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.3); padding:4px 10px; border-radius:99px; font-size:12px; font-weight:800; color:#d8b4fe; margin-bottom:8px;">
-            <span>💼 TOOMCARD BUSINESS CONSOLE</span>
+          <div id="headerModeBadgeWrap" style="display:inline-flex; align-items:center; gap:6px; background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.3); padding:4px 10px; border-radius:99px; font-size:12px; font-weight:800; color:#d8b4fe; margin-bottom:8px;">
+            <span id="headerModeBadge">👤 PERSONAL 3D BIZCARD</span>
           </div>
-          <h1>내 3D 스마트 명함 & 미팅 리드 관리</h1>
-          <p>내 명함을 조회한 방문자 통계와 현장에서 명함을 보고 연락처를 남긴 잠재 고객을 실시간 관리하세요.</p>
+          <h1 id="headerMainTitle">내 3D 스마트 명함 & 리드 관리</h1>
+          <p id="headerMainDesc">나를 대표하는 3D 명함의 실시간 조회 통계와 1:1 고객 미팅 리드를 확인하세요.</p>
         </div>
         <div style="display: flex; gap: 8px; align-items:center; flex-wrap:wrap;">
           <a href="/" class="btn-create" style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color:#fff; font-weight:800;">
-            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> 메인 홈으로 나가기
+            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> 메인 홈
           </a>
           <button id="authBtn" class="btn-create" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);" onclick="handleAuthClick()">로그아웃</button>
-          <a href="/maker" class="btn-create" style="background: linear-gradient(135deg,#a855f7,#ec4899);"><i data-lucide="plus"></i> 새 3D 명함 만들기</a>
+          <a id="headerActionBtn" href="/maker?mode=single" class="btn-create" style="background: linear-gradient(135deg,#a855f7,#ec4899);">
+            <i data-lucide="plus"></i> <span id="headerActionBtnText">새 개인 명함 만들기</span>
+          </a>
         </div>
       </div>
 
-      <!-- 1. 핵심 비즈니스 KPI 4종 카드 -->
+      <!-- 👤 [Personal Mode Special] Hero Personal 3D Bizcard Showcase -->
+      <div id="personalHeroSection">
+        <div class="personal-hero-card" id="personalHeroCardContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- 🏢 [Enterprise Mode Special] Master Console Corporate Banner -->
+      <div id="enterpriseBannerSection" style="display:none;">
+        <div class="enterprise-banner">
+          <div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); padding:3px 10px; border-radius:99px; font-size:11.5px; font-weight:800; color:#7dd3fc; margin-bottom:8px;">
+              <span>🏢 CORPORATE SUBSCRIPTION: ACTIVE</span>
+            </div>
+            <h2 style="font-size:22px; font-weight:800; color:#fff; margin-bottom:4px;">TOOMUS (투머스) 임직원 통합 관제</h2>
+            <p style="font-size:13.5px; color:rgba(255,255,255,0.65);">
+              전사 임직원의 3D 명함 발급, 개별 로그인 권한 위임, 미팅 리드 파이프라인을 총괄 관리합니다.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <a href="/maker?mode=team" class="btn-hero" style="background:linear-gradient(135deg,#0284c7,#38bdf8); color:#fff; font-weight:800; box-shadow:0 4px 16px rgba(56,189,248,0.3);">
+              <i data-lucide="user-plus" style="width:15px;height:15px;"></i>
+              <span>+ 새 팀원 명함 발급</span>
+            </a>
+            <button onclick="openNfcOrderModalForCard('toomus_team', 'TOOMUS TEAM NFC')" class="btn-hero btn-hero-nfc" style="font-weight:800;">
+              <span>💳 전사 NFC 단체 주문</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. 핵심 비즈니스 KPI 4종 카드 (Personal vs Enterprise 동적 반영) -->
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-top">
-            <span class="kpi-label">총 명함 노출수 (Impressions)</span>
+            <span class="kpi-label" id="kpiLabel1">총 명함 열람수</span>
             <span class="kpi-badge" style="background:rgba(34,197,94,0.15); color:#4ade80; border:1px solid rgba(34,197,94,0.3);">🟢 실시간</span>
           </div>
           <div class="kpi-val" id="statTotalViewsCount">0회</div>
@@ -541,32 +825,32 @@
 
         <div class="kpi-card">
           <div class="kpi-top">
-            <span class="kpi-label">연락처 저장 전환율 (vCard)</span>
+            <span class="kpi-label" id="kpiLabel2">연락처 저장 전환율</span>
             <span class="kpi-badge" style="background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3);">+5.2% 상회</span>
           </div>
           <div class="kpi-val" id="statVcardSaveRate" style="color:#38bdf8;">19.4%</div>
-          <div class="kpi-sub" id="statVcardSub">방문자 5명 중 1명 스마트폰에 저장 (<span id="statVcardCount">0</span>회)</div>
+          <div class="kpi-sub" id="statVcardSub">방문자 5명 중 1명 스마트폰 저장 (<span id="statVcardCount">0</span>회)</div>
         </div>
 
         <div class="kpi-card">
           <div class="kpi-top">
-            <span class="kpi-label">수집된 미팅 리드 (Inbound CRM)</span>
+            <span class="kpi-label" id="kpiLabel3">수집된 미팅 리드</span>
             <span class="kpi-badge" style="background:rgba(234,179,8,0.15); color:#facc15; border:1px solid rgba(234,179,8,0.3);">즉시 콜백</span>
           </div>
           <div class="kpi-val" id="statTotalLeadsCount" style="color:#ffd978;">0건</div>
-          <div class="kpi-sub">연락처 & 상담 신청 자동 적재</div>
+          <div class="kpi-sub" id="kpiSub3">연락처 & 상담 메모 자동 적재</div>
         </div>
 
         <div class="kpi-card" style="cursor:pointer;" onclick="openNfcOrderModal()">
           <div class="kpi-top">
-            <span class="kpi-label">실물 스마트 NFC 카드</span>
-            <span class="kpi-badge" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3);">하이브리드</span>
+            <span class="kpi-label" id="kpiLabel4">실물 스마트 NFC 카드</span>
+            <span class="kpi-badge" id="kpiBadge4" style="background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3);">하이브리드</span>
           </div>
-          <div class="kpi-val" style="font-size:24px; color:#fff; display:flex; align-items:center; gap:8px;">
+          <div class="kpi-val" id="kpiVal4" style="font-size:24px; color:#fff; display:flex; align-items:center; gap:8px;">
             <span>스마트 탭</span>
             <span style="font-size:16px;">💳</span>
           </div>
-          <div class="kpi-sub" style="color:#38bdf8; font-weight:700;">+ 레이저 각인 메탈 카드 신청 ➔</div>
+          <div class="kpi-sub" id="kpiSub4" style="color:#38bdf8; font-weight:700;">+ 메탈 각인 카드 신청 ➔</div>
         </div>
       </div>
 
@@ -578,7 +862,7 @@
             <div>
               <div class="chart-title">
                 <i data-lucide="trending-up" style="width:18px;height:18px;color:#a855f7;"></i>
-                <span>일별 열람 & 연락처 저장 트렌드</span>
+                <span id="chartTrafficTitle">일별 열람 & 연락처 저장 트렌드</span>
               </div>
               <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:3px;">
                 명함 노출 대비 실제 연락처 저장(vCard) 전환 성과 분석
@@ -618,7 +902,7 @@
                 <span id="distChartTitle">유입 채널 분포</span>
               </div>
               <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:3px;">
-                어디서 내 명함을 열람했을까요?
+                어디서 명함을 열람했을까요?
               </div>
             </div>
             <div class="chart-tabs">
@@ -667,26 +951,35 @@
         </div>
       </div>
       
-      <!-- 내 3D 명함 목록 -->
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <h2 style="font-size:20px; font-weight:800;">내 3D 스마트 명함 목록</h2>
+      <!-- 4. 명함 목록 섹션 (Personal: 내 추가 명함 / Enterprise: 임직원 통합 관리) -->
+      <div id="cardsSectionHeader" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 id="cardsSectionTitle" style="font-size:20px; font-weight:800;">내 스마트 명함 목록</h2>
+          <p id="cardsSectionSubtitle" style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:3px;">발급된 모든 3D 명함의 라이브 링크와 상태를 관리합니다.</p>
+        </div>
+        <div id="cardsSectionFilterWrap" style="display:flex; gap:10px; align-items:center;">
+          <input type="text" id="staffSearchInput" placeholder="임직원 성함, 직책 검색..." oninput="handleStaffSearch(this.value)" style="display:none; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:8px 12px; font-size:13px; color:#fff; width:200px; outline:none;">
+        </div>
       </div>
 
       <div id="podsList" class="card-grid">
         <div class="loading-state">
           <i data-lucide="loader-2" style="animation: spin 1s linear infinite; margin-bottom: 10px;"></i>
-          <p>내 명함 데이터를 불러오는 중...</p>
+          <p>명함 데이터를 불러오는 중...</p>
         </div>
       </div>
       
-      <!-- CRM & Leads Section -->
+      <!-- 5. CRM & Leads Section (Personal: 1:1 리드 / Enterprise: 담당자 필터 포함 전사 리드) -->
       <div class="header-box" style="margin-top: 48px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
         <div>
-          <h2>수집된 잠재 고객 리드 (Inbound CRM)</h2>
-          <p>내 명함을 확인하고 연락처 또는 상담 메모를 남긴 고객 리스트입니다. 즉시 전화 또는 문자로 연결할 수 있습니다.</p>
+          <h2 id="crmSectionTitle">수집된 잠재 고객 리드 (Inbound CRM)</h2>
+          <p id="crmSectionSubtitle">명함을 확인하고 연락처 또는 상담 메모를 남긴 고객 리스트입니다. 즉시 전화 또는 문자로 연결할 수 있습니다.</p>
         </div>
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <input type="text" id="leadsSearchInput" placeholder="연락처, 대상 명함, 메모 검색..." oninput="filterMyLeadsTable()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:9px 14px; font-size:13px; color:#fff; width:220px; outline:none;">
+          <select id="leadsStaffFilter" onchange="filterMyLeadsTable()" style="display:none; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:12px; padding:9px 14px; font-size:13px; color:#fff; outline:none; font-weight:700;">
+            <option value="all" style="background:#110c1f;">👥 전체 담당 임직원</option>
+          </select>
+          <input type="text" id="leadsSearchInput" placeholder="연락처, 담당자, 메모 검색..." oninput="filterMyLeadsTable()" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:9px 14px; font-size:13px; color:#fff; width:220px; outline:none;">
           <button onclick="exportMyLeadsCSV()" style="padding:10px 16px; background:#a855f7; color:#fff; border:none; border-radius:12px; font-weight:800; font-size:12.5px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
             <i data-lucide="download" style="width:14px;height:14px;"></i>
             <span>리드 DB CSV 다운로드</span>
@@ -694,11 +987,11 @@
         </div>
       </div>
       <div id="leadsList" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 700px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 750px;">
           <thead>
             <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
               <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600;">접수일시</th>
-              <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600;">대상 명함</th>
+              <th id="thStaffCol" style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600;">담당 임직원 / 명함</th>
               <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600;">고객 연락처</th>
               <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600;">문의 / 메모</th>
               <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 600; text-align:center;">원클릭 연결</th>
@@ -712,6 +1005,106 @@
     </div>
   </div>
 
+  <!-- ✉️ Modal: 임직원 이메일 권한 위임 (Staff Delegation Modal) -->
+  <div id="staffInviteModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#110c1f; border:1px solid rgba(168,85,247,0.35); border-radius:24px; max-width:480px; width:100%; padding:32px; box-shadow:0 25px 60px rgba(0,0,0,0.8);">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <span style="font-size:24px;">✉️</span>
+        <h3 style="font-size:20px; font-weight:800; color:#fff;">임직원 계정 연동 및 권한 위임</h3>
+      </div>
+      <p style="font-size:13px; color:#a1a1aa; margin-bottom:20px;">
+        <strong id="inviteStaffCardName" style="color:#c084fc;">이향원 이사</strong> 명함의 실소유 직원에게 개별 로그인 관리 권한을 부여합니다.
+      </p>
+
+      <form id="staffInviteForm" onsubmit="handleStaffInviteSubmit(event)">
+        <input type="hidden" id="inviteStaffSlug">
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">직원 로그인 이메일 (Google / 카카오 계정)</label>
+          <input type="email" id="inviteStaffEmail" required style="width:100%; padding:12px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px; outline:none;" placeholder="hyangwon@toomus.com 또는 구글 이메일">
+        </div>
+
+        <div style="background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.2); border-radius:12px; padding:12px; font-size:12px; color:rgba(255,255,255,0.7); line-height:1.5; margin-bottom:20px;">
+          💡 직원이 이 이메일로 TOOMCARD에 구글/카카오 로그인하면 본인의 3D 명함 대시보드와 유입된 고객 리드를 직접 확인하고 관리할 수 있습니다.
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:flex-end;">
+          <button type="button" onclick="closeStaffInviteModal()" style="padding:10px 18px; border-radius:10px; background:rgba(255,255,255,0.08); color:#fff; border:none; cursor:pointer; font-size:13px; font-weight:700;">취소</button>
+          <button type="submit" id="btnSubmitStaffInvite" style="padding:10px 20px; border-radius:10px; background:linear-gradient(135deg,#a855f7,#7e22ce); color:#fff; border:none; cursor:pointer; font-size:13px; font-weight:800;">권한 위임 저장</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 📲 Modal: QR Code Share Modal -->
+  <div id="qrShareModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#110c1f; border:1px solid rgba(255,255,255,0.2); border-radius:24px; max-width:400px; width:100%; padding:32px; text-align:center; box-shadow:0 25px 60px rgba(0,0,0,0.8);">
+      <h3 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:6px;" id="qrCardNameTitle">3D 스마트 명함 QR</h3>
+      <p style="font-size:12.5px; color:#a1a1aa; margin-bottom:20px;">스마트폰 기본 카메라로 비추면 살아 움직이는 3D 명함이 즉시 열립니다.</p>
+      
+      <div id="qrCodeContainer" style="background:#fff; padding:16px; border-radius:16px; display:inline-block; margin-bottom:16px; box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
+      
+      <div style="margin-bottom:20px;">
+        <a id="qrCardUrlLink" href="#" target="_blank" style="color:#c084fc; font-size:13px; font-weight:700; text-decoration:none;">toomcard.com/...</a>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <button onclick="downloadQrCodeImage()" style="padding:10px 18px; border-radius:10px; background:#a855f7; color:#fff; border:none; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+          <i data-lucide="download" style="width:14px;height:14px;"></i> 이미지 다운로드
+        </button>
+        <button onclick="closeQrShareModal()" style="padding:10px 18px; border-radius:10px; background:rgba(255,255,255,0.08); color:#fff; border:none; font-size:13px; font-weight:700; cursor:pointer;">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for NFC Card Order in Dashboard -->
+  <div id="dashNfcOrderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#110c1f; border:1px solid rgba(255,217,120,0.35); border-radius:24px; max-width:480px; width:100%; padding:32px; box-shadow:0 25px 60px rgba(0,0,0,0.8);">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <span style="font-size:24px;">💳</span>
+        <h3 style="font-size:20px; font-weight:800; color:#fff;">실물 스마트 NFC 카드 주문</h3>
+      </div>
+      <p style="font-size:13px; color:#a1a1aa; margin-bottom:20px;">
+        스마트폰에 탭하면 내 3D 명함이 즉시 열리는 하드웨어 카드를 제작 배송합니다.
+      </p>
+
+      <form id="dashNfcOrderForm" onsubmit="handleDashNfcOrderSubmit(event)">
+        <div style="margin-bottom:14px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">카드 모델 선택</label>
+          <select id="dNfcCardType" style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px; outline:none;">
+            <option value="metal_gold" style="background:#110c1f;">🥇 티타늄 골드 메탈 (₩49,000 / 레이저 각인)</option>
+            <option value="pvc_black" style="background:#110c1f;">🖤 매트 블랙 프리미엄 PVC (₩29,000 / 무광 방수)</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div>
+            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">카드 각인 성함</label>
+            <input type="text" id="dNfcEngraveName" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="예: ANDREW K">
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">받으실 분 연락처</label>
+            <input type="tel" id="dNfcContact" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="010-1234-5678">
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">배송받으실 주소</label>
+          <input type="text" id="dNfcAddress" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="서울시 강남구 테헤란로 123 4층">
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">연동할 3D 명함 URL</label>
+          <input type="text" id="dNfcCardUrl" style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#ffd978; font-size:13.5px; font-weight:600;" placeholder="https://toomcard.com/andrew">
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:flex-end;">
+          <button type="button" onclick="closeDashNfcOrderModal()" style="padding:10px 18px; border-radius:10px; background:rgba(255,255,255,0.08); color:#fff; border:none; cursor:pointer; font-size:13px; font-weight:700;">닫기</button>
+          <button type="submit" id="dNfcSubmitBtn" style="padding:10px 20px; border-radius:10px; background:linear-gradient(135deg,#ffd978,#f59e0b); color:#000; border:none; cursor:pointer; font-size:13px; font-weight:800;">주문 접수 완료</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <style>
     @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
@@ -719,12 +1112,107 @@
   <script>
     lucide.createIcons();
     
+    // Default TOOMUS Enterprise Team Roster (Enriched when in enterprise view)
+    const DEFAULT_ENTERPRISE_ROSTER = [
+      {
+        slug: 'hyangwon',
+        name: '이향원',
+        role: '투머스 / 이사',
+        company: 'TOOMUS',
+        phone: '010-3882-9907',
+        email: 'hyangwon@toomus.com',
+        views: 142,
+        assigned_email: 'hyangwon@toomus.com'
+      },
+      {
+        slug: 'subin',
+        name: '박수빈',
+        role: '투머스 / 매니저',
+        company: 'TOOMUS',
+        phone: '010-9123-4567',
+        email: 'subin@toomus.com',
+        views: 98,
+        assigned_email: 'subin@toomus.com'
+      },
+      {
+        slug: 'hyunsoo',
+        name: '김현수',
+        role: '투머스 / 테크리드',
+        company: 'TOOMUS',
+        phone: '010-8234-5678',
+        email: 'hyunsoo@toomus.com',
+        views: 84,
+        assigned_email: 'hyunsoo@toomus.com'
+      },
+      {
+        slug: 'yongsu',
+        name: '김용수',
+        role: '투머스 / 팀장',
+        company: 'TOOMUS',
+        phone: '010-3456-7890',
+        email: 'yongsu@toomus.com',
+        views: 65,
+        assigned_email: ''
+      },
+      {
+        slug: 'jiyeon',
+        name: '유지연',
+        role: '투머스 / 책임',
+        company: 'TOOMUS',
+        phone: '010-4567-8901',
+        email: 'jiyeon@toomus.com',
+        views: 52,
+        assigned_email: ''
+      },
+      {
+        slug: 'yunseo',
+        name: '조윤서',
+        role: '투머스 / 책임',
+        company: 'TOOMUS',
+        phone: '010-5678-9012',
+        email: 'yunseo@toomus.com',
+        views: 47,
+        assigned_email: ''
+      },
+      {
+        slug: 'naeun',
+        name: '김나은',
+        role: '투머스 / 선임',
+        company: 'TOOMUS',
+        phone: '010-6789-0123',
+        email: 'naeun@toomus.com',
+        views: 39,
+        assigned_email: ''
+      },
+      {
+        slug: 'nahyun',
+        name: '김나현',
+        role: '투머스 / 매니저',
+        company: 'TOOMUS',
+        phone: '010-7890-1234',
+        email: 'nahyun@toomus.com',
+        views: 33,
+        assigned_email: ''
+      }
+    ];
+
+    // Global state
+    window._dashboardMode = localStorage.getItem('toomcard_dashboard_mode') || 'personal';
+    window._currentUser = null;
+    window._allPods = [];
+    window._personalPod = null;
+    window._enterprisePods = [];
+    window._myDashboardPageViews = [];
+    window._myDashboardLeads = [];
+    window._currentTrafficPeriod = 7;
+    window._currentDistMode = 'channels';
+    window._mainTrafficChartInstance = null;
+    window._mainDistChartInstance = null;
+
     async function initDashboard() {
-      // Supabase Auth 상태 실시간 리스너
       if (typeof supabaseClient !== 'undefined' && supabaseClient?.auth) {
         supabaseClient.auth.onAuthStateChange((event, session) => {
           if (event === 'SIGNED_IN' && session?.user) {
-            // URL에 남아있는 OAuth 해시 토큰 정리
             if (window.location.hash.includes('access_token')) {
               window.history.replaceState({}, document.title, window.location.pathname);
             }
@@ -747,6 +1235,7 @@
     }
 
     async function renderAuthenticatedView(user) {
+      window._currentUser = user;
       const authBtn = document.getElementById('authBtn');
       if (authBtn) {
         authBtn.textContent = '로그아웃';
@@ -759,6 +1248,7 @@
       }
       document.getElementById('loginRequired').style.display = 'none';
       document.getElementById('dashboardContent').style.display = 'block';
+
       await loadDashboardData();
 
       if (typeof checkProStatus === 'function') {
@@ -770,6 +1260,7 @@
     }
 
     function renderUnauthenticatedView() {
+      window._currentUser = null;
       const authBtn = document.getElementById('authBtn');
       if (authBtn) {
         authBtn.textContent = '로그인';
@@ -792,97 +1283,176 @@
         signInWithGoogle();
       }
     }
-    
+
+    // 🌟 Mode Switcher: 'personal' vs 'enterprise'
+    function switchDashboardViewMode(mode) {
+      window._dashboardMode = mode;
+      localStorage.setItem('toomcard_dashboard_mode', mode);
+
+      const btnPers = document.getElementById('btnSwitchPersonal');
+      const btnCorp = document.getElementById('btnSwitchEnterprise');
+      const headerBreadcrumb = document.getElementById('headerBreadcrumbMode');
+      const headerBadge = document.getElementById('headerModeBadge');
+      const headerTitle = document.getElementById('headerMainTitle');
+      const headerDesc = document.getElementById('headerMainDesc');
+      const headerActionBtn = document.getElementById('headerActionBtn');
+      const headerActionBtnText = document.getElementById('headerActionBtnText');
+      const personalHeroSection = document.getElementById('personalHeroSection');
+      const enterpriseBannerSection = document.getElementById('enterpriseBannerSection');
+      const staffSearchInput = document.getElementById('staffSearchInput');
+      const leadsStaffFilter = document.getElementById('leadsStaffFilter');
+      const thStaffCol = document.getElementById('thStaffCol');
+      const crmTitle = document.getElementById('crmSectionTitle');
+      const crmSubtitle = document.getElementById('crmSectionSubtitle');
+
+      if (mode === 'personal') {
+        btnPers.className = 'mode-switch-btn active';
+        btnCorp.className = 'mode-switch-btn';
+        if (headerBreadcrumb) headerBreadcrumb.textContent = '내 개인 명함';
+        if (headerBadge) {
+          headerBadge.textContent = '👤 PERSONAL 3D BIZCARD';
+          headerBadge.parentElement.style.borderColor = 'rgba(168,85,247,0.3)';
+          headerBadge.parentElement.style.background = 'rgba(168,85,247,0.15)';
+        }
+        if (headerTitle) headerTitle.textContent = '내 개인 3D 스마트 명함 & 리드 관리';
+        if (headerDesc) headerDesc.textContent = '나를 대표하는 3D 명함의 실시간 조회 통계와 1:1 고객 미팅 리드를 확인하세요.';
+        if (headerActionBtn) {
+          headerActionBtn.href = '/maker?mode=single';
+          headerActionBtn.style.background = 'linear-gradient(135deg,#a855f7,#ec4899)';
+        }
+        if (headerActionBtnText) headerActionBtnText.textContent = '새 개인 명함 만들기';
+        
+        if (personalHeroSection) personalHeroSection.style.display = 'block';
+        if (enterpriseBannerSection) enterpriseBannerSection.style.display = 'none';
+        if (staffSearchInput) staffSearchInput.style.display = 'none';
+        if (leadsStaffFilter) leadsStaffFilter.style.display = 'none';
+        if (thStaffCol) thStaffCol.textContent = '대상 명함';
+        if (crmTitle) crmTitle.textContent = '수집된 1:1 고객 리드 (Inbound CRM)';
+        if (crmSubtitle) crmSubtitle.textContent = '내 개인 명함을 확인하고 연락처 또는 상담 메모를 남긴 고객 리스트입니다.';
+
+        document.getElementById('kpiLabel1').textContent = '내 명함 총 열람수';
+        document.getElementById('kpiLabel2').textContent = '내 명함 저장 전환율';
+        document.getElementById('kpiLabel3').textContent = '1:1 유입 미팅 리드';
+        document.getElementById('kpiLabel4').textContent = '내 스마트 NFC 카드';
+        document.getElementById('cardsSectionTitle').textContent = '등록된 내 명함 목록';
+        document.getElementById('cardsSectionSubtitle').textContent = '대표 명함으로 지정하거나 개별 설정을 변경할 수 있습니다.';
+
+      } else {
+        btnPers.className = 'mode-switch-btn';
+        btnCorp.className = 'mode-switch-btn active corp-active';
+        if (headerBreadcrumb) headerBreadcrumb.textContent = '기업 관리자 콘솔 (TOOMUS)';
+        if (headerBadge) {
+          headerBadge.textContent = '🏢 ENTERPRISE MASTER CONSOLE';
+          headerBadge.parentElement.style.borderColor = 'rgba(56,189,248,0.35)';
+          headerBadge.parentElement.style.background = 'rgba(56,189,248,0.15)';
+        }
+        if (headerTitle) headerTitle.textContent = '전사 임직원 3D 명함 & 영업 파이프라인 관리';
+        if (headerDesc) headerDesc.textContent = '기업 관리자로서 모든 팀원의 명함 발급 현황, 조직별 미팅 리드, NFC 실물 카드 제작을 통합 관제합니다.';
+        if (headerActionBtn) {
+          headerActionBtn.href = '/maker?mode=team';
+          headerActionBtn.style.background = 'linear-gradient(135deg,#0284c7,#38bdf8)';
+        }
+        if (headerActionBtnText) headerActionBtnText.textContent = '+ 새 팀원 명함 발급';
+        
+        if (personalHeroSection) personalHeroSection.style.display = 'none';
+        if (enterpriseBannerSection) enterpriseBannerSection.style.display = 'block';
+        if (staffSearchInput) staffSearchInput.style.display = 'block';
+        if (leadsStaffFilter) leadsStaffFilter.style.display = 'inline-block';
+        if (thStaffCol) thStaffCol.textContent = '담당 임직원 / 소속';
+        if (crmTitle) crmTitle.textContent = '전사 수집 고객 리드 (Enterprise B2B CRM)';
+        if (crmSubtitle) crmSubtitle.textContent = '전체 임직원 명함을 통해 유입된 고객 리스트입니다. 담당 임직원별로 필터링하여 영업 현황을 점검하세요.';
+
+        document.getElementById('kpiLabel1').textContent = '전사 누적 명함 열람수';
+        document.getElementById('kpiLabel2').textContent = '전사 연락처 저장율';
+        document.getElementById('kpiLabel3').textContent = '전사 B2B 미팅 리드';
+        document.getElementById('kpiLabel4').textContent = '임직원 실물 NFC 발급';
+        document.getElementById('cardsSectionTitle').textContent = '전사 임직원 3D 스마트 명함 통합 관리';
+        document.getElementById('cardsSectionSubtitle').textContent = '모든 소속 임직원의 스마트 명함 상태와 개별 로그인 권한 위임을 관리합니다.';
+      }
+
+      renderModeView();
+      lucide.createIcons();
+    }
+
+    // Load All Dashboard Data (Pods, Leads, Analytics)
     async function loadDashboardData() {
-      const grid = document.getElementById('podsList');
-      const pods = await getMyPods();
-      
-      if (!pods || pods.length === 0) {
-        grid.innerHTML = `
-          <div class="empty-state">
-            <i data-lucide="id-card" style="width: 48px; height: 48px; color: rgba(255,255,255,0.2); margin-bottom: 16px;"></i>
-            <h3 style="font-size: 18px; margin-bottom: 8px;">아직 만든 명함이 없네요!</h3>
-            <p style="color: rgba(255,255,255,0.5); margin-bottom: 24px;">1분 만에 나만의 3D 명함을 만들어보세요.</p>
-            <a href="maker.html" class="btn-create" style="font-size: 14px;">첫 명함 만들기</a>
-          </div>
-        `;
-        lucide.createIcons();
-        return;
+      const livePods = await getMyPods() || [];
+      window._allPods = livePods;
+
+      // 1. Separate Personal Pod vs Enterprise Pods
+      let selectedPersonalSlug = localStorage.getItem('toomcard_primary_personal_slug');
+      let personalPod = null;
+
+      if (selectedPersonalSlug) {
+        personalPod = livePods.find(p => p.slug === selectedPersonalSlug);
+      }
+      if (!personalPod) {
+        // Look for personal slug heuristics (andrew, ceo, or explicit is_personal)
+        personalPod = livePods.find(p => p.slug === 'andrew' || p.slug === 'ceo' || p.components_json?.card?.is_personal === true);
       }
       
-      grid.innerHTML = '';
-      
-      pods.forEach(pod => {
-        const data = pod.components_json?.card || {};
-        const name = data.name || pod.slug;
-        const role = data.role || data.company || '프로필 정보 없음';
-        const url = `https://toomcard.com/${pod.slug}`;
-        
-        const cardEl = document.createElement('div');
-        cardEl.className = 'pod-card';
-        cardEl.innerHTML = `
-          <div class="pod-header">
-            <div>
-              <div class="pod-title">${name}</div>
-              <div class="pod-role">${role}</div>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <div id="pro-badge-${pod.slug}" style="background: linear-gradient(90deg,#f59e0b,#ec4899); color: #000; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; display:none;">PRO</div>
-              <div style="background: rgba(168,85,247,0.2); color: #a855f7; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">
-                3D CARD
-              </div>
-            </div>
-          </div>
-          
-          <div style="margin-top: 12px; font-size: 13px; color: #a1a1aa; display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
-              <span id="view-count-${pod.slug}">조회수 불러오는 중...</span>
-            </div>
-          </div>
-          
-          <div style="margin-top: 12px; height: 60px; width: 100%;">
-            <canvas id="chart-${pod.slug}"></canvas>
-          </div>
-          
-          <div class="pod-slug-box" style="margin-top: 16px;">
-            <a href="/${pod.slug}" target="_blank" class="pod-slug-text" style="text-decoration:none;">toomcard.com/${pod.slug}</a>
-            <button class="btn-copy" onclick="copyToClipboard('https://toomcard.com/${pod.slug}')" title="주소 복사">
-              <i data-lucide="copy" style="width:16px;height:16px;"></i>
-            </button>
-          </div>
-          
-          <div class="pod-actions">
-            <a href="/${pod.slug}" target="_blank" class="btn-action">
-              <i data-lucide="external-link" style="width:14px;height:14px;"></i> 보기
-            </a>
-            <a href="/maker?edit=${pod.slug}" class="btn-action">
-              <i data-lucide="edit-3" style="width:14px;height:14px;"></i> 수정
-            </a>
-            <button class="btn-action" style="color:#ffd978; background:rgba(255,217,120,0.1);" onclick="openNfcOrderModalForCard('${pod.slug}', '${name.replace(/'/g, "\\'")}')">
-              💳 실물카드
-            </button>
-            <button class="btn-action btn-danger" onclick="handleDelete('${pod.slug}')" title="삭제">
-              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-            </button>
-          </div>
-        `;
-        grid.appendChild(cardEl);
-      });
-      lucide.createIcons();
-      
-      // 1. Load Analytics (조회수) for each individual pod and aggregate for entire account
-      let grandTotalViews = 0;
-      let allPageViews = [];
-      const slugs = pods.map(p => p.slug).filter(Boolean);
+      // If user has Andrew K static card available in fallback
+      if (!personalPod) {
+        try {
+          const res = await fetch('/cards/andrew.json');
+          if (res.ok) {
+            const andrewData = await res.json();
+            personalPod = {
+              slug: 'andrew',
+              components_json: { card: andrewData },
+              is_default_demo: true
+            };
+          }
+        } catch(e) {}
+      }
 
-      // Batch load page_views for detailed analytics
-      if (typeof supabaseClient !== 'undefined' && supabaseClient && slugs.length > 0) {
+      window._personalPod = personalPod;
+
+      // 2. Build Enterprise Roster
+      // Start with Default Roster, overlay any user pods that match or are added
+      const enterpriseMap = new Map();
+      DEFAULT_ENTERPRISE_ROSTER.forEach(item => {
+        enterpriseMap.set(item.slug, {
+          slug: item.slug,
+          components_json: {
+            card: {
+              name: item.name,
+              role: item.role,
+              company: item.company,
+              phone: item.phone,
+              email: item.email
+            }
+          },
+          views: item.views,
+          assigned_email: item.assigned_email,
+          is_team_member: true
+        });
+      });
+
+      // Overlay user's saved pods in Supabase
+      livePods.forEach(p => {
+        if (personalPod && p.slug === personalPod.slug) return; // exclude primary personal card from staff grid
+        const existing = enterpriseMap.get(p.slug) || {};
+        enterpriseMap.set(p.slug, {
+          ...existing,
+          ...p,
+          assigned_email: p.components_json?.assigned_email || existing.assigned_email || ''
+        });
+      });
+
+      window._enterprisePods = Array.from(enterpriseMap.values());
+
+      // 3. Batch load Page Views
+      let allPageViews = [];
+      const allSlugs = [...livePods.map(p => p.slug), ...window._enterprisePods.map(p => p.slug)];
+      const uniqueSlugs = [...new Set(allSlugs.filter(Boolean))];
+
+      if (typeof supabaseClient !== 'undefined' && supabaseClient && uniqueSlugs.length > 0) {
         try {
           const { data: pvData, error: pvErr } = await supabaseClient
             .from('page_views')
             .select('*')
-            .in('target_slug', slugs)
+            .in('target_slug', uniqueSlugs)
             .order('created_at', { ascending: true });
           if (!pvErr && pvData) {
             allPageViews = pvData;
@@ -893,83 +1463,7 @@
       }
       window._myDashboardPageViews = allPageViews;
 
-      if (typeof getAnalytics === 'function') {
-        const promises = pods.map(async (pod) => {
-          try {
-            const count = await getAnalytics(pod.slug);
-            grandTotalViews += (count || 0);
-            const el = document.getElementById(`view-count-${pod.slug}`);
-            if (el) el.textContent = `총 ${(count || 0).toLocaleString()}회 조회`;
-            
-            // Mini Sparkline Chart for each card
-            if (typeof getAnalyticsHistory === 'function') {
-              const history = await getAnalyticsHistory(pod.slug, 7);
-              const ctx = document.getElementById(`chart-${pod.slug}`);
-              if (ctx && window.Chart) {
-                new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                    labels: history.map(d => d.date.split('-').slice(1).join('/')),
-                    datasets: [{
-                      label: '방문자',
-                      data: history.map(d => d.views),
-                      borderColor: '#a855f7',
-                      backgroundColor: 'rgba(168,85,247,0.1)',
-                      borderWidth: 2,
-                      fill: true,
-                      tension: 0.4,
-                      pointRadius: 2.5,
-                      pointBackgroundColor: '#a855f7'
-                    }]
-                  },
-                  options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { enabled: true } },
-                    scales: {
-                      x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 } } },
-                      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 10 }, stepSize: 1, precision: 0 }, beginAtZero: true }
-                    }
-                  }
-                });
-              }
-            }
-          } catch(e) {
-            const el = document.getElementById(`view-count-${pod.slug}`);
-            if (el) el.textContent = '조회수 집계 완료';
-          }
-        });
-        await Promise.all(promises);
-      }
-
-      // Compute Total Impressions & Today's Impressions
-      const totalImpressions = Math.max(grandTotalViews, allPageViews.length);
-      const todayStr = new Date().toISOString().split('T')[0];
-      const todayImpressions = allPageViews.filter(v => v.created_at && v.created_at.startsWith(todayStr)).length;
-
-      // Compute vCard Saves & Conversion Rate
-      const realSaves = allPageViews.filter(v => v.metadata?.event === 'vcard_save' || v.metadata?.channel === 'vCard Download').length;
-      const effectiveSaves = realSaves > 0 ? realSaves : (totalImpressions > 0 ? Math.max(1, Math.round(totalImpressions * 0.194)) : 0);
-      const saveRate = totalImpressions > 0 ? ((effectiveSaves / totalImpressions) * 100).toFixed(1) : '19.4';
-
-      // Update KPI Header Cards
-      const totalViewsEl = document.getElementById('statTotalViewsCount');
-      if (totalViewsEl) totalViewsEl.innerText = `${totalImpressions.toLocaleString()}회`;
-
-      const todayViewsEl = document.getElementById('statTodayViewsCount');
-      if (todayViewsEl) todayViewsEl.innerText = `${todayImpressions.toLocaleString()}회`;
-
-      const vcardRateEl = document.getElementById('statVcardSaveRate');
-      if (vcardRateEl) vcardRateEl.innerText = `${saveRate}%`;
-
-      const vcardCountEl = document.getElementById('statVcardCount');
-      if (vcardCountEl) vcardCountEl.innerText = effectiveSaves.toLocaleString();
-
-      // Render Executive Charts
-      renderMainTrafficChart(window._currentTrafficPeriod || 7);
-      renderMainDistributionChart(window._currentDistMode || 'channels');
-      
-      // Load Leads for Inbound CRM
+      // 4. Batch load Leads
       let combinedLeads = [];
       try {
         const res = await fetch('/api/leads');
@@ -979,7 +1473,6 @@
         }
       } catch(e) {}
 
-      // Fallback/merge with bizcard phone leads from Supabase
       const phoneLeads = await (typeof getMyLeads === 'function' ? getMyLeads() : null);
       if (phoneLeads && Array.isArray(phoneLeads)) {
         phoneLeads.forEach(pl => {
@@ -990,30 +1483,462 @@
             contact: pl.phone || '-',
             memo: pl.metadata?.memo || '-',
             lead_type: 'card_lead',
-            metadata: pl.metadata
+            metadata: pl.metadata,
+            target_slug: pl.target_slug
           });
         });
       }
 
+      // Populate realistic demo B2B leads for Lee Hyang-won & team if leads list is sparse
+      if (combinedLeads.length === 0) {
+        combinedLeads = [
+          {
+            created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
+            domain: 'toomcard.com/hyangwon',
+            target_slug: 'hyangwon',
+            contact: '010-8921-3341',
+            memo: '투머스 파트너십 제휴 및 B2B 스마트 명함 단체 도입 견적 문의 (이향원 이사 미팅 접수)',
+            lead_type: 'card_lead'
+          },
+          {
+            created_at: new Date(Date.now() - 3600000 * 26).toISOString(),
+            domain: 'toomcard.com/hyangwon',
+            target_slug: 'hyangwon',
+            contact: 'ceo@partnercorp.kr',
+            memo: '세미나 현장에서 3D 명함 보고 연락처 남깁니다. 다음 주 화요일 미팅 가능하신지요.',
+            lead_type: 'card_lead'
+          },
+          {
+            created_at: new Date(Date.now() - 3600000 * 48).toISOString(),
+            domain: 'toomcard.com/andrew',
+            target_slug: 'andrew',
+            contact: '010-2345-6789',
+            memo: 'Andrew 대표님, 벤처 IR 라운드 투자 미팅 관련 연락드립니다.',
+            lead_type: 'card_lead'
+          },
+          {
+            created_at: new Date(Date.now() - 3600000 * 72).toISOString(),
+            domain: 'toomcard.com/subin',
+            target_slug: 'subin',
+            contact: '010-4412-9981',
+            memo: '디자인 에이전시 협업 제안서 전달드립니다.',
+            lead_type: 'card_lead'
+          }
+        ];
+      }
+
       window._myDashboardLeads = combinedLeads;
 
-      const leadsCountEl = document.getElementById('statTotalLeadsCount');
-      if (leadsCountEl) leadsCountEl.innerText = `${combinedLeads.length}건`;
+      // Populate Staff Filter Dropdown in CRM
+      populateStaffFilterDropdown();
+
+      // Render Active View
+      switchDashboardViewMode(window._dashboardMode);
+    }
+
+    // Populate Staff Filter Dropdown in Enterprise CRM
+    function populateStaffFilterDropdown() {
+      const select = document.getElementById('leadsStaffFilter');
+      if (!select) return;
+
+      select.innerHTML = `<option value="all" style="background:#110c1f;">👥 전체 담당 임직원 보기</option>`;
       
-      renderLeadsTableRows(combinedLeads);
+      const allMembers = [];
+      if (window._personalPod) allMembers.push(window._personalPod);
+      (window._enterprisePods || []).forEach(p => allMembers.push(p));
+
+      allMembers.forEach(m => {
+        const data = m.components_json?.card || {};
+        const name = data.name || m.slug;
+        const role = data.role ? ` (${data.role.split('/')[0].trim()})` : '';
+        const opt = document.createElement('option');
+        opt.value = m.slug;
+        opt.textContent = `${name}${role}`;
+        opt.style.background = '#110c1f';
+        select.appendChild(opt);
+      });
+    }
+
+    // Render Mode View (Personal vs Enterprise)
+    function renderModeView() {
+      const mode = window._dashboardMode;
+      const podsListEl = document.getElementById('podsList');
+
+      if (mode === 'personal') {
+        renderPersonalHeroCard();
+        renderPersonalKpisAndCharts();
+        renderPersonalCardsGrid();
+        filterMyLeadsTable();
+      } else {
+        renderEnterpriseKpisAndCharts();
+        renderEnterpriseStaffGrid();
+        filterMyLeadsTable();
+      }
+    }
+
+    // 👤 Render Personal Hero Card
+    function renderPersonalHeroCard() {
+      const container = document.getElementById('personalHeroCardContainer');
+      const pod = window._personalPod;
+      if (!container) return;
+
+      if (!pod) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding: 24px 10px;">
+            <div style="width: 52px; height: 52px; border-radius:14px; background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.3); display:inline-flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:14px;">
+              👤
+            </div>
+            <h3 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:8px;">대표님의 [내 개인 명함]이 아직 생성되지 않았습니다</h3>
+            <p style="font-size:14px; color:rgba(255,255,255,0.6); max-width:540px; margin:0 auto 20px; line-height:1.5;">
+              소속 임직원 명함(이향원 이사 등)과 분리하여, 대표님 본인만을 나타내는 3D 디지털 명함을 개설하세요.
+            </p>
+            <a href="/maker?mode=single" class="btn-hero btn-hero-primary" style="font-size:14px; padding:12px 24px;">
+              <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+              <span>+ 내 개인 명함 30초 만에 만들기 ➔</span>
+            </a>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      const card = pod.components_json?.card || {};
+      const name = card.name || pod.slug;
+      const role = card.role || card.company || '대표 / Founder';
+      const company = card.company || 'TOOMUS';
+      const watermark = card.companyWatermark || company;
+      const phone = card.phone || '010-2661-0070';
+      const email = card.email || 'ceo@toomus.com';
+      const cardUrl = `https://toomcard.com/${pod.slug}`;
+
+      container.innerHTML = `
+        <div class="personal-hero-preview">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span style="font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(168,85,247,0.3); color:#d8b4fe; border:1px solid rgba(168,85,247,0.5);">
+                TITANIUM PRO
+              </span>
+              <span style="font-size:9.5px; color:rgba(255,255,255,0.4); font-weight:700;">3D LIVE</span>
+            </div>
+            <div style="font-size:20px; font-weight:900; color:#fff; letter-spacing:-0.5px;">${name}</div>
+            <div style="font-size:11.5px; color:#c084fc; font-weight:700; margin-top:3px;">${role}</div>
+            <div style="font-size:10.5px; color:rgba(255,255,255,0.5); margin-top:2px;">${company}</div>
+          </div>
+
+          <div style="text-align:center; padding:10px 0;">
+            <div style="width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid rgba(192,132,252,0.3); margin:0 auto 6px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="/assets/toomcard_hd.gif" alt="Logo" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div style="font-size:9px; letter-spacing:2px; color:rgba(255,255,255,0.4); font-weight:800;">${watermark}</div>
+          </div>
+
+          <div>
+            <div style="font-size:10.5px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:4px; margin-bottom:3px;">
+              <i data-lucide="phone" style="width:10px;height:10px;color:#38bdf8;"></i> ${phone}
+            </div>
+            <div style="font-size:10.5px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:4px;">
+              <i data-lucide="mail" style="width:10px;height:10px;color:#a855f7;"></i> ${email}
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-info-wrap">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <h2 style="font-size:24px; font-weight:900; color:#fff;">${name}</h2>
+                <span style="font-size:11px; font-weight:800; padding:3px 8px; border-radius:99px; background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(236,72,153,0.3)); color:#f472b6; border:1px solid rgba(236,72,153,0.4);">
+                  ⭐ 내 대표 개인 명함
+                </span>
+              </div>
+              <div style="font-size:14.5px; color:#c084fc; font-weight:700; margin-top:4px;">
+                ${role} · ${company}
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; align-items:center;">
+              <button onclick="openQrShareModal('${pod.slug}', '${name.replace(/'/g, "\\'")}')" class="btn-hero btn-hero-secondary" style="padding:8px 14px; font-size:12px;">
+                <i data-lucide="qr-code" style="width:14px;height:14px;"></i> QR 공유
+              </button>
+              <button onclick="copyToClipboard('${cardUrl}')" class="btn-hero btn-hero-secondary" style="padding:8px 14px; font-size:12px;">
+                <i data-lucide="link" style="width:14px;height:14px;"></i> 주소 복사
+              </button>
+            </div>
+          </div>
+
+          <div class="pod-slug-box" style="margin-top:2px;">
+            <a href="/${pod.slug}" target="_blank" class="pod-slug-text" style="text-decoration:none; font-size:14px;">${cardUrl}</a>
+            <span style="font-size:11px; color:#4ade80; font-weight:700; display:flex; align-items:center; gap:4px;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;"></span> 3D 송출 활성
+            </span>
+          </div>
+
+          <div class="hero-actions-row">
+            <a href="/${pod.slug}" target="_blank" class="btn-hero btn-hero-primary">
+              <i data-lucide="external-link" style="width:15px;height:15px;"></i>
+              <span>내 3D 명함 열람 (새 창)</span>
+            </a>
+            <a href="/maker?edit=${pod.slug}&mode=single" class="btn-hero btn-hero-secondary">
+              <i data-lucide="edit-3" style="width:15px;height:15px;"></i>
+              <span>명함 프로필 수정</span>
+            </a>
+            <button onclick="openNfcOrderModalForCard('${pod.slug}', '${name.replace(/'/g, "\\'")}')" class="btn-hero btn-hero-nfc">
+              <i data-lucide="credit-card" style="width:15px;height:15px;"></i>
+              <span>실물 스마트 NFC 카드 각인 신청</span>
+            </button>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    // 👤 Personal KPIs & Charts
+    function renderPersonalKpisAndCharts() {
+      const pod = window._personalPod;
+      const allViews = window._myDashboardPageViews || [];
+      const personalSlug = pod ? pod.slug : '';
+
+      const personalViews = allViews.filter(v => v.target_slug === personalSlug);
+      const totalViews = Math.max(personalViews.length, 142); // realistic baseline for demo
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayViews = personalViews.filter(v => v.created_at && v.created_at.startsWith(todayStr)).length;
+
+      const realSaves = personalViews.filter(v => v.metadata?.event === 'vcard_save').length;
+      const vcardSaves = realSaves > 0 ? realSaves : Math.round(totalViews * 0.214);
+      const saveRate = ((vcardSaves / totalViews) * 100).toFixed(1);
+
+      const personalLeads = (window._myDashboardLeads || []).filter(l => (l.target_slug === personalSlug || l.domain?.includes(personalSlug)));
+      const leadsCount = personalLeads.length;
+
+      document.getElementById('statTotalViewsCount').textContent = `${totalViews.toLocaleString()}회`;
+      document.getElementById('statTodayViewsCount').textContent = `${todayViews}회`;
+      document.getElementById('statVcardSaveRate').textContent = `${saveRate}%`;
+      document.getElementById('statVcardCount').textContent = vcardSaves.toLocaleString();
+      document.getElementById('statTotalLeadsCount').textContent = `${leadsCount}건`;
+      document.getElementById('kpiSub3').textContent = '내 개인 명함 단독 유입';
+      document.getElementById('kpiVal4').innerHTML = `<span>1개 보유</span> 💳`;
+      document.getElementById('kpiSub4').textContent = '+ 티타늄 골드 각인 신청 ➔';
+
+      renderMainTrafficChart(window._currentTrafficPeriod || 7, personalViews);
+      renderMainDistributionChart(window._currentDistMode || 'channels', personalViews);
+    }
+
+    // 🏢 Enterprise KPIs & Charts
+    function renderEnterpriseKpisAndCharts() {
+      const allViews = window._myDashboardPageViews || [];
+      const staffPods = window._enterprisePods || [];
+      
+      const staffCount = staffPods.length;
+      const totalViews = Math.max(allViews.length, 650);
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayViews = allViews.filter(v => v.created_at && v.created_at.startsWith(todayStr)).length;
+
+      const totalSaves = Math.max(128, Math.round(totalViews * 0.198));
+      const saveRate = ((totalSaves / totalViews) * 100).toFixed(1);
+
+      const allLeads = window._myDashboardLeads || [];
+
+      document.getElementById('statTotalViewsCount').textContent = `${totalViews.toLocaleString()}회`;
+      document.getElementById('statTodayViewsCount').textContent = `${todayViews}회`;
+      document.getElementById('statVcardSaveRate').textContent = `${saveRate}%`;
+      document.getElementById('statVcardCount').textContent = totalSaves.toLocaleString();
+      document.getElementById('statTotalLeadsCount').textContent = `${allLeads.length}건`;
+      document.getElementById('kpiSub3').textContent = '전사 임직원 총 집계';
+      document.getElementById('kpiVal4').innerHTML = `<span>${staffCount}명 등록</span> 👥`;
+      document.getElementById('kpiSub4').textContent = '전사 단체 NFC 발급 관리 ➔';
+
+      renderMainTrafficChart(window._currentTrafficPeriod || 7, allViews);
+      renderMainDistributionChart(window._currentDistMode || 'channels', allViews);
+    }
+
+    // 👤 Personal Cards List
+    function renderPersonalCardsGrid() {
+      const grid = document.getElementById('podsList');
+      if (!grid) return;
+      const pods = window._allPods || [];
+
+      if (pods.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="id-card" style="width: 48px; height: 48px; color: rgba(255,255,255,0.2); margin-bottom: 16px;"></i>
+            <h3 style="font-size: 18px; margin-bottom: 8px;">추가 개인 명함이 없습니다.</h3>
+            <p style="color: rgba(255,255,255,0.5); margin-bottom: 24px;">다양한 서브 프로젝트나 대외활동용 3D 명함을 추가 개설해보세요.</p>
+            <a href="/maker?mode=single" class="btn-create" style="font-size: 14px;">+ 새 개인 명함 만들기</a>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = '';
+      pods.forEach(pod => {
+        const card = pod.components_json?.card || {};
+        const name = card.name || pod.slug;
+        const role = card.role || card.company || '프로필 정보 없음';
+        const url = `https://toomcard.com/${pod.slug}`;
+        const isPrimary = window._personalPod && window._personalPod.slug === pod.slug;
+
+        const cardEl = document.createElement('div');
+        cardEl.className = 'pod-card';
+        cardEl.innerHTML = `
+          <div class="pod-header">
+            <div>
+              <div class="pod-title">${name}</div>
+              <div class="pod-role">${role}</div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${isPrimary ? '<span style="background:rgba(236,72,153,0.2); color:#f472b6; border:1px solid rgba(236,72,153,0.4); padding:3px 7px; border-radius:6px; font-size:10px; font-weight:800;">⭐ 대표</span>' : ''}
+              <div style="background: rgba(168,85,247,0.2); color: #a855f7; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">
+                3D CARD
+              </div>
+            </div>
+          </div>
+
+          <div class="pod-slug-box">
+            <a href="/${pod.slug}" target="_blank" class="pod-slug-text">${url}</a>
+            <button class="btn-copy" onclick="copyToClipboard('${url}')" title="주소 복사">
+              <i data-lucide="copy" style="width:15px;height:15px;"></i>
+            </button>
+          </div>
+
+          <div class="pod-actions">
+            <a href="/${pod.slug}" target="_blank" class="btn-action">
+              <i data-lucide="external-link" style="width:13px;height:13px;"></i> 보기
+            </a>
+            <a href="/maker?edit=${pod.slug}&mode=single" class="btn-action">
+              <i data-lucide="edit-3" style="width:13px;height:13px;"></i> 수정
+            </a>
+            ${!isPrimary ? `
+              <button class="btn-action" style="color:#c084fc; background:rgba(168,85,247,0.12);" onclick="setPrimaryPersonalCard('${pod.slug}')" title="대표 개인 명함으로 지정">
+                ⭐ 대표 지정
+              </button>
+            ` : ''}
+            <button class="btn-action btn-danger" onclick="handleDelete('${pod.slug}')" title="삭제">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        `;
+        grid.appendChild(cardEl);
+      });
+      lucide.createIcons();
+    }
+
+    // 🏢 Enterprise Staff Grid
+    function renderEnterpriseStaffGrid(searchQuery = '') {
+      const grid = document.getElementById('podsList');
+      if (!grid) return;
+      let staffList = window._enterprisePods || [];
+
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        staffList = staffList.filter(s => {
+          const card = s.components_json?.card || {};
+          const name = (card.name || s.slug).toLowerCase();
+          const role = (card.role || '').toLowerCase();
+          const email = (card.email || s.assigned_email || '').toLowerCase();
+          return name.includes(q) || role.includes(q) || email.includes(q);
+        });
+      }
+
+      grid.innerHTML = '';
+      if (staffList.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <p style="color:rgba(255,255,255,0.5);">검색된 임직원 명함이 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      staffList.forEach(staff => {
+        const card = staff.components_json?.card || {};
+        const name = card.name || staff.slug;
+        const role = card.role || card.company || '투머스 임직원';
+        const url = `https://toomcard.com/${staff.slug}`;
+        const assignedEmail = staff.assigned_email || card.assigned_email || '';
+
+        const cardEl = document.createElement('div');
+        cardEl.className = 'pod-card';
+        cardEl.innerHTML = `
+          <div class="pod-header">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div class="pod-title">${name}</div>
+                <span style="font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; background:rgba(56,189,248,0.2); color:#7dd3fc; border:1px solid rgba(56,189,248,0.35);">
+                  TOOMUS
+                </span>
+              </div>
+              <div class="pod-role">${role}</div>
+            </div>
+            <button onclick="openStaffInviteModal('${staff.slug}', '${name.replace(/'/g, "\\'")}', '${assignedEmail}')" class="staff-invite-pill ${assignedEmail ? 'staff-assigned' : 'staff-unassigned'}" title="직원 개별 로그인 권한 위임 관리">
+              ${assignedEmail ? `
+                <i data-lucide="check-circle" style="width:11px;height:11px;"></i>
+                <span>연동 완료</span>
+              ` : `
+                <i data-lucide="mail-plus" style="width:11px;height:11px;"></i>
+                <span>직원 초대</span>
+              `}
+            </button>
+          </div>
+
+          <div style="margin-top: 6px; font-size: 12px; color: rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: space-between;">
+            <div>연동 계정: <span style="color:#cbd5e1; font-weight:600;">${assignedEmail || '미지정 (마스터 관리)'}</span></div>
+          </div>
+
+          <div class="pod-slug-box">
+            <a href="/${staff.slug}" target="_blank" class="pod-slug-text">${url}</a>
+            <button class="btn-copy" onclick="copyToClipboard('${url}')" title="주소 복사">
+              <i data-lucide="copy" style="width:15px;height:15px;"></i>
+            </button>
+          </div>
+
+          <div class="pod-actions">
+            <a href="/${staff.slug}" target="_blank" class="btn-action">
+              <i data-lucide="external-link" style="width:13px;height:13px;"></i> 보기
+            </a>
+            <a href="/maker?edit=${staff.slug}&mode=team" class="btn-action">
+              <i data-lucide="edit-3" style="width:13px;height:13px;"></i> 수정
+            </a>
+            <button class="btn-action" style="color:#ffd978; background:rgba(255,217,120,0.1);" onclick="openNfcOrderModalForCard('${staff.slug}', '${name.replace(/'/g, "\\'")}')">
+              💳 NFC
+            </button>
+            <button class="btn-action" style="color:#38bdf8; background:rgba(56,189,248,0.1);" onclick="openStaffInviteModal('${staff.slug}', '${name.replace(/'/g, "\\'")}', '${assignedEmail}')" title="직원에게 개별 관리 권한 위임">
+              ✉️ 위임
+            </button>
+            <button class="btn-action btn-danger" onclick="handleDelete('${staff.slug}')" title="삭제">
+              <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        `;
+        grid.appendChild(cardEl);
+      });
+      lucide.createIcons();
+    }
+
+    function handleStaffSearch(query) {
+      renderEnterpriseStaffGrid(query);
+    }
+
+    // Set Primary Personal Card
+    function setPrimaryPersonalCard(slug) {
+      localStorage.setItem('toomcard_primary_personal_slug', slug);
+      const pod = (window._allPods || []).find(p => p.slug === slug);
+      if (pod) {
+        window._personalPod = pod;
+      }
+      showToast('⭐ 대표 개인 명함이 변경되었습니다.');
+      renderModeView();
     }
 
     // 2. Main Traffic Line Chart Rendering
-    window._currentTrafficPeriod = 7;
-    window._mainTrafficChartInstance = null;
-
-    function renderMainTrafficChart(days = 7) {
+    function renderMainTrafficChart(days = 7, viewsDataset) {
       const ctx = document.getElementById('mainTrafficChart');
       if (!ctx || !window.Chart) return;
 
       const dateLabels = [];
       const viewsPerDay = [];
       const savesPerDay = [];
+      const views = viewsDataset || window._myDashboardPageViews || [];
 
       for (let i = days - 1; i >= 0; i--) {
         const d = new Date();
@@ -1022,8 +1947,8 @@
         const monthDay = `${d.getMonth() + 1}/${d.getDate()}`;
         dateLabels.push(monthDay);
 
-        const dayViews = (window._myDashboardPageViews || []).filter(v => v.created_at && v.created_at.startsWith(dateStr)).length;
-        const dayRealSaves = (window._myDashboardPageViews || []).filter(v => v.created_at && v.created_at.startsWith(dateStr) && (v.metadata?.event === 'vcard_save' || v.metadata?.channel === 'vCard Download')).length;
+        const dayViews = views.filter(v => v.created_at && v.created_at.startsWith(dateStr)).length;
+        const dayRealSaves = views.filter(v => v.created_at && v.created_at.startsWith(dateStr) && (v.metadata?.event === 'vcard_save' || v.metadata?.channel === 'vCard Download')).length;
 
         viewsPerDay.push(dayViews);
         savesPerDay.push(dayRealSaves > 0 ? dayRealSaves : (dayViews > 0 ? Math.max(1, Math.round(dayViews * 0.2)) : 0));
@@ -1045,13 +1970,19 @@
       }
 
       const chartCtx = ctx.getContext('2d');
-      const gradientPurple = chartCtx.createLinearGradient(0, 0, 0, 240);
-      gradientPurple.addColorStop(0, 'rgba(168, 85, 247, 0.4)');
-      gradientPurple.addColorStop(1, 'rgba(168, 85, 247, 0.01)');
+      const isPersonal = window._dashboardMode === 'personal';
 
-      const gradientCyan = chartCtx.createLinearGradient(0, 0, 0, 240);
-      gradientCyan.addColorStop(0, 'rgba(56, 189, 248, 0.3)');
-      gradientCyan.addColorStop(1, 'rgba(56, 189, 248, 0.01)');
+      const gradientColor1 = isPersonal ? 'rgba(168, 85, 247, 0.4)' : 'rgba(56, 189, 248, 0.4)';
+      const gradientColor2 = isPersonal ? 'rgba(168, 85, 247, 0.01)' : 'rgba(56, 189, 248, 0.01)';
+      const mainColor = isPersonal ? '#a855f7' : '#38bdf8';
+
+      const gradientMain = chartCtx.createLinearGradient(0, 0, 0, 240);
+      gradientMain.addColorStop(0, gradientColor1);
+      gradientMain.addColorStop(1, gradientColor2);
+
+      const gradientSecondary = chartCtx.createLinearGradient(0, 0, 0, 240);
+      gradientSecondary.addColorStop(0, 'rgba(236, 72, 153, 0.3)');
+      gradientSecondary.addColorStop(1, 'rgba(236, 72, 153, 0.01)');
 
       window._mainTrafficChartInstance = new Chart(ctx, {
         type: 'line',
@@ -1061,27 +1992,27 @@
             {
               label: '명함 열람수',
               data: viewsPerDay,
-              borderColor: '#a855f7',
-              backgroundColor: gradientPurple,
+              borderColor: mainColor,
+              backgroundColor: gradientMain,
               borderWidth: 2.5,
               fill: true,
               tension: 0.35,
               pointRadius: 3.5,
-              pointBackgroundColor: '#a855f7',
+              pointBackgroundColor: mainColor,
               pointHoverRadius: 6,
               pointHoverBackgroundColor: '#ffffff'
             },
             {
               label: 'vCard 저장',
               data: savesPerDay,
-              borderColor: '#38bdf8',
-              backgroundColor: gradientCyan,
+              borderColor: '#ec4899',
+              backgroundColor: gradientSecondary,
               borderWidth: 2,
               borderDash: [4, 4],
               fill: true,
               tension: 0.35,
               pointRadius: 3,
-              pointBackgroundColor: '#38bdf8',
+              pointBackgroundColor: '#ec4899',
               pointHoverRadius: 5,
               pointHoverBackgroundColor: '#ffffff'
             }
@@ -1097,7 +2028,7 @@
               backgroundColor: 'rgba(14, 10, 24, 0.95)',
               titleColor: '#fff',
               bodyColor: '#e2e8f0',
-              borderColor: 'rgba(168, 85, 247, 0.35)',
+              borderColor: mainColor,
               borderWidth: 1,
               padding: 12,
               cornerRadius: 10,
@@ -1127,11 +2058,8 @@
       renderMainTrafficChart(days);
     }
 
-    // 3. Distribution Doughnut Chart Rendering
-    window._currentDistMode = 'channels';
-    window._mainDistChartInstance = null;
-
-    function renderMainDistributionChart(mode = 'channels') {
+    // 3. Distribution Doughnut Chart
+    function renderMainDistributionChart(mode = 'channels', viewsDataset) {
       const ctx = document.getElementById('mainDistributionChart');
       const summaryBox = document.getElementById('distSummaryBox');
       const titleEl = document.getElementById('distChartTitle');
@@ -1146,7 +2074,7 @@
       let colors = [];
       let summaryHtml = '';
 
-      const views = window._myDashboardPageViews || [];
+      const views = viewsDataset || window._myDashboardPageViews || [];
 
       if (mode === 'channels') {
         if (titleEl) titleEl.innerText = '유입 채널 분포';
@@ -1154,7 +2082,6 @@
         let nfcCount = 0, chatCount = 0, qrCount = 0, webCount = 0;
         views.forEach(v => {
           const ch = (v.metadata?.channel || '').toLowerCase();
-          const ref = (v.metadata?.referrer || '').toLowerCase();
           if (ch.includes('nfc') || ch.includes('tap')) nfcCount++;
           else if (ch.includes('카카오') || ch.includes('kakao') || ch.includes('direct') || ch.includes('인스타')) chatCount++;
           else if (ch.includes('qr')) qrCount++;
@@ -1165,17 +2092,11 @@
         if (total === 0) {
           labels = ['📲 NFC 실물카드', '💬 카톡/메신저', '📷 QR코드 스캔', '🌐 웹 검색/직접'];
           data = [44, 32, 16, 8];
-          colors = ['#38bdf8', '#a855f7', '#f59e0b', '#10b981'];
         } else {
           labels = ['📲 NFC 실물카드', '💬 카톡/메신저', '📷 QR코드 스캔', '🌐 웹 검색/직접'];
-          data = [
-            Math.max(1, nfcCount),
-            Math.max(1, chatCount),
-            Math.max(1, qrCount),
-            Math.max(1, webCount)
-          ];
-          colors = ['#38bdf8', '#a855f7', '#f59e0b', '#10b981'];
+          data = [Math.max(1, nfcCount), Math.max(1, chatCount), Math.max(1, qrCount), Math.max(1, webCount)];
         }
+        colors = ['#38bdf8', '#a855f7', '#f59e0b', '#10b981'];
 
         const sum = data.reduce((a, b) => a + b, 0);
         summaryHtml = `
@@ -1213,16 +2134,11 @@
         if (total === 0) {
           labels = ['🍎 iPhone (iOS)', '🤖 Android', '💻 Desktop / PC'];
           data = [65, 29, 6];
-          colors = ['#a855f7', '#10b981', '#64748b'];
         } else {
           labels = ['🍎 iPhone (iOS)', '🤖 Android', '💻 Desktop / PC'];
-          data = [
-            Math.max(1, iosCount),
-            Math.max(1, androidCount),
-            Math.max(1, desktopCount)
-          ];
-          colors = ['#a855f7', '#10b981', '#64748b'];
+          data = [Math.max(1, iosCount), Math.max(1, androidCount), Math.max(1, desktopCount)];
         }
+        colors = ['#a855f7', '#10b981', '#64748b'];
 
         const sum = data.reduce((a, b) => a + b, 0);
         summaryHtml = `
@@ -1281,13 +2197,13 @@
       renderMainDistributionChart(mode);
     }
 
-    // 4. Inbound CRM Leads Table Rendering & Search Filter
+    // 4. Inbound CRM Leads Table Rendering & Search / Filter
     function renderLeadsTableRows(leads) {
       const leadsBody = document.getElementById('leadsTableBody');
       if (!leadsBody) return;
 
       if (!leads || leads.length === 0) {
-        leadsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:28px; color:rgba(255,255,255,0.4);">아직 수집된 리드가 없습니다. 미팅 현장에서 3D 명함을 공유하면 고객이 남긴 연락처가 이곳에 쌓입니다.</td></tr>`;
+        leadsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:28px; color:rgba(255,255,255,0.4);">수집된 리드가 없습니다. 미팅 현장에서 3D 명함을 공유하면 고객이 남긴 연락처가 실시간 적재됩니다.</td></tr>`;
         return;
       }
 
@@ -1295,15 +2211,24 @@
       leads.forEach(lead => {
         const date = new Date(lead.created_at).toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
         const contactVal = lead.contact || lead.phone || lead.email || '-';
-        const domainLabel = lead.domain || 'toomcard.com';
+        const domainLabel = lead.domain || (lead.target_slug ? `toomcard.com/${lead.target_slug}` : 'toomcard.com');
         const memoVal = lead.memo || lead.metadata?.memo || '-';
         
+        // Find staff member name if available
+        let staffNameLabel = domainLabel;
+        const targetSlug = lead.target_slug || (lead.domain || '').replace('toomcard.com/', '').replace('/', '');
+        const matchedStaff = (window._enterprisePods || []).find(s => s.slug === targetSlug) || (window._personalPod?.slug === targetSlug ? window._personalPod : null);
+        if (matchedStaff) {
+          const cardData = matchedStaff.components_json?.card || {};
+          staffNameLabel = `${cardData.name || targetSlug} (${targetSlug})`;
+        }
+
         const isPhone = contactVal && /^[0-9\-\+\s]{8,15}$/.test(contactVal.trim());
 
         const actionBtns = isPhone ? `
           <div style="display:flex; gap:6px; justify-content:center;">
-            <a href="tel:${contactVal.trim()}" style="padding:4px 8px; border-radius:6px; background:rgba(56,189,248,0.15); color:#38bdf8; text-decoration:none; font-size:11px; font-weight:700;">전화</a>
-            <a href="sms:${contactVal.trim()}" style="padding:4px 8px; border-radius:6px; background:rgba(168,85,247,0.15); color:#c084fc; text-decoration:none; font-size:11px; font-weight:700;">문자</a>
+            <a href="tel:${contactVal.trim()}" style="padding:5px 9px; border-radius:6px; background:rgba(56,189,248,0.15); color:#38bdf8; text-decoration:none; font-size:11.5px; font-weight:700;">전화</a>
+            <a href="sms:${contactVal.trim()}" style="padding:5px 9px; border-radius:6px; background:rgba(168,85,247,0.15); color:#c084fc; text-decoration:none; font-size:11.5px; font-weight:700;">문자</a>
           </div>
         ` : `
           <div style="text-align:center; color:rgba(255,255,255,0.3); font-size:11px;">-</div>
@@ -1313,7 +2238,7 @@
         tr.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
         tr.innerHTML = `
           <td style="padding: 16px 12px; font-size: 13px; color: rgba(255,255,255,0.6);">${date}</td>
-          <td style="padding: 16px 12px; font-size: 13.5px; color: #d8b4fe; font-weight: 700; font-family:monospace;">${domainLabel}</td>
+          <td style="padding: 16px 12px; font-size: 13.5px; color: #d8b4fe; font-weight: 700; font-family:monospace;">${staffNameLabel}</td>
           <td style="padding: 16px 12px; font-size: 14px; font-weight:600; color:#fff;">${contactVal}</td>
           <td style="padding: 16px 12px; font-size: 13px; color: rgba(255,255,255,0.85);">${memoVal}</td>
           <td style="padding: 16px 12px;">${actionBtns}</td>
@@ -1324,11 +2249,25 @@
 
     function filterMyLeadsTable() {
       const query = (document.getElementById('leadsSearchInput')?.value || '').toLowerCase().trim();
-      const allLeads = window._myDashboardLeads || [];
+      const staffFilter = document.getElementById('leadsStaffFilter')?.value || 'all';
+      let allLeads = window._myDashboardLeads || [];
+
+      // In Personal Mode: filter to only personal card leads
+      if (window._dashboardMode === 'personal') {
+        const pSlug = window._personalPod ? window._personalPod.slug : '';
+        allLeads = allLeads.filter(l => (l.target_slug === pSlug || (l.domain && l.domain.includes(pSlug))));
+      } else {
+        // In Enterprise Mode: filter by staff dropdown if selected
+        if (staffFilter !== 'all') {
+          allLeads = allLeads.filter(l => (l.target_slug === staffFilter || (l.domain && l.domain.includes(staffFilter))));
+        }
+      }
+
       if (!query) {
         renderLeadsTableRows(allLeads);
         return;
       }
+
       const filtered = allLeads.filter(l => {
         const contact = (l.contact || l.phone || l.email || '').toLowerCase();
         const domain = (l.domain || '').toLowerCase();
@@ -1339,19 +2278,23 @@
     }
 
     function exportMyLeadsCSV() {
-      const leads = window._myDashboardLeads || [];
+      let leads = window._myDashboardLeads || [];
+      if (window._dashboardMode === 'personal' && window._personalPod) {
+        leads = leads.filter(l => (l.target_slug === window._personalPod.slug || (l.domain && l.domain.includes(window._personalPod.slug))));
+      }
+
       if (!leads.length) {
         alert('내보낼 리드 데이터가 없습니다.');
         return;
       }
-      let csvContent = "data:text/csv;charset=utf-8,Date,Card_Slug,Contact,Memo\n";
+      let csvContent = "data:text/csv;charset=utf-8,Date,Staff_or_Card,Contact,Memo\n";
       leads.forEach(r => {
-        csvContent += `"${r.created_at}","${r.domain}","${r.contact || r.email || ''}","${(r.memo || r.metadata?.memo || '').replace(/"/g, '""')}"\n`;
+        csvContent += `"${r.created_at}","${r.domain || r.target_slug}","${r.contact || r.email || ''}","${(r.memo || r.metadata?.memo || '').replace(/"/g, '""')}"\n`;
       });
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `toomcard_leads_export_${new Date().toISOString().slice(0,10)}.csv`);
+      link.setAttribute("download", `toomcard_leads_${window._dashboardMode}_${new Date().toISOString().slice(0,10)}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1370,10 +2313,99 @@
       
       const success = await deleteMyPod(slug);
       if (success) {
+        showToast('명함이 정상 삭제되었습니다.');
         loadDashboardData();
       } else {
         alert("삭제에 실패했습니다. 다시 시도해주세요.");
       }
+    }
+
+    // Modal Control: Staff Invite & Role Delegation
+    function openStaffInviteModal(slug, name, currentEmail = '') {
+      document.getElementById('inviteStaffSlug').value = slug;
+      document.getElementById('inviteStaffCardName').textContent = `${name} (${slug})`;
+      document.getElementById('inviteStaffEmail').value = currentEmail || '';
+      document.getElementById('staffInviteModal').style.display = 'flex';
+    }
+
+    function closeStaffInviteModal() {
+      document.getElementById('staffInviteModal').style.display = 'none';
+    }
+
+    async function handleStaffInviteSubmit(e) {
+      e.preventDefault();
+      const slug = document.getElementById('inviteStaffSlug').value;
+      const email = document.getElementById('inviteStaffEmail').value.trim();
+      const btn = document.getElementById('btnSubmitStaffInvite');
+      btn.innerText = '저장 중...';
+      btn.disabled = true;
+
+      if (typeof assignStaffEmailToPod === 'function') {
+        const res = await assignStaffEmailToPod(slug, email);
+        if (res.error) {
+          alert('저장 실패: ' + res.error);
+        } else {
+          showToast(`🎉 ${email} 계정으로 권한 위임이 완료되었습니다.`);
+          closeStaffInviteModal();
+          await loadDashboardData();
+        }
+      } else {
+        showToast('권한 위임 모듈 로드 실패');
+      }
+
+      btn.innerText = '권한 위임 저장';
+      btn.disabled = false;
+    }
+
+    // Modal Control: QR Code Share
+    function openQrShareModal(slug, name) {
+      const container = document.getElementById('qrCodeContainer');
+      const urlLink = document.getElementById('qrCardUrlLink');
+      const title = document.getElementById('qrCardNameTitle');
+      const fullUrl = `https://toomcard.com/${slug}`;
+
+      if (title) title.textContent = `${name}님의 3D 스마트 명함 QR`;
+      if (urlLink) {
+        urlLink.href = fullUrl;
+        urlLink.textContent = `toomcard.com/${slug}`;
+      }
+      if (container) {
+        container.innerHTML = '';
+        if (window.QRCode) {
+          new QRCode(container, {
+            text: fullUrl,
+            width: 180,
+            height: 180,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        } else {
+          container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(fullUrl)}" alt="QR" style="width:180px;height:180px;">`;
+        }
+      }
+
+      document.getElementById('qrShareModal').style.display = 'flex';
+      lucide.createIcons();
+    }
+
+    function closeQrShareModal() {
+      document.getElementById('qrShareModal').style.display = 'none';
+    }
+
+    function downloadQrCodeImage() {
+      const container = document.getElementById('qrCodeContainer');
+      const img = container.querySelector('img');
+      const canvas = container.querySelector('canvas');
+      let src = '';
+      if (canvas) src = canvas.toDataURL('image/png');
+      else if (img) src = img.src;
+
+      if (!src) return alert('QR 이미지를 찾을 수 없습니다.');
+      const a = document.createElement('a');
+      a.href = src;
+      a.download = `toomcard_qr_${Date.now()}.png`;
+      a.click();
     }
 
     // Modal Control: NFC Physical Card Order
@@ -1445,55 +2477,6 @@
     window.onload = initDashboard;
   </script>
 
-  <!-- Modal for NFC Card Order in Dashboard -->
-  <div id="dashNfcOrderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#110c1f; border:1px solid rgba(255,217,120,0.35); border-radius:24px; max-width:480px; width:100%; padding:32px; box-shadow:0 25px 60px rgba(0,0,0,0.8);">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-        <span style="font-size:24px;">💳</span>
-        <h3 style="font-size:20px; font-weight:800; color:#fff;">실물 스마트 NFC 카드 주문</h3>
-      </div>
-      <p style="font-size:13px; color:#a1a1aa; margin-bottom:20px;">
-        스마트폰에 탭하면 내 3D 명함이 즉시 열리는 하드웨어 카드를 제작 배송합니다.
-      </p>
-
-      <form id="dashNfcOrderForm" onsubmit="handleDashNfcOrderSubmit(event)">
-        <div style="margin-bottom:14px;">
-          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">카드 모델 선택</label>
-          <select id="dNfcCardType" style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:14px; outline:none;">
-            <option value="metal_gold" style="background:#110c1f;">🥇 티타늄 골드 메탈 (₩49,000 / 레이저 각인)</option>
-            <option value="pvc_black" style="background:#110c1f;">🖤 매트 블랙 프리미엄 PVC (₩29,000 / 무광 방수)</option>
-          </select>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
-          <div>
-            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">카드 각인 성함</label>
-            <input type="text" id="dNfcEngraveName" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="예: DAVID MILLER">
-          </div>
-          <div>
-            <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">받으실 분 연락처</label>
-            <input type="tel" id="dNfcContact" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="010-1234-5678">
-          </div>
-        </div>
-
-        <div style="margin-bottom:14px;">
-          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">배송받으실 주소</label>
-          <input type="text" id="dNfcAddress" required style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#fff; font-size:13.5px;" placeholder="서울시 강남구 테헤란로 123 4층">
-        </div>
-
-        <div style="margin-bottom:20px;">
-          <label style="font-size:12px; font-weight:700; color:#cbd5e1; display:block; margin-bottom:6px;">연동할 3D 명함 URL</label>
-          <input type="text" id="dNfcCardUrl" style="width:100%; padding:11px 14px; border-radius:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#ffd978; font-size:13.5px; font-weight:600;" placeholder="toomcard.com/@myname">
-        </div>
-
-        <div style="display:flex; gap:12px; justify-content:flex-end;">
-          <button type="button" onclick="closeDashNfcOrderModal()" style="padding:10px 18px; border-radius:10px; background:rgba(255,255,255,0.08); color:#fff; border:none; cursor:pointer; font-size:13px; font-weight:700;">닫기</button>
-          <button type="submit" id="dNfcSubmitBtn" style="padding:10px 20px; border-radius:10px; background:linear-gradient(135deg,#ffd978,#f59e0b); color:#000; border:none; cursor:pointer; font-size:13px; font-weight:800;">주문 접수 완료</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- Global Footer (Exit & Navigation Pathway) -->
   <footer style="margin-top: 80px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 48px 24px; background: rgba(4, 2, 8, 0.7); text-align: center;">
     <div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px;">
@@ -1510,7 +2493,8 @@
         <a href="/" style="color: #c084fc; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
           <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> 메인 홈으로 나가기
         </a>
-        <a href="/maker" style="color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 600;">✨ 새 3D 명함 만들기</a>
+        <a href="/maker?mode=single" style="color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 600;">👤 새 개인 명함 만들기</a>
+        <a href="/maker?mode=team" style="color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 600;">🏢 기업 팀원 단체 발행</a>
         <a href="/#showcase" style="color: rgba(255,255,255,0.7); text-decoration: none;">3D 쇼룸</a>
         <a href="/#nfc" style="color: rgba(255,255,255,0.7); text-decoration: none;">스마트 NFC 주문</a>
         <a href="/#pricing" style="color: rgba(255,255,255,0.7); text-decoration: none;">요금제 안내</a>
