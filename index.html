@@ -120,7 +120,7 @@
       <div class="card-showcase-wrapper" id="showcase">
         <div class="simulator-frame">
           <div class="simulator-notch"></div>
-          <iframe id="liveCardIframe" class="simulator-iframe" src="/card.html?id=toomcard&embed=simulator" title="3D Card Live Demo"></iframe>
+          <iframe id="liveCardIframe" class="simulator-iframe" src="/card?id=toomcard&embed=simulator" title="3D Card Live Demo"></iframe>
         </div>
 
         <!-- Sample Switcher Buttons (디자인 에디션별 쇼케이스) -->
@@ -585,7 +585,7 @@
 
       const iframe = document.getElementById('liveCardIframe');
       if (iframe) {
-        iframe.src = `/card.html?id=${slug}&embed=simulator`;
+        iframe.src = `/card?id=${slug}&embed=simulator`;
       }
     }
 
