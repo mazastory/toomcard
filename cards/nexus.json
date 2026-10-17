@@ -1,63 +1,65 @@
 {
   "slug": "nexus",
-  "company": "NEXUS GROUP",
+  "company": "NEXUS GLOBAL",
   "companySlug": "nexus",
   "layout": "metal",
-  "theme": "executive",
-  "edition": "PLATINUM VIP",
+  "theme": "obsidian",
   "companyWatermark": "NEXUS",
-  "slogan": "Enterprise Scaled AI & Infrastructure",
-  "tagline": "GLOBAL TECH VENTURES",
-  "role": "Global Managing Director",
-  "name": "Alex Rivera",
-  "phone": "02-555-0100",
+  "slogan": "미래를 여는 차세대 글로벌 엔터프라이즈 솔루션",
+  "tagline": "GLOBAL INNOVATION & ASSET",
+  "role": "총괄 디렉터",
+  "name": "김민준",
+  "phone": "010-5555-0200",
   "phoneLabel": "M",
-  "email": "alex@toomcard.com",
+  "email": "contact@nexus-global.io",
   "emailLabel": "E",
   "moatTags": [
-    "엔터프라이즈 AI",
-    "글로벌 무역 인프라",
-    "B2B 솔루션"
+    "3D 인터랙티브",
+    "vCard 주소록 저장",
+    "기업 공식명함"
   ],
   "logo": {
-    "src": "/assets/toomcard_hd.gif",
-    "fallback": "/assets/toomcard_hd.gif",
-    "alt": "NEXUS GROUP Logo"
+    "src": "/assets/setupod.gif",
+    "fallback": "/assets/setupod.gif",
+    "alt": "NEXUS GLOBAL Logo"
   },
   "primaryAction": {
     "url": "https://toomcard.com",
     "label": "공식 웹사이트",
-    "icon": "globe"
+    "icon": "sparkles"
   },
   "socials": [
     {
       "type": "kakao",
       "url": "https://open.kakao.com",
-      "label": "기업 카카오톡"
+      "label": "기업 카카오톡 채널",
+      "color": "#ffd978"
     },
     {
       "type": "instagram",
       "url": "https://instagram.com",
-      "label": "인스타그램"
+      "label": "공식 인스타그램",
+      "color": "#f472b6"
     }
   ],
   "vcard": {
-    "lastName": "Rivera",
-    "firstName": "Alex",
-    "formattedName": "Alex Rivera",
-    "org": "NEXUS GROUP",
-    "title": "Global Managing Director",
-    "tel": "02-555-0100",
-    "email": "alex@toomcard.com",
+    "lastName": "김",
+    "firstName": "민준",
+    "formattedName": "김민준 (NEXUS GLOBAL 총괄 디렉터)",
+    "org": "NEXUS GLOBAL",
+    "title": "총괄 디렉터",
+    "tel": "010-5555-0200",
+    "email": "contact@nexus-global.io",
     "url": "https://toomcard.com/nexus",
-    "note": "NEXUS GROUP | Enterprise Scaled AI & Infrastructure"
+    "note": "NEXUS GLOBAL | 미래를 여는 차세대 엔터프라이즈 솔루션"
   },
   "meta": {
-    "title": "NEXUS GROUP | Alex Rivera 디지털 명함",
-    "siteName": "NEXUS GROUP",
-    "ogTitle": "Alex Rivera | NEXUS GROUP",
-    "ogDescription": "Enterprise Scaled AI & Infrastructure | NEXUS GROUP 공식 디지털 명함",
-    "ogImage": "/assets/toomcard_front.jpg"
+    "title": "NEXUS GLOBAL | 김민준 디렉터 디지털 명함",
+    "siteName": "NEXUS GLOBAL",
+    "ogTitle": "김민준 디렉터 | NEXUS GLOBAL",
+    "ogDescription": "GLOBAL INNOVATION | NEXUS GLOBAL 공식 디지털 명함",
+    "ogImage": "https://toomcard.com/assets/toomcard_card_hybrid.jpg"
   },
-  "avatar": "/assets/toomcard_hd.gif"
+  "avatar": "/assets/setupod.gif",
+  "plateCardImage": "/assets/toomcard_front_plate.png"
 }

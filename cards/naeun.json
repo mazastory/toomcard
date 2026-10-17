@@ -4,20 +4,19 @@
   "companySlug": "toomus",
   "layout": "metal",
   "theme": "obsidian",
-  "edition": "TITANIUM PRO",
   "companyWatermark": "TOOMUS",
-  "slogan": "Next-Gen Digital Living & Mobility",
-  "tagline": "GLOBAL STRATEGY GROUP",
-  "role": "Global Managing Director",
-  "name": "Sophia Kang",
-  "phone": "02-555-0199",
+  "slogan": "Life, Connected",
+  "tagline": "LIFE · CONNECTED",
+  "role": "매니저",
+  "name": "김나은",
+  "phone": "010-4985-0712",
   "phoneLabel": "M",
-  "email": "hello@toomcard.com",
+  "email": "naeun@toomus.com",
   "emailLabel": "E",
   "moatTags": [
-    "글로벌 비즈니스",
-    "브랜드 전략",
-    "M&A 파트너십"
+    "Toomus",
+    "Life",
+    "Connected"
   ],
   "logo": {
     "src": "/assets/toomuslogo.gif",
@@ -25,39 +24,29 @@
     "alt": "TOOMUS Logo"
   },
   "primaryAction": {
-    "url": "https://toomcard.com",
-    "label": "공식 웹사이트",
+    "url": "https://toomus.com",
+    "label": "TOOMUS 웹사이트",
     "icon": "globe"
   },
-  "socials": [
-    {
-      "type": "kakao",
-      "url": "https://open.kakao.com",
-      "label": "카카오톡 1:1"
-    },
-    {
-      "type": "instagram",
-      "url": "https://instagram.com",
-      "label": "인스타그램"
-    }
-  ],
+  "socials": [],
   "vcard": {
-    "lastName": "Kang",
-    "firstName": "Sophia",
-    "formattedName": "Sophia Kang",
+    "lastName": "김",
+    "firstName": "나은",
+    "formattedName": "김나은",
     "org": "TOOMUS",
-    "title": "Global Managing Director",
-    "tel": "02-555-0199",
-    "email": "hello@toomcard.com",
+    "title": "매니저",
+    "tel": "010-4985-0712",
+    "email": "naeun@toomus.com",
     "url": "https://toomcard.com/naeun",
-    "note": "TOOMUS | Next-Gen Digital Living & Mobility"
+    "note": "TOOMUS | Life, Connected"
   },
   "meta": {
-    "title": "TOOMUS | Sophia Kang 디지털 명함",
+    "title": "TOOMUS | 김나은 매니저 디지털 명함",
     "siteName": "TOOMUS",
-    "ogTitle": "Sophia Kang | TOOMUS",
-    "ogDescription": "Next-Gen Digital Living & Mobility | TOOMUS 공식 디지털 명함",
-    "ogImage": "/assets/toomcard_front.jpg"
+    "ogTitle": "김나은 매니저 | TOOMUS",
+    "ogDescription": "Life, Connected | TOOMUS 공식 디지털 명함",
+    "ogImage": "https://toomcard.com/assets/toomus_card_minimal.jpg"
   },
-  "avatar": "/assets/toomuslogo.gif"
+  "avatar": "/assets/toomuslogo.gif",
+  "plateCardImage": "/assets/toomus_front_plate.png"
 }

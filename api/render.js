@@ -50,9 +50,50 @@ module.exports = async (req, res) => {
 
   // Alias 매핑 (한글 및 오타 대응)
   const ALIAS_MAP = {
+    // 이향원
     '이향원': 'hyangwon',
     'hyanwon': 'hyangwon',
-    'won': 'hyangwon'
+    'won': 'hyangwon',
+
+    // 박수빈
+    '박수빈': 'subin',
+    'subin': 'subin',
+
+    // 김현수
+    '김현수': 'hyunsoo',
+    'hyunsoo': 'hyunsoo',
+
+    // 유지연
+    '유지연': 'jiyeon',
+    'jiyeon': 'jiyeon',
+
+    // 김용수
+    '김용수': 'yongsu',
+    'yongsu': 'yongsu',
+
+    // 조윤서
+    '조윤서': 'yunseo',
+    'yunseo': 'yunseo',
+
+    // 김나은
+    '김나은': 'naeun',
+    'naeun': 'naeun',
+
+    // 김나현
+    '김나현': 'nahyun',
+    'nahyun': 'nahyun',
+
+    // 김민준
+    '김민준': 'nexus',
+    'nexus': 'nexus',
+
+    // Andrew K / 대표
+    '대표': 'ceo',
+    'ceo': 'ceo',
+    'andrew': 'andrew',
+    'toomus': 'toomus',
+    'setupod': 'setupod',
+    'toomcard': 'toomcard'
   };
 
   const aliasTarget = ALIAS_MAP[cleanSlug] || ALIAS_MAP[decodedSlug] || null;
