@@ -4767,6 +4767,15 @@
       } else if (modeParam === 'single' || modeParam === 'personal') {
         if (typeof switchMakerMode === 'function') switchMakerMode('single');
       }
+
+      const presetParam = urlParams.get('preset') || urlParams.get('template') || urlParams.get('design');
+      if (presetParam && DESIGN_PRESETS[presetParam]) {
+        if (modeParam === 'team' || modeParam === 'enterprise') {
+          if (typeof selectTeamDesignPreset === 'function') selectTeamDesignPreset(presetParam);
+        } else {
+          if (typeof selectDesignPreset === 'function') selectDesignPreset(presetParam);
+        }
+      }
       
       let savedData = null;
       

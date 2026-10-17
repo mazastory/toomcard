@@ -15,6 +15,14 @@
       "destination": "/maker.html"
     },
     {
+      "source": "/templates",
+      "destination": "/templates.html"
+    },
+    {
+      "source": "/designs",
+      "destination": "/templates.html"
+    },
+    {
       "source": "/dashboard",
       "destination": "/dashboard.html"
     },
