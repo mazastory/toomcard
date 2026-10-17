@@ -1380,15 +1380,24 @@
       window._allPods = livePods;
 
       // 1. Separate Personal Pod vs Enterprise Pods
+      // Enterprise Team Member Slugs (절대 개인 명함으로 자동 배정되지 않도록 철저히 차단)
+      const enterpriseSlugs = new Set(['hyangwon', 'subin', 'hyunsoo', 'yongsu', 'jiyeon', 'naeun', 'nahyun']);
+
       let selectedPersonalSlug = localStorage.getItem('toomcard_primary_personal_slug');
+      // 만약 기존 저장된 슬러그가 이향원 등 임직원 명함이면 강제 초기화
+      if (selectedPersonalSlug && enterpriseSlugs.has(selectedPersonalSlug)) {
+        localStorage.removeItem('toomcard_primary_personal_slug');
+        selectedPersonalSlug = null;
+      }
+
       let personalPod = null;
 
       if (selectedPersonalSlug) {
-        personalPod = livePods.find(p => p.slug === selectedPersonalSlug);
+        personalPod = livePods.find(p => p.slug === selectedPersonalSlug && !enterpriseSlugs.has(p.slug));
       }
       if (!personalPod) {
-        // Look for personal slug heuristics (andrew, ceo, or explicit is_personal)
-        personalPod = livePods.find(p => p.slug === 'andrew' || p.slug === 'ceo' || p.components_json?.card?.is_personal === true);
+        // Look for personal slug heuristics (andrew, ceo, toomus, or explicit is_personal), excluding enterprise staff
+        personalPod = livePods.find(p => (p.slug === 'andrew' || p.slug === 'ceo' || p.slug === 'toomus' || p.components_json?.card?.is_personal === true) && !enterpriseSlugs.has(p.slug));
       }
       
       // If user has Andrew K static card available in fallback
@@ -1755,7 +1764,10 @@
     function renderPersonalCardsGrid() {
       const grid = document.getElementById('podsList');
       if (!grid) return;
-      const pods = window._allPods || [];
+
+      const enterpriseSlugs = new Set(['hyangwon', 'subin', 'hyunsoo', 'yongsu', 'jiyeon', 'naeun', 'nahyun']);
+      const allPods = window._allPods || [];
+      const pods = allPods.filter(p => !enterpriseSlugs.has(p.slug) && !p.is_team_member && p.components_json?.card?.is_personal !== false);
 
       if (pods.length === 0) {
         grid.innerHTML = `
