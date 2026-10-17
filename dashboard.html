@@ -1113,6 +1113,7 @@
     lucide.createIcons();
     
     // Default TOOMUS Enterprise Team Roster (Enriched when in enterprise view)
+    // ⚠️ MAZA STUDIO와 TOOMUS는 별개 회사이므로 조윤서 대표 등 MAZA 인물은 절대 포함하지 않음
     const DEFAULT_ENTERPRISE_ROSTER = [
       {
         slug: 'hyangwon',
@@ -1165,16 +1166,6 @@
         assigned_email: ''
       },
       {
-        slug: 'yunseo',
-        name: '조윤서',
-        role: '투머스 / 책임',
-        company: 'TOOMUS',
-        phone: '010-5678-9012',
-        email: 'yunseo@toomus.com',
-        views: 47,
-        assigned_email: ''
-      },
-      {
         slug: 'naeun',
         name: '김나은',
         role: '투머스 / 선임',
@@ -1195,6 +1186,29 @@
         assigned_email: ''
       }
     ];
+
+    // Enterprise Team Member Slugs & Names (절대 개인 명함으로 자동 배정되거나 개인 목록에 노출되지 않도록 철저히 차단)
+    const ENTERPRISE_STAFF_IDENTIFIERS = new Set([
+      'hyangwon', '이향원',
+      'subin', '박수빈',
+      'hyunsoo', '김현수',
+      'yongsu', '김용수',
+      'jiyeon', '유지연',
+      'naeun', '김나은',
+      'nahyun', '김나현'
+    ]);
+
+    function isEnterpriseStaffPod(pod) {
+      if (!pod) return false;
+      const slug = (pod.slug || '').trim().toLowerCase();
+      const rawSlug = (pod.slug || '').trim();
+      const card = pod.components_json?.card || {};
+      const name = (card.name || '').trim();
+      if (ENTERPRISE_STAFF_IDENTIFIERS.has(slug) || ENTERPRISE_STAFF_IDENTIFIERS.has(rawSlug)) return true;
+      if (ENTERPRISE_STAFF_IDENTIFIERS.has(name)) return true;
+      if (pod.is_team_member === true) return true;
+      return false;
+    }
 
     // Global state
     window._dashboardMode = localStorage.getItem('toomcard_dashboard_mode') || 'personal';
@@ -1380,12 +1394,9 @@
       window._allPods = livePods;
 
       // 1. Separate Personal Pod vs Enterprise Pods
-      // Enterprise Team Member Slugs (절대 개인 명함으로 자동 배정되지 않도록 철저히 차단)
-      const enterpriseSlugs = new Set(['hyangwon', 'subin', 'hyunsoo', 'yongsu', 'jiyeon', 'naeun', 'nahyun']);
-
       let selectedPersonalSlug = localStorage.getItem('toomcard_primary_personal_slug');
       // 만약 기존 저장된 슬러그가 이향원 등 임직원 명함이면 강제 초기화
-      if (selectedPersonalSlug && enterpriseSlugs.has(selectedPersonalSlug)) {
+      if (selectedPersonalSlug && (ENTERPRISE_STAFF_IDENTIFIERS.has(selectedPersonalSlug) || ENTERPRISE_STAFF_IDENTIFIERS.has(selectedPersonalSlug.toLowerCase()))) {
         localStorage.removeItem('toomcard_primary_personal_slug');
         selectedPersonalSlug = null;
       }
@@ -1393,11 +1404,15 @@
       let personalPod = null;
 
       if (selectedPersonalSlug) {
-        personalPod = livePods.find(p => p.slug === selectedPersonalSlug && !enterpriseSlugs.has(p.slug));
+        personalPod = livePods.find(p => p.slug === selectedPersonalSlug && !isEnterpriseStaffPod(p));
       }
       if (!personalPod) {
         // Look for personal slug heuristics (andrew, ceo, toomus, or explicit is_personal), excluding enterprise staff
-        personalPod = livePods.find(p => (p.slug === 'andrew' || p.slug === 'ceo' || p.slug === 'toomus' || p.components_json?.card?.is_personal === true) && !enterpriseSlugs.has(p.slug));
+        personalPod = livePods.find(p => (p.slug === 'andrew' || p.slug === 'ceo' || p.slug === 'toomus' || p.components_json?.card?.is_personal === true) && !isEnterpriseStaffPod(p));
+      }
+      if (!personalPod) {
+        // Any pod owned by user that is NOT enterprise staff
+        personalPod = livePods.find(p => !isEnterpriseStaffPod(p));
       }
       
       // If user has Andrew K static card available in fallback
@@ -1441,11 +1456,43 @@
       // Overlay user's saved pods in Supabase
       livePods.forEach(p => {
         if (personalPod && p.slug === personalPod.slug) return; // exclude primary personal card from staff grid
-        const existing = enterpriseMap.get(p.slug) || {};
-        enterpriseMap.set(p.slug, {
+        
+        // Find matching staff target key: e.g. '이향원' -> 'hyangwon'
+        let matchKey = p.slug;
+        const card = p.components_json?.card || {};
+        const name = (card.name || '').trim();
+        if (p.slug === '이향원' || p.slug === 'hyangwon' || name === '이향원') {
+          matchKey = 'hyangwon';
+        } else if (p.slug === '박수빈' || p.slug === 'subin' || name === '박수빈') {
+          matchKey = 'subin';
+        } else if (p.slug === '김현수' || p.slug === 'hyunsoo' || name === '김현수') {
+          matchKey = 'hyunsoo';
+        } else if (p.slug === '김용수' || p.slug === 'yongsu' || name === '김용수') {
+          matchKey = 'yongsu';
+        } else if (p.slug === '유지연' || p.slug === 'jiyeon' || name === '유지연') {
+          matchKey = 'jiyeon';
+        } else if (p.slug === '김나은' || p.slug === 'naeun' || name === '김나은') {
+          matchKey = 'naeun';
+        } else if (p.slug === '김나현' || p.slug === 'nahyun' || name === '김나현') {
+          matchKey = 'nahyun';
+        }
+
+        const existing = enterpriseMap.get(matchKey) || {};
+        enterpriseMap.set(matchKey, {
           ...existing,
           ...p,
-          assigned_email: p.components_json?.assigned_email || existing.assigned_email || ''
+          slug: matchKey, // Keep canonical roster slug so links stay neat
+          liveSlug: p.slug,
+          components_json: {
+            ...existing.components_json,
+            ...p.components_json,
+            card: {
+              ...(existing.components_json?.card || {}),
+              ...(p.components_json?.card || {})
+            }
+          },
+          assigned_email: p.components_json?.assigned_email || existing.assigned_email || '',
+          is_team_member: true
         });
       });
 
@@ -1765,9 +1812,8 @@
       const grid = document.getElementById('podsList');
       if (!grid) return;
 
-      const enterpriseSlugs = new Set(['hyangwon', 'subin', 'hyunsoo', 'yongsu', 'jiyeon', 'naeun', 'nahyun']);
       const allPods = window._allPods || [];
-      const pods = allPods.filter(p => !enterpriseSlugs.has(p.slug) && !p.is_team_member && p.components_json?.card?.is_personal !== false);
+      const pods = allPods.filter(p => !isEnterpriseStaffPod(p));
 
       if (pods.length === 0) {
         grid.innerHTML = `
@@ -1933,9 +1979,13 @@
 
     // Set Primary Personal Card
     function setPrimaryPersonalCard(slug) {
+      if (ENTERPRISE_STAFF_IDENTIFIERS.has(slug) || ENTERPRISE_STAFF_IDENTIFIERS.has((slug || '').toLowerCase())) {
+        showToast('⚠️ 기업 소속 임직원 명함은 개인 대표 명함으로 지정할 수 없습니다.');
+        return;
+      }
       localStorage.setItem('toomcard_primary_personal_slug', slug);
       const pod = (window._allPods || []).find(p => p.slug === slug);
-      if (pod) {
+      if (pod && !isEnterpriseStaffPod(pod)) {
         window._personalPod = pod;
       }
       showToast('⭐ 대표 개인 명함이 변경되었습니다.');
